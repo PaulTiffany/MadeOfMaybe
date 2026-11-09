@@ -22,7 +22,9 @@ jobs:
       - name: Verify globally faster, physically rescored lyrics without a bubble
         run: python -m unittest tests.test_lyric_clock -v
       - name: Export the physically verified 192-generation-per-audio-second word
-        run: python -m life.export_clocked_text --gps 192 --pitch 160 --manifest output/lyric_cues/clocked_we_192.json > output/lyric_cues/clocked_we_192.rle
+        run: |
+          mkdir -p output/lyric_cues
+          python -m life.export_clocked_text --gps 192 --pitch 160 --manifest output/lyric_cues/clocked_we_192.json > output/lyric_cues/clocked_we_192.rle
       - name: Compile every caption to a generation score and reference SRT
         run: python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe --gps 24
       - name: Compile entire fixed-speed song at the higher Life clock
