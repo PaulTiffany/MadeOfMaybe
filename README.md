@@ -2,6 +2,41 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
+## Lyrics-first alignment pilot (current active work)
+
+The connected Suno source for *Made of Maybe* has **468 raw timing tokens**;
+all are saved verbatim in `data/made_of_maybe_suno_alignment.json` on this
+research branch, including three zero-duration anomalies. **We are doing text
+before phonemes**: `life/lyric_cues.py` converts token/syllable fragments
+into timed words, two-row (eight-character) caption pages, generation scores,
+CSV, JSON and diagnostic SRT. `life/caption_library.py` exports each caption
+page as native, stable B3/S23 blocks inside the **existing** speech bubble.
+The GitHub lyric CI job exports the complete song's page library as Golly RLE.
+
+The first physical synchronization proof is a real, constant-clock Life
+universe (`life/lyric_text_pilot.py`): the singer, 5×7 caption
+`WE MADE / A WINDOW`, unchanged bubble, and four separate glider-created
+progress blocks for `WE`, `MADE`, `A`, `WINDOW`. The blocks turn on at
+generations 268, 276, 284, 288 and are erased at 326 by real Life reactions.
+The combined universe was checked against independent subsystems for **350**
+consecutive generations. It does not replace subtitle letters yet, and the
+blocks currently sit **right of the bubble**, to avoid invalidating routes.
+No phoneme mapping has begun.
+
+```sh
+python -m pip install numpy scipy Pillow
+python -m unittest tests.test_lyric_cues tests.test_caption_library tests.test_lyric_text_pilot -v
+python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe
+python -m life.caption_library --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/native_page_rles
+python -m life.export_lyric_text_pilot > output/lyric_cues/first_lyric_glider_progress.rle
+python preview/make_lyric_text_pilot.py
+python preview/make_caption_library_preview.py
+```
+
+See [lyrics-first qualification](research/LYRICS_FIRST_QUALIFICATION.md).
+
+---
+
 ## Character round 2 — wavy hair + glider-controlled eyebrow and iris
 
 The new `life/character_round2.py` builds a much more deliberate singer:

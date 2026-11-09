@@ -88,7 +88,9 @@ def aligned_words(raw: dict) -> tuple[LyricWord, ...]:
     for i, token in enumerate(raw["words"]):
         original = token["word"]
         headers = _HEADER.findall(original)
-        if headers:
+        # Only headers preceding the token surface describe its section.
+        # A trailing [End] annotation must not relabel the final sung word.
+        if headers and original.lstrip().startswith("["):
             section = headers[-1][1:-1].strip()
         cleaned = _PAREN.sub("", _HEADER.sub("", original))
         match = re.match(r"\s*", cleaned)

@@ -76,3 +76,52 @@ class LyricAlignmentTests(unittest.TestCase):
         self.assertTrue(all(len(row)<=8 for page in pages for row in page.lines))
 
 if __name__=='__main__':unittest.main()
+
+class ExportedLyricArtifactTests(unittest.TestCase):
+    def test_fixture_generates_reusable_csv_json_and_srt(self):
+        import csv,json,tempfile
+        from life.lyric_cues import compile_files,page_rows
+        raw=read_alignment(DATA/'first_verse_alignment_fixture.json')
+        with tempfile.TemporaryDirectory() as tmp:
+            prefix=Path(tmp)/'verse'
+            compile_files(raw,prefix)
+            with (Path(tmp)/'verse_words.csv').open(encoding='utf-8') as f:
+                ws=list(csv.DictReader(f))
+            with (Path(tmp)/'verse_pages.csv').open(encoding='utf-8') as f:
+                ps=list(csv.DictReader(f))
+            pages=json.loads((Path(tmp)/'verse_pages.json').read_text())
+            subtitles=(Path(tmp)/'verse_pages.srt').read_text()
+            self.assertEqual(len(ws),14)
+            self.assertEqual(len(ps),4)
+            self.assertEqual(pages['native_life_switching'],
+                             'NOT IMPLEMENTED FOR CAPTION PAGES')
+            self.assertEqual(ws[0]['word'],'WE')
+            self.assertEqual(ws[0]['make_generation'],'268')
+            self.assertEqual(ps[0]['line1'],'WE MADE')
+            self.assertEqual(ps[0]['line2'],'A WINDOW')
+            self.assertIn('00:00:11,224 -->',subtitles)
+            self.assertEqual(subtitles.count(' --> '),4)
+            self.assertEqual(page_rows(raw)[0]['source_tokens'],'0;1;2;3')
+
+    def test_trailing_end_header_does_not_relabel_last_word(self):
+        from life.lyric_cues import aligned_words
+        a=aligned_words({'words':[
+            {'word':'[Outro]\nRight','start_s':231.0,'end_s':231.2},
+            {'word':' now.\n\n[End]','start_s':231.2,'end_s':231.5},
+        ]})
+        self.assertEqual([x.section for x in a],['Outro','Outro'])
+        self.assertEqual([x.text for x in a],['RIGHT','NOW.'])
+
+    def test_full_alignment_with_real_bubble_pages(self):
+        from life.lyric_cues import page_rows
+        source=DATA/'made_of_maybe_suno_alignment.json'
+        if not source.exists():
+            self.skipTest('Full song captured on draft PR branch; CI runs this test')
+        raw=read_alignment(source)
+        pages=caption_pages(aligned_words(raw))
+        self.assertGreater(len(pages),70)
+        for page in pages:
+            for line in page.lines:
+                self.assertLessEqual(len(line),8)
+                self.assertGreater(len(line_cells(line,(0,0))),0)
+        self.assertEqual(len(page_rows(raw)),len(pages))
