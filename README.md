@@ -3,6 +3,28 @@
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
 
+## NEW — same native-Life splitter reused for TWO sung lines
+
+The next compaction gate now passes for a **single fixed lyric anchor pixel**:
+word onsets at generations **2156** and **2976** both physically construct
+one Life still life at the **same cell coordinates (0,0)** using a single
+reused 84-cell duplicator with two preloaded input gliders. The word pixel
+is erased at line clears 2578 and 3402. The original one-element real-lip
+coupling survives, and the unchanged 5,796-cell singer art has two-cell
+spacetime clearance through generation 3402. This removes the remote-stage
+necessity for **this anchor**, not for all font pixels or all 403 words.
+
+The second splitter outlet is not yet connected to the real lips; attempts
+to do so encountered actual glider collisions. See
+[`research/REUSED_WORD_SIGNAL_BUS.md`](research/REUSED_WORD_SIGNAL_BUS.md)
+for the exact scoped results, ablation caveat and reproduction commands.
+
+```sh
+python -m unittest tests.test_reusable_word_cue -v
+python -m life.export_reusable_word_cue --with-portrait \
+  --out patterns/two_line_reused_word_and_singer.rle
+```
+
 ## Current integration milestone — ONE original lyric pixel drives ONE real lip tile
 
 The conservative physical bridge now replaces **two actual original control gliders** with
@@ -496,13 +518,3 @@ phonemization or secondary timeline is used. This does **not** yet mean 403
 signals are physically connected to the full lip contour. Rate/collision
 qualification remains a gated next step; the new GitHub workflow uploads
 both the source-cue audit and the physically coupled first-line proof video.
-
-The standalone **real 1→4 glider cascade** now has a verified three-catalyst,
-one-source Golly RLE and direct B3/S23 regression tests. This is fanout
-capacity only; it does not yet certify four mouth tiles on the character.
-
-A conservative native Life causal-cone audit now also demonstrates that the
-**second sparse lyric stage is physically too far** from the fixed singer for
-one localized g0 signal to coordinate both at their aligned time. This is a
-layout obstruction, not a failure of Conway's rules: compact delayed glider
-emission or distributed stage design is required before 403 physical links.
