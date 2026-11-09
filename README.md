@@ -243,3 +243,20 @@ View `preview/beehive_face_compare.png` (closed vs open with no debug labels),
 **The speech bubble is unchanged.** The new face and existing bubble/pulsar
 have been independently qualified together for 610 generations. This
 remains **draft artwork**, not yet an accepted singer or lip-sync.
+
+---
+
+## Lyrics-first milestone — 7 physically controlled word cues
+
+Before mapping mouth articulation, the repo now captures the **complete Suno alignment** (`data/made_of_maybe_suno_alignment.json`, 468 raw tokens) and compiles a fixed-24-gens/sec *word timeline* and line-wrapped 5×7 Life-bubble text. The first 7 lyric words from **WE MADE A WINDOW OUT OF SAND** have glider-made progress lamps in one continuous, verified Life universe, spread across two independent still-life caption pages. A camera cut in the preview changes which page is shown; it does not add or remove Life cells. **The caption letters remain static** — progress lights, not the glyphs, are controlled. No phoneme inference has been attempted.
+
+```bash
+python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues
+python -m unittest tests.test_lyric_cues tests.test_lyric_text_pilot tests.test_lyric_text_scene -v
+python -m life.export_first_line > patterns/seven_word_glider_timed_captions.rle
+python preview/make_lyric_text_scene.py
+```
+
+Inspect `preview/seven_word_native_life_cues.gif`,
+`preview/seven_word_cue_contact_sheet.png`, the RLE, and
+[lyric alignment qualification](research/LYRIC_ALIGNMENT_FIRST_PASS.md).
