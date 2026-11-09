@@ -1,0 +1,26 @@
+#C Made of Maybe: genuine FOUR physical 1-glider -> 2-glider word/mouth fanouts.
+#C One output constructs ONE lyric pixel with a preloaded partner glider.
+#C Other output switches ONE 2x2 mouth port. Modes: C M O M C.
+#C Suno starts: WE, MADE, A, WINDOW; 192 Life gen/audio-second.
+#C Original stable splitter: https://conwaylife.com/wiki/Glider_duplicator
+#C Full singer lips and 403 sung word fanouts are NOT yet physically wired.
+x = 1943, y = 1576, rule = B3/S23
+646bo$646bobo$646b2o407$917bo$917bobo$917b2o141$1107bo$1107bobo$1107b
+2o41$1184bo$1184bobo$1184b2o10$71bobo$72b2o$72bo7$obo$b2o$bo233$340b2o
+$341bo$341bobo$331bo10b2o$329b3o$328bo$328b2o$313b2o48b2o$314bo48b2o$
+314bob2o$315bo2bo$316b2o$331b2o$331b2o4$340bo3b2o$339bobo3bo$338bobo3b
+o$334b2obobo3bo$334b2obo2b4obo5b2o$338bobo3bobo5bo$334b2ob2o2bo2bobo2b
+3o$335bobo2b2o3bo3bo$323b2o10bobo$323b2o11bo76$1518bo$1517bo$1517b3o
+27$423bobo$424b2o$424bo47$440b2o$441bo$441bobo$431bo10b2o$429b3o$428bo
+$428b2o$413b2o48b2o$414bo48b2o$414bob2o$415bo2bo$416b2o$431b2o$431b2o
+4$440bo3b2o$439bobo3bo$438bobo3bo$434b2obobo3bo$434b2obo2b4obo5b2o$
+438bobo3bobo5bo$434b2ob2o2bo2bobo2b3o$435bobo2b2o3bo3bo$423b2o10bobo$
+423b2o11bo69$533b2o$533b2o192$785b2o$786bo$786bobo$776bo10b2o$774b3o$
+773bo$773b2o$758b2o48b2o$759bo48b2o$759bob2o$760bo2bo$761b2o$776b2o$
+776b2o4$785bo3b2o$784bobo3bo$783bobo3bo$779b2obobo3bo$779b2obo2b4obo5b
+2o$783bobo3bobo5bo$779b2ob2o2bo2bobo2b3o$780bobo2b2o3bo3bo$768b2o10bob
+o$768b2o11bo65$1941bo$1940bo$1940b3o27$800bobo$801b2o$801bo108$935b2o$
+936bo$936bobo$926bo10b2o$924b3o$923bo$923b2o$908b2o48b2o$909bo48b2o$
+909bob2o$910bo2bo$911b2o$926b2o$926b2o4$935bo3b2o$934bobo3bo$933bobo3b
+o$929b2obobo3bo$929b2obo2b4obo5b2o$933bobo3bobo5bo$929b2ob2o2bo2bobo2b
+3o$930bobo2b2o3bo3bo$918b2o10bobo$918b2o11bo!

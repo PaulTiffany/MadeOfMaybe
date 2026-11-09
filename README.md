@@ -3,6 +3,37 @@
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
 
+## NEW — one physical glider event drives lyrics **and** three-state mouth
+
+A stable, reusable **one-input / two-output glider duplicator** now couples
+the first four song word onsets directly to a native Life three-state mouth
+register. Four word triggers from the existing 192-generation/second karaoke
+score drive **CLOSED → MEDIUM → OPEN → MEDIUM → CLOSED** without any separate
+mouth timeline. One branch constructs a real 2×2 Life lyric pixel (with a
+preloaded partner); its sibling constructs or erases one mouth control block.
+Removing any source input causes **both** operations to fail. The 84-cell
+splitter catalyst is restored after every event, and the full four-event
+universe evolves cleanly through generation 2320 with 356 final live cells.
+
+This is a rigorously verified **shared-clock causal circuit pilot**, not yet
+the physical integration of the entire 403-word text universe or the full
+styled singer's 40-lip-element artwork. The optical preview arranges two
+true mouth bits and one word pixel per trigger for legibility; it does not
+pretend to be the final singer. Full-song word-onset mouth *intent* is also
+compiled directly from the existing lyric score but remains to be routed.
+
+```sh
+python -m unittest tests.test_lyric_mouth_fanout -v
+python -m life.export_lyric_mouth_fanout
+python preview/make_lyric_mouth_fanout.py
+```
+
+See [full qualification and limitations](research/SHARED_LYRIC_MOUTH_SPLITTER.md),
+`patterns/lyric_mouth_shared_splitter.rle`, and
+`preview/lyric_mouth_shared_fanout.gif`.
+
+---
+
 ## Full song — genuine glider-written karaoke (text-first)
 
 The full-song compiler now treats **every sung line** in the 468-token Suno
