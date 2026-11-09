@@ -1,0 +1,36 @@
+name: Render full-song Conway karaoke video
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  optical-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install video tools
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          ffmpeg -version | head -1
+      - name: Check exact native Life block occupancy against B3/S23
+        run: python -m unittest tests.test_life_cell_sampler -v
+      - name: Render all 66 sung lines from original glider programs
+        run: |
+          mkdir -p output/video
+          python preview/render_full_song_karaoke.py \
+            --out output/video/made_of_maybe_conway_karaoke_silent.mp4 \
+            --thumbnail output/video/native_life_karaoke_thumbnail.png \
+            --metadata output/video/optical_video_provenance.json
+          ffprobe -v error -show_entries format=duration,size:stream=nb_frames \
+            -of json output/video/made_of_maybe_conway_karaoke_silent.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MadeOfMaybe-full-song-conway-karaoke-video
+          path: output/video/
+          retention-days: 30
