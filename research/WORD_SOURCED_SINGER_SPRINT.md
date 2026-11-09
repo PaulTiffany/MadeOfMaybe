@@ -21,7 +21,10 @@ states are dropped in the concise intent; raw word events remain available.
 8 native generations apart in the local first-two-line fixture. Even a clean
 block erasure takes 22 generations, so the visible full-lip contours cannot
 simply be commanded at every word event without rate-adaptation and a new
-collision-qualified routing design. The audit exposes sub-22/sub-48 gaps.
+collision-qualified routing design. The audit exposes sub-22/sub-48 gaps and additionally exports an
+**uncertified 48-generation rate-limited candidate**. That candidate drops
+changes it cannot satisfy without inventing any replacement event times;
+its routes still require native B3/S23 qualification.
 
 ## The real first-line coupling video
 
@@ -56,6 +59,23 @@ python preview/render_causal_firstline_singer.py --out preview/causal_firstline_
 GitHub Actions runs full-alignment assertions and uploads the 4.5-second
 physical-causal proof video as an artifact. The full word alignment file is
 tracked by the GitHub branch; local fixture-only checkouts may not have it.
+
+## Two-level REAL glider fanout: one input → four outputs
+
+A second, separate B3/S23 hardware experiment now proves that the stable
+84-cell duplicator can be cascaded. Place two additional duplicators directly
+on the two *physically produced* first-stage outputs, with phase-matched
+orientations. One initial glider and **252 stationary catalyst cells**
+produce **four independent five-cell output gliders by generation 683**.
+No runtime signal is ever inserted. Actual B3/S23 simulation validates
+three stable catalyst banks, four moving gliders, and no extra debris.
+Source ablation leaves only the stable catalysts. The exact exported Golly
+pattern is `patterns/one_to_four_word_glider_splitter.rle`.
+
+**Scope:** these four outlet gliders are not yet routed to the complete
+character's lips; this is the missing fanout *capacity* primitive rather than
+a claim of four causally actuated lip tiles. Additional phases, reflected
+branches and protected routes need clearance tests before using the outputs.
 
 ## Next gate (not bypassed)
 

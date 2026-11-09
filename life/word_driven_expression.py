@@ -58,8 +58,28 @@ def qualified_intent(path=ALIGNMENT_FILE):
             current=cue.state
     return tuple(out)
 
+def rate_limited_candidate(path=ALIGNMENT_FILE, *, min_spacing_g=48):
+    """Event-only thinning proposal for a bounded-response physical router.
+
+    This **does not certify** 40 physical lip elements. It merely omits state
+    changes that would require less than min_spacing_g Life generations. No
+    artificial delayed events are invented: outputs are a strict ordered
+    subset of actual karaoke onset/clear events. A physically qualified mouth
+    compiler must still prove its individual glider routes and reset behavior.
+    """
+    if min_spacing_g<0 or min_spacing_g%4:
+        raise ValueError('minimum candidate response must be nonnegative, multiple of 4')
+    out=[];current='closed'
+    for cue in source_cues(path):
+        if cue.state==current:continue
+        if out and cue.generation-out[-1].generation<min_spacing_g:continue
+        out.append(cue);current=cue.state
+    return tuple(out)
+
+
 def audit(path=ALIGNMENT_FILE):
     raw=source_cues(path); changed=qualified_intent(path)
+    feasible_candidate=rate_limited_candidate(path)
     gaps=[b.generation-a.generation for a,b in zip(changed,changed[1:])]
     return {
       'gps':GPS,'source_alignment_file':path.name,'word_events':sum(x.cause=='word_make' for x in raw),
@@ -68,6 +88,10 @@ def audit(path=ALIGNMENT_FILE):
       'smallest_change_gap_generations':min(gaps) if gaps else None,
       'gaps_under_22_generations':sum(g<22 for g in gaps),
       'gaps_under_48_generations':sum(g<48 for g in gaps),
+      'rate_limited_proposed_changes':len(feasible_candidate),
+      'rate_limited_minimum_spacing_generations':48,
+      'rate_limited_cues':[asdict(c) for c in feasible_candidate],
+      'rate_limited_physical_hardware_certified':False,
       'word_source_only':True,'phonemization':False,
       'physical_full_lip_wiring_verified':False,
       'all_cues': [asdict(c) for c in changed]

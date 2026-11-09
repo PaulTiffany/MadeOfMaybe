@@ -496,3 +496,7 @@ phonemization or secondary timeline is used. This does **not** yet mean 403
 signals are physically connected to the full lip contour. Rate/collision
 qualification remains a gated next step; the new GitHub workflow uploads
 both the source-cue audit and the physically coupled first-line proof video.
+
+The standalone **real 1→4 glider cascade** now has a verified three-catalyst,
+one-source Golly RLE and direct B3/S23 regression tests. This is fanout
+capacity only; it does not yet certify four mouth tiles on the character.

@@ -24,12 +24,14 @@ jobs:
           ffmpeg -version | head -n 1
           ffprobe -version | head -n 1
       - name: Qualify native-lyric score and physical-causal camera
-        run: python -m unittest tests.test_word_driven_expression tests.test_causal_firstline_camera -v
+        run: python -m unittest tests.test_word_driven_expression tests.test_causal_firstline_camera tests.test_cascaded_lyric_splitter -v
       - name: Export all 403 source-linked word cue intentions
         run: |
           python -m life.export_word_driven_expression \
             --alignment data/made_of_maybe_suno_alignment.json \
             --out output/full_song_three_state_intent.json
+      - name: Export exact B3/S23 four-output cascaded splitter
+        run: python -m life.export_cascaded_splitter
       - name: Render first-line video from actual shared glider and real mouth element
         run: |
           python preview/render_causal_firstline_singer.py \
@@ -44,4 +46,6 @@ jobs:
             preview/causal_firstline_character_frame.png
             preview/causal_firstline_singer_metadata.json
             output/full_song_three_state_intent.json
+            output/one_to_four_word_glider_splitter.json
+            patterns/one_to_four_word_glider_splitter.rle
           retention-days: 30

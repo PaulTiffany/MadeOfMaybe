@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from life.full_song_karaoke import GPS,ALIGNMENT_FILE
 FIXTURE=Path(__file__).resolve().parents[1]/"data"/"first_verse_alignment_fixture.json"
-from life.word_driven_expression import (score,source_cues,qualified_intent,audit,STATES)
+from life.word_driven_expression import (score,source_cues,qualified_intent,rate_limited_candidate,audit,STATES)
 
 class WordDrivenExpressionTests(unittest.TestCase):
     def test_every_word_and_line_clear_reuses_exact_real_native_lyric_cues(self):
@@ -32,6 +32,18 @@ class WordDrivenExpressionTests(unittest.TestCase):
         self.assertFalse(report['physical_full_lip_wiring_verified'])
         self.assertGreater(report['state_changes_requested'],5)
         self.assertGreater(report['gaps_under_48_generations'],0)
+
+    def test_thinned_state_changes_are_only_actual_word_or_clear_events(self):
+        requested=source_cues(FIXTURE)
+        proposed=rate_limited_candidate(FIXTURE,min_spacing_g=48)
+        self.assertGreater(len(proposed),0)
+        self.assertLess(len(proposed),len(requested))
+        self.assertTrue(set(proposed)<=set(requested))
+        self.assertTrue(all(b.generation-a.generation>=48
+            for a,b in zip(proposed,proposed[1:])))
+        self.assertTrue(all(a.state!=b.state for a,b in zip(proposed,proposed[1:])))
+        with self.assertRaises(ValueError):
+            rate_limited_candidate(FIXTURE,min_spacing_g=7)
 
     @unittest.skipUnless(ALIGNMENT_FILE.exists(), "GitHub's full Suno alignment is absent in local fixture-only checkout")
     def test_full_song_all_403_words_and_66_lines(self):
