@@ -17,7 +17,7 @@ jobs:
         run: python -m unittest tests.test_reusable_word_cue -v
       - name: Export one static Golly universe containing singer and reused lyric anchor
         run: |
-          python -m life.export_reusable_word_cue --with-portrait \
+          python -m life.export_reusable_word_cue --with-portrait --skip-long-replay \
             --out patterns/two_line_reused_word_and_singer.rle \
             --report output/two_line_reused_word_and_singer.json
       - uses: actions/upload-artifact@v4

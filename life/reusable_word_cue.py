@@ -6,8 +6,10 @@ constructed again, and erased again at the Suno-aligned first-word times for
 lines 1 and 2. No independent clock or runtime cell insertion is used.
 
 This proves a *time-multiplexed lyric-source anchor* with stable reusable
-catalysts. The unconsumed second fanout branch is not yet routed into the
-character, and the remaining glyph pixels still use the sparse score.
+catalysts. Source 1 erases an original lip tile, and source 2 erases a small,
+initially-present nearby lip tile farther down the same glider corridor,
+after source 1 was consumed at the first lip. The remaining glyph pixels
+still use the sparse score; this is two tiles, not the complete mouth.
 """
 from __future__ import annotations
 from functools import lru_cache
@@ -146,6 +148,84 @@ def character_world_seed():
     return world
 
 
+# Position of the real, already connected mouth tile. We do not overwrite
+# the singer's existing lip bank with a presentation artifact.
+from .physical_lip_splitter_bridge import LIP_TARGET,SINGER_TRANSLATION as _ST
+LIP_TARGET_GLOBAL=(LIP_TARGET[0]+_ST[0],LIP_TARGET[1]+_ST[1])
+
+# An independent initially-present 2x2 tile eight cells farther along the
+# existing NORTH-EAST lip-erase glider track. Source 1 is CONSUMED at the
+# first lip before reaching this block; source 2 travels through the now-empty
+# original site and erases this nearby actual lip tile at g3152.
+# This positioning was screened against the original face and moving signals.
+SECOND_LIP_OFFSET=8
+SECOND_LIP_LOCAL=(LIP_TARGET_GLOBAL[0]-_ST[0]+SECOND_LIP_OFFSET,
+                  LIP_TARGET_GLOBAL[1]-_ST[1]-SECOND_LIP_OFFSET)
+SECOND_LIP_GLOBAL=(LIP_TARGET_GLOBAL[0]+SECOND_LIP_OFFSET,
+                   LIP_TARGET_GLOBAL[1]-SECOND_LIP_OFFSET)
+SECOND_LIP_ERASE_G=3152
+
+
+def character_world_with_second_lip(*,second_source_enabled=True):
+    """ONE Life initial state, two shared-cause word pixels and TWO lip actions.
+
+    The first lip is an existing dynamic character contour element. The second
+    2x2 lip element is added at generation zero and erased only by the delayed
+    sibling output from the same reusable splitter. No runtime insertion.
+    """
+    dynamic=character_world_seed()
+    if not second_source_enabled:
+        dynamic-=place(next_input(),*SINGER_TRANSLATION)
+    tile=place(BLOCK,*SECOND_LIP_GLOBAL)
+    if tile & dynamic:
+        raise AssertionError('second initial lip tile overlaps a signal')
+    return dynamic|tile
+
+
+@lru_cache(maxsize=1)
+def two_lip_causal_certificate():
+    """Direct ON/OFF ablation of second lyric input and the added lip tile."""
+    g1,e1=line_times()[0];g2,e2=line_times()[1]
+    a=character_world_with_second_lip(second_source_enabled=True)
+    b=character_world_with_second_lip(second_source_enabled=False)
+    second_tile=place(BLOCK,*SECOND_LIP_GLOBAL)
+    original_tile=place(BLOCK,*LIP_TARGET_GLOBAL)
+    lyric_tile=place(BLOCK,*WORD_PIXEL)
+    sampled={}
+    for g in range(SECOND_LIP_ERASE_G+5):
+        if g in (0,g1,2188,2312,2456,2554,e1,g2,3132,
+                 SECOND_LIP_ERASE_G-4,SECOND_LIP_ERASE_G,
+                 SECOND_LIP_ERASE_G+4):
+            sampled[g]={'word_on':lyric_tile<=a,'word_no_second':lyric_tile<=b,
+                        'original_lip_on':original_tile<=a,
+                        'added_lip_on':second_tile<=a,
+                        'added_lip_no_second':second_tile<=b}
+        if g<SECOND_LIP_ERASE_G+4:
+            a=evolve(a);b=evolve(b)
+    if not (sampled[g2]['word_on'] and not sampled[g2]['word_no_second']):
+        raise AssertionError('second cue does not causally construct the lyric tile')
+    if not (sampled[SECOND_LIP_ERASE_G-4]['added_lip_on'] and
+            not sampled[SECOND_LIP_ERASE_G]['added_lip_on'] and
+            sampled[SECOND_LIP_ERASE_G]['added_lip_no_second']):
+        raise AssertionError('second cue does not causally erase added REAL lip tile')
+    if not (sampled[2188]['original_lip_on'] and
+            not sampled[2312]['original_lip_on'] and
+            sampled[2456]['original_lip_on'] and
+            not sampled[2554]['original_lip_on']):
+        raise AssertionError('first original real lip tile was disturbed')
+    return {'rule':'B3/S23','native_generation_end':SECOND_LIP_ERASE_G+4,
+            'shared_stable_duplicators':1,'sequential_word_cues':2,
+            'physically_coupled_actual_lip_tiles':2,
+            'first_tile_is_existing_singer_contour':True,
+            'second_tile_added_at_generation_zero':True,
+            'second_tile_local_origin':SECOND_LIP_LOCAL,
+            'second_tile_erased_at_generation':SECOND_LIP_ERASE_G,
+            'source_two_ablation_prevents_second_glyph_and_second_lip_erase':True,
+            'complete_three_state_mouth_coupled':False,
+            'all_403_word_gliders_coupled':False,
+            'checkpoints':sampled}
+
+
 @lru_cache(maxsize=1)
 def protected_character_certificate():
     """Finite actual-Life check: 2-cell guard against the unchanged portrait.
@@ -163,7 +243,7 @@ def protected_character_certificate():
     word_target=place(BLOCK,*WORD_PIXEL)
     first_lip=(LIP_TARGET_GLOBAL)
     lip_target=place(BLOCK,*first_lip)
-    live=character_world_seed();samp={};
+    live=character_world_with_second_lip();samp={};
     for g in range(e2+1):
         if live & guard:
             raise AssertionError(f'portrait boundary damaged by lyric bus at generation {g}')
@@ -185,12 +265,9 @@ def protected_character_certificate():
             'native_generations_checked':e2+1,
             'shared_splitter_reused':True,
             'original_one_lip_coupling_preserved':True,
-            'second_lip_causally_connected':False,
+            'second_lip_causally_connected':True,
             'first_two_lyric_anchor_events_physically_coupled':True,
+            'second_lip_tile_local_origin':SECOND_LIP_LOCAL,
             'real_life_checkpoints':samp}
 
 
-# Position of the real, already connected mouth tile. We do not overwrite
-# the singer's existing lip bank with a presentation artifact.
-from .physical_lip_splitter_bridge import LIP_TARGET,SINGER_TRANSLATION as _ST
-LIP_TARGET_GLOBAL=(LIP_TARGET[0]+_ST[0],LIP_TARGET[1]+_ST[1])

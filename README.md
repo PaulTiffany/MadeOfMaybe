@@ -14,14 +14,19 @@ coupling survives, and the unchanged 5,796-cell singer art has two-cell
 spacetime clearance through generation 3402. This removes the remote-stage
 necessity for **this anchor**, not for all font pixels or all 403 words.
 
-The second splitter outlet is not yet connected to the real lips; attempts
-to do so encountered actual glider collisions. See
+The first cue's sibling erases one **existing** lower-lip tile; the second
+cause now erases a different nearby native lip tile at g3152. This second
+2×2 block is preloaded at g0 (not one of the existing 40 motion routes),
+and input ablation proves that the same lyric cue physically causes both
+its word pixel and the second lip erasure. A failed alternative involving
+additional glider-made mouth geometry was rejected after it collided with
+existing character controls. See
 [`research/REUSED_WORD_SIGNAL_BUS.md`](research/REUSED_WORD_SIGNAL_BUS.md)
 for the exact scoped results, ablation caveat and reproduction commands.
 
 ```sh
 python -m unittest tests.test_reusable_word_cue -v
-python -m life.export_reusable_word_cue --with-portrait \
+python -m life.export_reusable_word_cue --with-portrait --skip-long-replay \
   --out patterns/two_line_reused_word_and_singer.rle
 ```
 

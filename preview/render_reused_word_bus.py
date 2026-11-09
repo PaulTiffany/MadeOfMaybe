@@ -13,7 +13,7 @@ from PIL import Image,ImageDraw,ImageFont
 from life.core import evolve,place
 from life.first_line_singing_character import safe_art
 from life.physical_lip_splitter_bridge import SINGER_TRANSLATION,WORD_PIXEL
-from life.reusable_word_cue import character_world_seed,line_times
+from life.reusable_word_cue import character_world_with_second_lip,line_times,SECOND_LIP_GLOBAL
 from life.glider_controlled_mouth import BLOCK
 from preview.make_character_round2 import PALETTE
 
@@ -28,13 +28,13 @@ def font(size,bold=False):
 
 def render(path=ROOT/'preview/reused_word_bus_two_lines.png'):
     times=line_times();wanted=[times[0][0],times[0][1],times[1][0],times[1][1]]
-    still={};live=character_world_seed()
+    still={};live=character_world_with_second_lip()
     for g in range(wanted[-1]+1):
         if g in wanted:still[g]=set(live)
         if g<wanted[-1]:live=evolve(live)
     art=safe_art()
     canvas=Image.new('RGB',(W,H),BG);d=ImageDraw.Draw(canvas)
-    d.text((27,16),'ONE SPLITTER. TWO SONG LINES. ONE PHYSICAL GLYPH PIXEL.',font=font(23,True),fill=(240,222,248))
+    d.text((27,16),'ONE SPLITTER. TWO SONG LINES. TWO REAL LIP ACTIONS.',font=font(23,True),fill=(240,222,248))
     d.text((28,48),'Original singer protected; first WE pixel reused at its exact native B3/S23 coordinates',font=font(15),fill=(167,191,219))
     notes=[('FIRST WE / WORD ON',True),('FIRST LINE / ERASED',False),('SECOND WE / WORD ON',True),('SECOND LINE / ERASED',False)]
     for i,g in enumerate(wanted):
@@ -76,9 +76,13 @@ def render(path=ROOT/'preview/reused_word_bus_two_lines.png'):
                 ux=bx+12+(x+6)*8;vy=by+24+(y+6)*8
                 d.rectangle((ux,vy,ux+6,vy+6),fill=(112,246,213))
         d.text((bx,by+150),'ON' if on else 'OFF',font=font(16,True),fill=(112,246,213) if on else (246,165,178))
+        if i==2:
+            d.text((left+18,bottom-29),'SECOND LIP TILE: waiting for causal ERASE at g3152',font=font(11),fill=(188,192,234))
+        elif i==3:
+            d.text((left+18,bottom-29),'SECOND LIP TILE: erased by the SAME WORD SOURCE',font=font(11),fill=(188,192,234))
         if on!=expected:
             raise AssertionError(f'wrong native anchor occupancy at g{g}: {on} != {expected}')
-    d.text((28,H-29),'CAMERA CROPS ONLY  |  One unchanged initial Life universe  |  Remaining letters and second lip fanout not included',
+    d.text((28,H-29),'CAMERA CROPS ONLY  |  One unchanged Life universe  |  Complete 403-word and three-state lip fanout still pending',
            font=font(13),fill=(163,182,202))
     path.parent.mkdir(parents=True,exist_ok=True);canvas.save(path,optimize=True)
     print('Wrote',path,'bytes',path.stat().st_size)

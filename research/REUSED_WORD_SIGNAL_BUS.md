@@ -1,105 +1,104 @@
-# Two sequential lyric cues through one physical Conway splitter
+# Reusable Conway source: two lyric events, two real lip actions
 
-**Sprint scope:** a time-multiplexed native-Life cue *anchor* for two successive
-song lines. This is a positive compact-control result, **not** compaction of
-all 23,057 song glyph tiles, and not completion of 403 word-to-mouth routes.
+**Verified sprint, 2026-11-09.** One native B3/S23 84-cell glider
+splitter now accepts two separately timed, preloaded input gliders. It drives
+**the same lyric-pixel location twice** and the same singer's **two real lip
+tiles** without a separate mouth clock. All 3,403 generations of the
+portrait-protected two-line fixture are qualified. This is not yet a completed
+three-state, 40-element mouth or a 403-word integrated film.
 
-## Problem with the old layout
+## Actual song events and reuse
 
-The full-song text-only world uses widely separated physical line stages.
-The second line's first pixel was over 10,000 cells from the fixed singer,
-beyond even Life's generation-zero causal cone at its scheduled generation
-2976 (`life.causal_layout_limit`). We cannot attach a single shared physical
-source to the singer without changing that arrangement.
+The first two lines of the real Suno word alignment both begin with **WE**.
+Their word onsets correspond to g2156 and g2976 at the global fixed rate
+**192 generations/audio-second**. Each word's first pixel is the exact same
+2×2 cell block at world `(0,0)`; it is physically created and erased in the
+same Life universe on this schedule:
 
-## What is now physically qualified
-
-The first two sung lyric lines both start with **WE**, aligned at 11.224 s
-and 15.499 s. At 192 native generations/audio-second, their first word
-completes at generations **2156** and **2976**. Their line-clear events
-are **2578** and **3402**.
-
-`life.reusable_word_cue` reuses the *exact same physical location (0,0)* for
-the first 2×2 pixel of both words. It also uses the *same* stable 84-cell
-Conway glider duplicator, excited by **two** preloaded gliders 820 ticks
-apart. The second input is placed 205 cells upstream along the same glider
-track, so its travel phase reproduces the already-qualified first output
-geometry. This is a physically reusable catalyst, not an injected signal or
-an independent mouth clock.
-
-The two outputs of each duplication feed one source-glider path to the same
-word-pixel sink, while the other path remains available for expression
-wiring. The first one is already causally coupled to an original lower-lip
-tile. The second expression branch is **not** connected to an actual lip tile
-in this milestone; a trial of constructing a second lip pixel failed when
-its partner glider collided with the existing character motion. This failed
-routing is **not** included as qualified code.
-
-A single unchanged B3/S23 initial condition constructs and erases the pixel
-**twice**:
-
-| Generation | Real native Life observation |
+| Generation | Source and observed physical result |
 |---:|---|
-| 2156 | First lyric pixel physically ON |
-| 2578 | First line erase; pixel OFF |
-| 2976 | Second line physically ON at the **same location** |
-| 3402 | Second line erase; pixel OFF |
+| 2156 | First `WE` lyric anchor formed |
+| 2312 | Source 1's branch erases singer's **existing** `lower_medium_0` lip tile |
+| 2578 | First lyric anchor erased |
+| 2976 | Source 2's branch forms the **same** lyric anchor again |
+| 3148 | Nearby second lip tile remains a native 2×2 block |
+| **3152** | Source 2's branch **erases** that nearby lip tile |
+| 3402 | Second lyric anchor erased |
 
-The target is never repositioned, and there are no runtime cell edits.
-Source ablation is causal: removing input 1 blocks the first construction;
-removing input 2 blocks the second construction. **Important:** removing the
-first source leaves an uncancelled partner glider which can disturb the later
-erase. The complete-source universe is clean, but the ablated universes are
-not independently qualified for cleanup. The first event's *existing* real
-lip ablation result remains separately certified by the prior sprint.
+The two incoming gliders are separated by 820 generations, with their
+preloaded positions 205 cells apart along the same input trajectory. They
+reuse one unchanged **84-cell** catalyst. No gliders, blocks or text are
+inserted at playback time. Two clean outbound gliders remain when the
+small anchor-only system finishes (84+10 = **94** live cells); the complete
+source world has no unexplained debris in the measured horizon.
 
-After the second clear, the 114-cell input pattern has exactly **94** live
-cells: the original **84** stable duplicator cells and **two moving 5-cell
-gliders**. This is not silent debris—those unconsumed fanout branches remain
-live and should be terminated or used before integrating a complete film.
+### Why the second lip tile works
 
-## Protecting the existing singer
+A first attempt to construct an additional mouth tile from a second glider
+partner FAILED because that partner crossed existing mouth machinery. That
+proposal is excluded from the qualified pattern.
 
-`protected_character_certificate()` performs actual per-generation B3/S23
-simulation, **3,403** sampled generations from g0 through g3402, containing:
+Instead, the second tile is **preloaded from generation zero**, eight Life
+cells farther along the existing north-east erase-glider route: local singer
+coordinate **(-72,46)**, eight cells northeast of the existing tile at
+(-80,54). Source 1 is consumed when it erases the old tile, so it cannot
+hit the second tile. When source 2 passes through the now-empty old tile
+position, it continues and consumes the second tile at **g3152**. Thus the
+second cue's *same physical glider* now causes both lyric construction and
+one lip change. It is not a renderer opacity switch.
 
-- the existing multi-element singer's original control gliders;
-- the original causal WE word pixel and lip tile;
-- a second preloaded glider through the **same** splitter;
-- the second WE pixel's independent partner and eraser gliders.
+**Causal ablation:** removing input 2 prevents **both** the second lyric
+pixel's construction at g2976 and the second lip tile's erasure at g3152.
+Removing input 1 prevents the first lyric construction and first existing-lip
+erasure. The source-1-absent counterfactual can leave an uncancelled partner
+glider that interferes with later erasure; it is **not** a clean operational
+fallback and is not misrepresented as such.
 
-The **5,796 native still-life cells** of the character's hair, eyes, face,
-and jewelry are unchanged. A two-cell Moore-distance guard is verified
-against the entire dynamic world for every generation; the original lower
-lip still appears, erases, rebuilds and resets at its original checkpoints.
-This is a finite-horizon property of this fixture, not a general unlimited
-reusable-bus safety theorem.
+The new second tile is an *added, initially present* nearby real Life block;
+it is not one of the original 40 independent lip routes. This still does NOT
+actuate the entire Closed/Medium/Open contour.
 
-## Reproduce
+## Protecting her face
+
+`protected_character_certificate` runs actual B3/S23 updates from generation
+0 through **3402** with the second physical mouth tile, second trigger, the
+existing singer's dynamic mouth machinery, the actual glyph anchor, and
+unchanged character art. A strict two-cell spacetime guard excludes all
+collisions with the original **5,796 static singer art cells** (hair, eyes,
+brows, face and jewelry). The first original causal lip's on/off/rebuild
+checkpoints remain unchanged.
+
+`two_lip_causal_certificate` separately evolves the source-present and
+second-source-ablated universes to g3156, checking both lyric and lip
+outcomes directly rather than inferring them from scheduled labels.
+
+## Reproducibility
 
 ```sh
 python -m unittest tests.test_reusable_word_cue -v
-python -m life.export_reusable_word_cue
-python -m life.export_reusable_word_cue --with-portrait \
+python -m life.export_reusable_word_cue --with-portrait --skip-long-replay \
   --out patterns/two_line_reused_word_and_singer.rle \
   --report output/two_line_reused_word_and_singer.json
+python preview/render_reused_word_bus.py
 ```
 
-The two-line source fixture is `data/first_verse_alignment_fixture.json`,
-corresponding exactly to the first two sung lines of the full Suno
-alignment. GitHub CI exports the portrait-inclusive pattern and report.
+GitHub Actions workflow `.github/workflows/reused-word-cue.yml` uploads the
+portrait-inclusive Golly RLE and JSON certificate. All source pulses are
+present at generation 0, at a constant GPS=192.
 
-## Next physical design gates
+## Outstanding requirements for the full film
 
-1. **Multiple lyric anchor tiles** at a common reused stage, screened with
-   actual 2-cell spacetime clearance. Merely reducing the legacy pixel pitch
-   from 1,600 to 8 fails native B3/S23 collision tests; visual camera scaling
-   is not a substitute for physical routing.
-2. Route the reusable splitter's *second* expression branch into an existing
-   mouth element without collisions (and ultimately a three-state fanout).
-3. Repeat the bus over all timed lyric events and prove clean downstream
-   word erasure, expression transitions and shared-cause ablation across
-   the song. Finally render with the original song and add the speech bubble.
+1. Reuse the **entire lyric font**, not just one physically anchored pixel of
+   WE. The legacy full-song karaoke already builds all 403 words, but its
+   per-line physical pitches remain huge and are optically projected. Lowering
+   their pitch without re-routing causes real B3/S23 glider collisions.
+2. Expand to an actual **three-state whole-lip fanout**, not two individual
+   event-controlled tiles. The other original lip components remain separately
+   preloaded and follow their previous verified fixed performance.
+3. Qualify all 403 events in a single complete B3/S23 layout, render with the
+   original recorded audio, and add the speech bubble only after the video
+   works without it.
 
-**Current guarantee: two sequential real lyric anchors plus the intact
-single original causal lip tile, not a finished synchronized singer.**
+**Net result:** two sequential, causally shared word/lip actions in the real
+character, through one reusable physical duplicator. It is a concrete
+hardware integration advance with explicitly limited scope.
