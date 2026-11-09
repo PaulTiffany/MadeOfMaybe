@@ -61,7 +61,7 @@ def main():
         contact.paste(imgs[g],((i%3)*780,(i//3)*470))
     contact.save(OUT/'clocked_we_six_checkpoints.png',optimize=True)
     frames[0].save(OUT/'clocked_we_192_life.gif',save_all=True,
-                   append_images=frames[1:],duration=80,loop=0,optimize=True)
+                   append_images=frames[1:],duration=42,loop=0,optimize=True)
     print('Exported exact native-Life word timing at 8× nominal clock')
 
 if __name__=='__main__':main()
