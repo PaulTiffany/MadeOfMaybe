@@ -2,6 +2,27 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
+## Expressive singer — real moving centerline and twinkling eyes (latest candidate)
+
+The **tooth-like permanent interior line is gone from active mouth poses**. Five actual Life blocks form a pursed CLOSED band; incoming gliders cleanly erase them by generation 98 and later reconstruct them (generation 800–932). The original symmetric MEDIUM/OPEN upper-and-lower glider contours remain independently controlled. Two small native period-2 eye oscillators add subtle autonomous motion without crossing any controls. The existing bubble/text and pulsar are unchanged.
+
+The preview uses a **horizontal camera stretch and optical glow** to make the Life-cell shapes more legible. These are cosmetic presentation choices; the RLE has exact B3/S23 cells at their real coordinates.
+
+**Important limitation:** the middle rests at generations 540 and 778 are currently **BREATH/NEUTRAL**, not a mechanically reconstructed CLOSED state. We genuinely close at generation 60 and reconstruct CLOSED by generation 960, with MEDIUM and OPEN transitions in between. The seven-event fully reversible controller is still the earlier symmetric version with its permanent central line; we have *not* yet combined both properties. The expressive prototype is not synchronized to audio.
+
+```sh
+python -m unittest tests.test_expressive_mouth -v
+python preview/make_expressive_mouth.py
+```
+
+Inspect `preview/expressive_mouth_contact_sheet.png`,
+`preview/expressive_glider_singer.gif`,
+`preview/expressive_singer_bubble.png`, and
+`patterns/expressive_singer_glider_performance.rle`. Full qualification and
+limitations: [expressive singer research](research/EXPRESSIVE_SINGER_QUALIFICATION.md).
+
+---
+
 ## Symmetric moving lips — latest visual experiment
 
 Both upper and lower lip contours now move through **real glider reactions**.
