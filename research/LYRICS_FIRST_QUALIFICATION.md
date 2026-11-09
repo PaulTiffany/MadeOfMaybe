@@ -36,7 +36,17 @@ first coarse word-cue test, not proof of exact lip synchronization.
   or qualifying channels through the bubble will be required to place markers
   beside each word. The static title words are present in the universe from
   generation zero. They do **not** appear/disappear with their timestamps.
-- The first four words' fixed Life text, physical progress blocks, singer,
+- A second, prior experiment in `life/lyric_text_scene.py` composes **seven**
+word lamps across two **separate** independent Life bubble pages for the
+complete first line (WE MADE A WINDOW OUT OF SAND); an external camera can
+choose which page to frame, but no Life text is swapped or injected.
+This seven-lamp performance has an additional 350-generation composition test.
+We fixed a real scheduler defect: double-rounding 12.909 seconds selected
+generation **312**, giving a 91 ms timing error for OF. Direct rounding
+to the four-generation MAKE phase chooses **308**, within 76 ms. The target
+SAND is separately scheduled for generation 312.
+
+The first four words' fixed Life text, physical progress blocks, singer,
   existing bubble, hair, eye/brow controls and pulsar all evolve on **one
   constant-clock universe**. A full exact B3/S23 replay for 350 generations
   compares the composite to its independently evolved major subsystems at
@@ -49,10 +59,11 @@ standard library; install `numpy scipy Pillow` for the accelerated full-board
 qualification and previews.
 
 ```sh
-python -m unittest tests.test_lyric_cues tests.test_caption_library tests.test_lyric_text_pilot -v
+python -m unittest tests.test_lyric_cues tests.test_caption_library tests.test_lyric_text_pilot tests.test_lyric_text_scene -v
 python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe
 python -m life.caption_library --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/native_page_rles
 python -m life.export_lyric_text_pilot > output/lyric_cues/first_lyric_glider_progress.rle
+python -m life.export_first_line > output/lyric_cues/seven_word_glider_timed_captions.rle
 python preview/make_lyric_text_pilot.py
 python preview/make_caption_library_preview.py
 ```

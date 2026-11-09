@@ -16,15 +16,17 @@ jobs:
       - name: Install reproducible simulator and preview dependencies
         run: python -m pip install 'numpy>=1.26,<3' 'scipy>=1.12,<2' 'Pillow>=10,<13'
       - name: Qualify complete Suno alignment, native caption pages, and first physical Life word cues
-        run: python -m unittest tests.test_lyric_cues tests.test_caption_library tests.test_lyric_text_pilot -v
+        run: python -m unittest tests.test_lyric_cues tests.test_caption_library tests.test_lyric_text_pilot tests.test_lyric_text_scene -v
       - name: Compile every caption to a generation score and reference SRT
         run: python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe --gps 24
       - name: Export entire song as true stable Life caption-page RLE assets
         run: python -m life.caption_library --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/native_page_rles
       - name: Export first physical glider-timed lyric signal universe
-        run: python -m life.export_lyric_text_pilot > output/lyric_cues/first_lyric_glider_progress.rle
+        run: |
+          python -m life.export_lyric_text_pilot > output/lyric_cues/first_lyric_glider_progress.rle
+          python -m life.export_first_line > output/lyric_cues/seven_word_glider_timed_captions.rle
       - name: Render proof at actual simulated generations
-        run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py
+        run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py && python preview/make_lyric_text_scene.py
       - uses: actions/upload-artifact@v4
         with:
           name: made-of-maybe-lyric-score-native-life-pages
@@ -33,4 +35,5 @@ jobs:
             preview/first_lyric_native_cues.gif
             preview/first_lyric_progress_contact_sheet.png
             preview/first_lyric_pages_contact_sheet.png
+            preview/first_line*
           retention-days: 30

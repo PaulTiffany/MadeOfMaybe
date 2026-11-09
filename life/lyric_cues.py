@@ -58,8 +58,12 @@ def generation(seconds: float, gps: int = GENERATIONS_PER_SECOND) -> int:
 
 def make_generation(seconds: float, gps: int = GENERATIONS_PER_SECOND) -> int:
     """Nearest permitted two-glider block MAKE generation (4 mod 4)."""
-    desired = generation(seconds, gps)
-    return max(4, 4 * int((Decimal(desired) / 4).quantize(Decimal("1"), rounding=ROUND_HALF_UP)))
+    if gps <= 0 or seconds < 0:
+        raise ValueError("time must be nonnegative and gps positive")
+    # Round only ONCE: quantizing first to the nearest generation then
+    # again to the 4-generation glider phase can choose the WRONG phase.
+    phase = Decimal(str(seconds)) * gps / 4
+    return max(4, 4 * int(phase.quantize(Decimal("1"), rounding=ROUND_HALF_UP)))
 
 
 def read_alignment(path: str | Path) -> dict:

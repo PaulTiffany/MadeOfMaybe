@@ -24,6 +24,9 @@ class LyricAlignmentTests(unittest.TestCase):
             [268,276,284,288])
         self.assertLessEqual(max(abs(make_generation(w.start_s)/24-w.start_s)
                                  for w in words[:4]),.06)
+        # Avoid the historic double-rounding error: 12.909s must pick g308, not g312.
+        self.assertEqual(make_generation(12.909),308)
+        self.assertEqual(make_generation(12.968),312)
 
     def test_page_layout_does_not_drop_words_or_overflow_bubble(self):
         words=aligned_words(read_alignment(DATA/'first_verse_alignment_fixture.json'))
