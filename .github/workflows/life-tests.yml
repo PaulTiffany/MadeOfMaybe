@@ -17,3 +17,5 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Export scene RLE
         run: python -m life.export_scene > /tmp/singer_bubble_pulsar.rle
+      - name: Export and verify dense full-world RLE
+        run: python -m life.export_dense > /tmp/dense_three_state_singer.rle
