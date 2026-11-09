@@ -53,6 +53,16 @@ jobs:
             --out output/lyric_cues/made_of_maybe_full_song_native_life.rle \
             --score output/lyric_cues/made_of_maybe_full_song_native_life.json
           python -m life.export_full_song_cues --out output/lyric_cues/full_song_cues
+      - name: Qualify exact-cell optical sampler against direct B3/S23 evolution
+        run: python -m unittest tests.test_life_cell_sampler -v
+      - name: Encode complete 238.88-second native Life karaoke film (silent)
+        run: |
+          python preview/render_full_song_karaoke.py \
+            --out output/lyric_cues/made_of_maybe_full_song_silent.mp4 \
+            --thumbnail preview/full_song_karaoke_thumbnail.png \
+            --metadata output/lyric_cues/full_song_video_provenance.json
+          ffprobe -v error -show_entries format=duration:stream=nb_frames \
+            -of json output/lyric_cues/made_of_maybe_full_song_silent.mp4
       - uses: actions/upload-artifact@v4
         with:
           name: made-of-maybe-lyric-score-native-life-pages
@@ -65,4 +75,5 @@ jobs:
             preview/native_we_*
             preview/clocked_we_*
             preview/seven_real_words_*
+            preview/full_song_karaoke_thumbnail.png
           retention-days: 30

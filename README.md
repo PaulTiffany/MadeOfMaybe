@@ -387,3 +387,27 @@ python preview/make_lyric_text_scene.py
 Inspect `preview/seven_word_native_life_cues.gif`,
 `preview/seven_word_cue_contact_sheet.png`, the RLE, and
 [lyric alignment qualification](research/LYRIC_ALIGNMENT_FIRST_PASS.md).
+
+## Full-song visual karaoke film (lyrics first)
+
+Once the native full-song RLE is compiled, the new optical renderer can make
+all 66 lyric stages legible without altering a single Life cell. It samples
+actual 2×2 target-block occupancy using exact B3/S23 collision windows and
+certified isolated glider flight rather than painting font characters or
+manually inserting cells. A stage camera follows the current word.
+
+```bash
+python -m unittest tests.test_life_cell_sampler -v
+python preview/render_full_song_karaoke.py \
+  --out output/made_of_maybe_conway_karaoke_silent.mp4
+# Local short proof without full Suno alignment file:
+python preview/render_full_song_karaoke.py --fixture --preview \
+  --out output/first_two_lines_optical_teaser.mp4
+```
+
+The GitHub lyric CI workflow exports the full 238.88-second silent MP4 and
+verification report. The original music can be muxed later using `--audio`
+without changing its speed or buying additional inference. The large
+physical glider routing is still sparse; this is an optical camera solution,
+not yet a compact Golly world. The singer and bubble are intentionally deferred.
+See [research/FULL_SONG_OPTICAL_RENDERER.md](research/FULL_SONG_OPTICAL_RENDERER.md).
