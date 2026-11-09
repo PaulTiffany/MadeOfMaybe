@@ -2,6 +2,40 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
+## Operational mouth — glider-controlled three-state animation (new)
+
+The working performer is now available as a **single initial B3/S23 pattern**
+with genuine reversible transitions. This is not a sheet of three static
+mouth pictures, and none of its changing cells are video overlays.
+
+**Control sequence:** `CLOSED → MEDIUM → OPEN → MEDIUM → CLOSED → OPEN → CLOSED`.
+The second `CLOSED → OPEN` is a **direct skip**; no medium frame is required.
+Two-glider syntheses make stable lower-lip blocks, while single gliders erase
+them cleanly. Incoming signals are all preloaded into the initial universe.
+The singer face, original speech bubble/lyrics, and pulsar evolve together
+without cross-component interference for 785 exact generations.
+
+```shell
+python -m unittest discover -s tests -v
+python -m life.export_operational > patterns/operational_three_state_mouth.rle
+python -m pip install Pillow
+python preview/make_operational_mouth.py
+```
+
+Look for `preview/operational_mouth_glider_control.gif` and the
+`operational_mouth_three_states.png`/`operational_mouth_closeup.png` previews.
+The 6.7-KB compact RLE opens in Golly; the state snapshots occur at generations
+60, 180, 288, 420, 540, 680 and 778. The face is near the RLE's original
+coordinates, and the bubble is translated out of the control lanes.
+
+**Scope:** This is a successful *preloaded glider choreography*, not yet a
+polished full oval mouth or a general-purpose arbitrary-timing switch. Each
+lower-lip state currently consists of four independently actuated blocks.
+New score timings require routing and requalification; Suno timing is not yet
+integrated. See [research/GLIDER_CONTROLLED_MOUTH.md](research/GLIDER_CONTROLLED_MOUTH.md).
+
+---
+
 ## Working composition pilot
 
 The first **singer + speech bubble + lyric text + pulsar** scene is available. It contains:
