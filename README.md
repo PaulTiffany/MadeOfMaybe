@@ -2,6 +2,34 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
+## Denser glider-controlled stage (latest)
+
+The new `life/dense_glider_mouth.py` uses **23 independently routed Life
+output blocks**: 10 in MEDIUM and 13 in OPEN, with a fixed 53-block upper
+lip. The existing speech bubble and letters have not been redesigned, only
+translated nearer to the singer. A pulsar evolves alongside them.
+
+One complete starting Life configuration performs
+**CLOSED → MEDIUM → OPEN → MEDIUM → CLOSED → OPEN → CLOSED**, including a
+direct skip. A 785-generation replay tests the *actual whole universe*
+against all its individually evolved components, on every generation.
+No frame swaps, runtime cell edits or variable simulation speed.
+
+```sh
+python -m unittest discover -s tests -v
+python -m pip install Pillow
+python preview/make_dense_mouth.py
+```
+
+Open the generated `patterns/dense_three_state_singer.rle` in Golly or
+watch `preview/dense_singer_bubble_stage.gif` / 
+`preview/dense_mouth_three_states.png` for representative frames.
+The output is still a dotted lip arc, not a finished smoothly contoured
+mouth, and not synchronized to the Suno audio yet. See
+`research/DENSE_GLIDER_MOUTH_QUALIFICATION.md` for limits.
+
+---
+
 ## Operational mouth — glider-controlled three-state animation (new)
 
 The working performer is now available as a **single initial B3/S23 pattern**
