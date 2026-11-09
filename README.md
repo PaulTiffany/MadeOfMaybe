@@ -2,6 +2,38 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
+## NEW — physical 5×7 lyric word made and erased entirely by gliders
+
+We have gone beyond the seven correctly timed *lamps*. The first actual
+5×7 Life word, **WE**, is now constructed and erased by **105 preloaded
+B3/S23 gliders** (three per 2×2 glyph pixel). All **35 physical glyph blocks**
+finish assembling by generation **268** (11.167s versus Suno's 11.224s
+word onset). They persist as still lifes and are completely erased by
+generation **442** (18.417s). The 35 routing subsystems pass an exact
+**481-checkpoint** independent-evolution comparison, and the word remains
+spatially independent of the existing character and speech bubble through
+all 481 generations. The combined initial universe is Golly-exportable.
+
+This is an **engineering pilot, not finished karaoke**: letter creation
+begins ~2 seconds early; erasure is almost 7 seconds late relative to
+Suno's end of “We.” The text is on a separate isolated Life stage so the
+control gliders don't destroy the previously qualified bubble. The 5×7
+render-preview optically enlarges only truly present 2×2 Life blocks;
+a raw-cell view simultaneously shows all glider traffic. The next tasks
+are to increase circuit packing throughput and route through the bubble.
+
+```sh
+python -m unittest tests.test_native_lyric_word -v
+python -m life.export_native_lyric_word > patterns/native_we_glider_written_world.rle
+python -m life.export_native_lyric_word --word-only > patterns/native_we_glider_only.rle
+python -m pip install Pillow
+python preview/make_native_word.py
+```
+
+See [physical-word qualification](research/PHYSICAL_LYRICS_FIRST_WORD.md).
+
+---
+
 ## Lyrics-first alignment pilot (current active work)
 
 The connected Suno source for *Made of Maybe* has **468 raw timing tokens**;
