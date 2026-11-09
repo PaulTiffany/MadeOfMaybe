@@ -24,12 +24,22 @@ jobs:
           ffmpeg -version | head -n 1
           ffprobe -version | head -n 1
       - name: Qualify native-lyric score and physical-causal camera
-        run: python -m unittest tests.test_word_driven_expression tests.test_causal_firstline_camera tests.test_cascaded_lyric_splitter -v
+        run: python -m unittest tests.test_word_driven_expression tests.test_causal_firstline_camera tests.test_cascaded_lyric_splitter tests.test_causal_layout_limit -v
       - name: Export all 403 source-linked word cue intentions
         run: |
           python -m life.export_word_driven_expression \
             --alignment data/made_of_maybe_suno_alignment.json \
             --out output/full_song_three_state_intent.json
+      - name: Certify single-source geometry constraints of sparse lyric world
+        run: |
+          python - <<'PYWORK'
+          import json
+          from pathlib import Path
+          from life.causal_layout_limit import report
+          out=Path('output/sparse_lyric_light_cone_audit.json')
+          out.parent.mkdir(exist_ok=True)
+          out.write_text(json.dumps(report(),indent=2)+'\n')
+          PYWORK
       - name: Export exact B3/S23 four-output cascaded splitter
         run: python -m life.export_cascaded_splitter
       - name: Render first-line video from actual shared glider and real mouth element
@@ -47,5 +57,6 @@ jobs:
             preview/causal_firstline_singer_metadata.json
             output/full_song_three_state_intent.json
             output/one_to_four_word_glider_splitter.json
+            output/sparse_lyric_light_cone_audit.json
             patterns/one_to_four_word_glider_splitter.rle
           retention-days: 30

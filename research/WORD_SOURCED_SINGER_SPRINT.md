@@ -77,6 +77,27 @@ character's lips; this is the missing fanout *capacity* primitive rather than
 a claim of four causally actuated lip tiles. Additional phases, reflected
 branches and protected routes need clearance tests before using the outputs.
 
+## Physical feasibility of the existing sparse full-song layout
+
+There is a **hard geometric blocker** to one localized g0 input triggering
+both the current singer and every remote lyric stage. In the native two-line
+fixture, the *second line's first real glyph target* is **over 10,000 Life
+cells** from the existing lip tile, but its onset is only **2,976 generations**
+from time zero. Even B3/S23's absolute one-cell-per-generation causal limit
+rules out one localized g0 source affecting both targets at that time:
+the two causal cones together span at most **5,952** cells.
+
+This negative result is *not* a claim that Life cannot implement the music.
+It identifies an architectural limitation of our previous enormous sparse
+layout. Options include compact, locally delayed lyric emitters (preferred
+for one persistent singer), or physically replicated per-line performers
+(less faithful to a single-character concept). The 1-to-4 cascade is necessary
+fanout capacity, but not a solution to the global-distance problem.
+
+Machine-readable audit: `life.causal_layout_limit` (GitHub workflow artifact).
+It separately reports which existing sparse stages cannot be physically
+reached under that specific single-local-source assumption.
+
 ## Next gate (not bypassed)
 
 Increase the number of native lyric glider branches connected to the existing

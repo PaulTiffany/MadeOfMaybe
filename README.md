@@ -500,3 +500,9 @@ both the source-cue audit and the physically coupled first-line proof video.
 The standalone **real 1→4 glider cascade** now has a verified three-catalyst,
 one-source Golly RLE and direct B3/S23 regression tests. This is fanout
 capacity only; it does not yet certify four mouth tiles on the character.
+
+A conservative native Life causal-cone audit now also demonstrates that the
+**second sparse lyric stage is physically too far** from the fixed singer for
+one localized g0 signal to coordinate both at their aligned time. This is a
+layout obstruction, not a failure of Conway's rules: compact delayed glider
+emission or distributed stage design is required before 403 physical links.
