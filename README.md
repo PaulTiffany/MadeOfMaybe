@@ -3,6 +3,43 @@
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
 
+## Current integration milestone — ONE original lyric pixel drives ONE real lip tile
+
+The conservative physical bridge now replaces **two actual original control gliders** with
+outputs from an 84-cell Conway glider duplicator: one glider constructs the first
+2×2 pixel of the original **WE** karaoke glyph; the other erases the singer's
+existing `lower_medium_0` lip block. There is **one** preloaded input glider,
+no second musical clock, no extra drawn mouth overlay, and no changes to
+her 5,796-cell static hairstyle/face/eye/jewelry artwork.
+
+A native B3/S23 *source-ablation* trial demonstrates causation at both outputs.
+At generation **2156**, WE's first glyph pixel exists only with the source.
+At generation **2312**, the actual medium lip tile is erased only with the source.
+The original lip pattern is subsequently rebuilt and reset. The native
+character is placed alongside all **seven** physical first-line words in one
+initial Golly RLE; the other **360** word pixels have separate certified
+clearance. The finite-horizon tests reach generation **3068**.
+
+**Limits:** This is a verified **single-tile connection**, *not* a full-mouth
+fanout, not 403-word lyric–mouth wiring, and not a finished singing video*.
+The shared lip event follows the WE onset by 156 generations (~0.81 s) in
+this particular compact routing; musical articulation will need more routing
+work. The previous first-line split-view video remains an independent
+singer/lyrics demonstration and should not be cited as proof of a shared
+physical lip controller. The speech bubble remains deferred.
+
+```bash
+python -m unittest tests.test_physical_lip_splitter_bridge -v
+python -m life.export_physical_lip_splitter_bridge \
+  --out patterns/first_line_physical_lip_bridge.rle \
+  --report output/first_line_physical_lip_bridge.json
+python preview/render_physical_lip_bridge.py
+```
+
+See [`research/PHYSICAL_LIP_SPLITTER_BRIDGE.md`](research/PHYSICAL_LIP_SPLITTER_BRIDGE.md)
+for the exact qualification scope, causal checkpoints, limitations, and
+reproducibility commands.
+
 ## NEW — one physical glider event drives lyrics **and** three-state mouth
 
 A stable, reusable **one-input / two-output glider duplicator** now couples
