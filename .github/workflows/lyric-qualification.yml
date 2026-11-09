@@ -21,10 +21,14 @@ jobs:
         run: python -m unittest tests.test_native_lyric_word -v
       - name: Verify globally faster, physically rescored lyrics without a bubble
         run: python -m unittest tests.test_lyric_clock -v
+      - name: Qualify seven fully constructed lyric words in one native Life universe
+        run: python -m unittest tests.test_first_line_karaoke -v
       - name: Export the physically verified 192-generation-per-audio-second word
         run: |
           mkdir -p output/lyric_cues
           python -m life.export_clocked_text --gps 192 --pitch 160 --manifest output/lyric_cues/clocked_we_192.json > output/lyric_cues/clocked_we_192.rle
+      - name: Export real seven-word glider karaoke at 192 Life gens per audio second
+        run: python -m life.export_first_line_karaoke --manifest output/lyric_cues/first_line_karaoke_192.json > output/lyric_cues/first_line_karaoke_192.rle
       - name: Compile every caption to a generation score and reference SRT
         run: python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe --gps 24
       - name: Compile entire fixed-speed song at the higher Life clock
@@ -38,7 +42,7 @@ jobs:
       - name: Export the complete singer plus actual glider-written lyric RLE
         run: python -m life.export_native_lyric_word > output/lyric_cues/native_we_glider_written_world.rle
       - name: Render proof at actual simulated generations
-        run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py && python preview/make_lyric_text_scene.py && python preview/make_native_word.py && python preview/make_clocked_word.py
+        run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py && python preview/make_lyric_text_scene.py && python preview/make_native_word.py && python preview/make_clocked_word.py && python preview/make_first_line_karaoke.py
       - uses: actions/upload-artifact@v4
         with:
           name: made-of-maybe-lyric-score-native-life-pages
@@ -50,4 +54,5 @@ jobs:
             preview/first_line*
             preview/native_we_*
             preview/clocked_we_*
+            preview/seven_real_words_*
           retention-days: 30
