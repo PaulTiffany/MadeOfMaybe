@@ -55,6 +55,11 @@ jobs:
           python -m life.export_full_song_cues --out output/lyric_cues/full_song_cues
       - name: Qualify exact-cell optical sampler against direct B3/S23 evolution
         run: python -m unittest tests.test_life_cell_sampler -v
+      - name: Install video encoder (ubuntu-latest does not guarantee ffmpeg)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          command -v ffmpeg
       - name: Encode complete 238.88-second native Life karaoke film (silent)
         run: |
           python preview/render_full_song_karaoke.py \
