@@ -1,0 +1,43 @@
+name: Word-driven three-state mouth and causal first-line film
+on:
+  push:
+    branches: [main, research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  word-sourced-singer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install optical-preview renderer
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Require FFmpeg and FFprobe
+        run: |
+          command -v ffmpeg
+          command -v ffprobe
+      - name: Qualify native-lyric score and physical-causal camera
+        run: python -m unittest tests.test_word_driven_expression tests.test_causal_firstline_camera -v
+      - name: Export all 403 source-linked word cue intentions
+        run: |
+          python -m life.export_word_driven_expression \
+            --alignment data/made_of_maybe_suno_alignment.json \
+            --out output/full_song_three_state_intent.json
+      - name: Render first-line video from actual shared glider and real mouth element
+        run: |
+          python preview/render_causal_firstline_singer.py \
+            --out preview/causal_firstline_singer.mp4
+          ffprobe -v error -show_entries format=duration,size \
+            -of json preview/causal_firstline_singer.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: made-of-maybe-word-sourced-causal-firstline-singer
+          path: |
+            preview/causal_firstline_singer.mp4
+            preview/causal_firstline_character_frame.png
+            preview/causal_firstline_singer_metadata.json
+            output/full_song_three_state_intent.json
+          retention-days: 30

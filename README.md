@@ -479,3 +479,20 @@ without changing its speed or buying additional inference. The large
 physical glider routing is still sparse; this is an optical camera solution,
 not yet a compact Golly world. The singer and bubble are intentionally deferred.
 See [research/FULL_SONG_OPTICAL_RENDERER.md](research/FULL_SONG_OPTICAL_RENDERER.md).
+
+### Source-linked singer integration (latest incremental gate)
+
+A **4.5-second first-line video** now samples the *physically shared*
+WE-glyph/lower-lip glider bridge, rather than the old independently retimed
+mouth simulation. The actual WE glyph pixel and existing lip tile share one
+preloaded duplicator input. See
+[`research/WORD_SOURCED_SINGER_SPRINT.md`](research/WORD_SOURCED_SINGER_SPRINT.md)
+and `preview/render_causal_firstline_singer.py`.
+
+A separate full-song **intent-only** compiler
+(`python -m life.export_word_driven_expression`) derives three-state mouth
+commands from all 403 karaoke word-onsets and 66 lyric-line clears. No
+phonemization or secondary timeline is used. This does **not** yet mean 403
+signals are physically connected to the full lip contour. Rate/collision
+qualification remains a gated next step; the new GitHub workflow uploads
+both the source-cue audit and the physically coupled first-line proof video.

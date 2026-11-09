@@ -61,7 +61,7 @@ for state,arr in (('medium',MEDIUM_TILES),('open',OPEN_TILES)):
 CENTER_TILES=[place(BLOCK,*xy) for xy in START_LINE]
 
 
-def make_image(g,world,art,*,diagnostic=False):
+def make_image(g,world,art,*,diagnostic=False,first_glyph_pixel_alive=None):
  im=Image.new('RGB',(W,H),BG);d=ImageDraw.Draw(im)
  d.rounded_rectangle((16,61,555,684),radius=14,outline=(76,66,118),width=2)
  d.rounded_rectangle((571,61,1263,684),radius=14,outline=(52,111,117),width=2)
@@ -96,6 +96,8 @@ def make_image(g,world,art,*,diagnostic=False):
    if not live:continue
    color=(255,226,157) if w==active[-1] else (104,213,202)
    for tx,ty in w.targets:
+    if first_glyph_pixel_alive is False and w==score()[0] and (tx,ty)==(0,0):
+     continue
     xcol=tx//PITCH; yrow=ty//PITCH-logical_row_y
     px=left+xcol*cell_pitch;py=base_y+yrow*cell_pitch
     d.rounded_rectangle((px,py,px+cell_pitch-2,py+cell_pitch-2),radius=1,fill=color)
