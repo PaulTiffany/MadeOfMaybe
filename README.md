@@ -36,7 +36,7 @@ integrated. See [research/GLIDER_CONTROLLED_MOUTH.md](research/GLIDER_CONTROLLED
 
 ---
 
-## Working composition pilot
+## Initial composition pilot (historical)
 
 The first **singer + speech bubble + lyric text + pulsar** scene is available. It contains:
 
@@ -77,7 +77,7 @@ This produces a GIF, keyframes, a static contact sheet of four researched symbol
 - [Smiley](https://conwaylife.com/wiki/Smiley) — period 8; **no verified ability to pause it**.
 - [Gosper glider gun](https://conwaylife.com/wiki/Gosper_glider_gun) — periodic emitter with unbounded output; **not yet qualified for composite placement**.
 
-## Three-state mouth candidate (visual geometry only)
+## Earlier three-state static pose study (historical)
 
 `preview/three_state_mouth_contact_sheet.png` compares **CLOSED, MEDIUM and
 OPEN** mouths in the same stable face. All three are valid, persistent B3/S23
@@ -87,11 +87,12 @@ still composes independently with all three poses.
 
 **Important:** This is a contact sheet of *three different initial universes*,
 NOT a three-state signal-switched Life animation yet. Reversible and skipped
-transitions remain unimplemented. Details: [three-state mouth research](research/THREE_STATE_MOUTH_CANDIDATE.md).
+transitions were unimplemented in this earlier static prototype. The operational
+glider-controlled states are now implemented above. Details: [three-state mouth research](research/THREE_STATE_MOUTH_CANDIDATE.md).
 
-## Next step
+## Next refinements
 
-Choose an aesthetically readable mouth geometry and map short lyric activity intervals from Suno to pre-positioned signal gliders. Then verify the resulting *combined* simulation before recording a chorus video. Every independently scheduled composition must declare an active spatial footprint, incoming/outgoing signal corridors, and time window.
+The glider-scheduled seven-event demo now works; improve visual mouth density so MEDIUM and OPEN form continuous, legible arcs rather than four distinct dots per state. Then compile Suno phrase/activity timing into new glider placements. Each new score must requalify the full universe, including the speech bubble and lyric counterpoint.
 
 See [research/LIFE_SINGER.md](research/LIFE_SINGER.md) and [research/COMPOSITION_PILOT.md](research/COMPOSITION_PILOT.md).
 
