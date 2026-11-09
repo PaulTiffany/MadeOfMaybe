@@ -19,7 +19,11 @@ universe (`life/lyric_text_pilot.py`): the singer, 5×7 caption
 progress blocks for `WE`, `MADE`, `A`, `WINDOW`. The blocks turn on at
 generations 268, 276, 284, 288 and are erased at 326 by real Life reactions.
 The combined universe was checked against independent subsystems for **350**
-consecutive generations. It does not replace subtitle letters yet, and the
+consecutive generations. `life/lyric_text_scene.py` also places the remaining
+**three** words OUT, OF, SAND in a *second physical caption page* within the
+same Life universe; all seven progress blocks are native glider-controlled.
+An actual double-rounding bug was corrected: OF now switches at generation
+308 rather than 312. It does not replace subtitle letters yet, and the
 blocks currently sit **right of the bubble**, to avoid invalidating routes.
 No phoneme mapping has begun.
 
