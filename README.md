@@ -43,8 +43,38 @@ This produces a GIF, keyframes, a static contact sheet of four researched symbol
 - [Smiley](https://conwaylife.com/wiki/Smiley) — period 8; **no verified ability to pause it**.
 - [Gosper glider gun](https://conwaylife.com/wiki/Gosper_glider_gun) — periodic emitter with unbounded output; **not yet qualified for composite placement**.
 
+## Three-state mouth candidate (visual geometry only)
+
+`preview/three_state_mouth_contact_sheet.png` compares **CLOSED, MEDIUM and
+OPEN** mouths in the same stable face. All three are valid, persistent B3/S23
+configurations built from 2×2 blocks, exported as individual RLE files under
+`patterns/singer_mouth_*_stable.rle`. The current speech bubble/text compound
+still composes independently with all three poses.
+
+**Important:** This is a contact sheet of *three different initial universes*,
+NOT a three-state signal-switched Life animation yet. Reversible and skipped
+transitions remain unimplemented. Details: [three-state mouth research](research/THREE_STATE_MOUTH_CANDIDATE.md).
+
 ## Next step
 
 Choose an aesthetically readable mouth geometry and map short lyric activity intervals from Suno to pre-positioned signal gliders. Then verify the resulting *combined* simulation before recording a chorus video. Every independently scheduled composition must declare an active spatial footprint, incoming/outgoing signal corridors, and time window.
 
 See [research/LIFE_SINGER.md](research/LIFE_SINGER.md) and [research/COMPOSITION_PILOT.md](research/COMPOSITION_PILOT.md).
+
+### Improved mouth candidate (still under visual review)
+
+The original 2x2 block did not resemble a mouth. We added a genuine six-cell
+**beehive** produced and removed by Mitchell Riley's glider-controlled
+beehive factory, plus a tighter provisional emoji-like face. This produces
+an open/closed/open aperture instead of merely blinking a block.
+
+    python -m unittest discover -s tests -v
+    python preview/make_beehive_face.py
+
+View `preview/beehive_face_compare.png` (closed vs open with no debug labels),
+`preview/beehive_face.gif` (real simulated generations), or open
+`patterns/beehive_singer_with_bubble.rle` in Golly.
+
+**The speech bubble is unchanged.** The new face and existing bubble/pulsar
+have been independently qualified together for 610 generations. This
+remains **draft artwork**, not yet an accepted singer or lip-sync.
