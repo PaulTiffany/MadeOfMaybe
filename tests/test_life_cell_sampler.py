@@ -1,6 +1,7 @@
 """No bitmap/subtitle substitution: exact native Life packet state sampling."""
 from pathlib import Path
 import shutil
+import importlib.util
 import subprocess
 import tempfile
 import unittest
@@ -10,11 +11,10 @@ from life.full_song_karaoke import (compile_plan,pixel_seed,physical_targets,GPS
 from life.glider_controlled_mouth import BLOCK
 from life.life_cell_sampler import (block_alive_at,make_trace,erase_trace)
 from life.lyric_cues import read_alignment
-from preview.render_full_song_karaoke import (build_frame_intervals,
-         sampled_signature,render,word_targets)
 
 ROOT=Path(__file__).resolve().parents[1]
 FIXTURE=ROOT/'data'/'first_verse_alignment_fixture.json'
+PIL_AVAILABLE=importlib.util.find_spec('PIL') is not None
 
 
 class LifeCellSamplingTests(unittest.TestCase):
@@ -46,7 +46,9 @@ class LifeCellSamplingTests(unittest.TestCase):
                                  f'Suno word full Life mismatch at generation {g}')
             world=evolve(world)
 
+    @unittest.skipUnless(PIL_AVAILABLE,'Pillow optional for video projections')
     def test_projected_pixel_positions_are_exact_stage_targets(self):
+        from preview.render_full_song_karaoke import word_targets
         line=compile_plan(read_alignment(FIXTURE))[0]
         targets=word_targets(line)
         self.assertEqual(len(targets),len(line.words))
@@ -56,7 +58,9 @@ class LifeCellSamplingTests(unittest.TestCase):
                 self.assertEqual(x,logical_x*line.pitch)
                 self.assertEqual(y,line.y_origin+logical_y*line.pitch)
 
+    @unittest.skipUnless(PIL_AVAILABLE,'Pillow optional for video projections')
     def test_frame_event_sequence_matches_physical_generations(self):
+        from preview.render_full_song_karaoke import build_frame_intervals,sampled_signature
         lines=compile_plan(read_alignment(FIXTURE))
         events=build_frame_intervals(lines,10.5,19.,24)
         self.assertEqual(events[0]['line_index'],None)
@@ -70,8 +74,9 @@ class LifeCellSamplingTests(unittest.TestCase):
             idx,flags=sampled_signature(lines,[l.start_s for l in lines],g)
             self.assertEqual((idx,list(flags)),(ev['line_index'],ev['live_words']))
 
-    @unittest.skipUnless(shutil.which('ffmpeg') and shutil.which('ffprobe'),'ffmpeg required')
+    @unittest.skipUnless(PIL_AVAILABLE and shutil.which('ffmpeg') and shutil.which('ffprobe'),'Pillow and ffmpeg required')
     def test_video_is_native_life_projection_with_valid_duration(self):
+        from preview.render_full_song_karaoke import render
         lines=compile_plan(read_alignment(FIXTURE))
         with tempfile.TemporaryDirectory() as tmp:
             target=Path(tmp)/'sample.mp4'
