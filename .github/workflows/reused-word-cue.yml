@@ -7,7 +7,7 @@ on:
 jobs:
   two-line-native-life:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -20,10 +20,17 @@ jobs:
           python -m life.export_reusable_word_cue --with-portrait --skip-long-replay \
             --out patterns/two_line_reused_word_and_singer.rle \
             --report output/two_line_reused_word_and_singer.json
+      - name: Install image-preview dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Check clean face, bubble, and below-bubble controller layout
+        run: python -m unittest tests.test_reused_word_camera -v
+      - name: Render actual Life checkpoint camera with controller moved optically below lyric bubble
+        run: python preview/render_reused_word_bus.py
       - uses: actions/upload-artifact@v4
         with:
           name: made-of-maybe-two-line-reused-glider-word-bus
           path: |
             patterns/two_line_reused_word_and_singer.rle
             output/two_line_reused_word_and_singer.json
+            preview/reused_word_bus_two_lines.png
           retention-days: 30
