@@ -2,6 +2,37 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
+## CURRENT — karaoke-first fast Life clock (speech bubble deferred)
+
+The soundtrack stays at **normal speed**, but the *single constant* Conway
+clock can be increased from **24 to 48 / 96 / 192 generations per audio second**.
+At **192 generations/s**, the first genuine 35-block lyric word **WE** is
+physically constructed over just **0.250 seconds**, finishing at **11.229s**,
+within **5.2 ms** of Suno's **11.224s** word onset. We let the word **stay
+visible until the line finishes**, then gliders completely erase it by
+**13.427s** (target 13.420s). There are no renderer cell edits or overlays
+inside the Life universe. The first 48/96/192-rate worlds pass real full
+B3/S23 per-generation independence and completion/clearance tests.
+
+**Important:** Retiming the original gliders at the same pitch produces new
+cross-lane collisions. The verified first-word solutions use *more physical
+space* between letter pixels (pitch 80 at 48/96, pitch 160 at 192).
+This is not a minimum pitch and not yet a complete karaoke line. The new
+fast-clock world deliberately contains **only lyrics**; the speech bubble is
+postponed. The mouth will need a separate glider rescore (multiplying desired
+musical times by the new constant rate) before reunion.
+
+```sh
+python -m unittest tests.test_lyric_clock -v
+python -m life.export_clocked_text --gps 192 --pitch 160 > patterns/clocked_we_192.rle
+python preview/make_clocked_word.py
+```
+
+See [rate experiment and limitations](research/KARAOKE_CLOCK_RATE_EXPERIMENT.md).
+The old 24-gens/sec pilot is retained below as historical evidence.
+
+---
+
 ## NEW — physical 5×7 lyric word made and erased entirely by gliders
 
 We have gone beyond the seven correctly timed *lamps*. The first actual

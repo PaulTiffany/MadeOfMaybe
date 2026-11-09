@@ -7,7 +7,7 @@ on:
 jobs:
   lyrics:
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,8 +19,14 @@ jobs:
         run: python -m unittest tests.test_lyric_cues tests.test_caption_library tests.test_lyric_text_pilot tests.test_lyric_text_scene -v
       - name: Qualify 35 genuine Life glyph pixels, glider writing, and erasing
         run: python -m unittest tests.test_native_lyric_word -v
+      - name: Verify globally faster, physically rescored lyrics without a bubble
+        run: python -m unittest tests.test_lyric_clock -v
+      - name: Export the physically verified 192-generation-per-audio-second word
+        run: python -m life.export_clocked_text --gps 192 --pitch 160 --manifest output/lyric_cues/clocked_we_192.json > output/lyric_cues/clocked_we_192.rle
       - name: Compile every caption to a generation score and reference SRT
         run: python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe --gps 24
+      - name: Compile entire fixed-speed song at the higher Life clock
+        run: python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/made_of_maybe_192 --gps 192
       - name: Export entire song as true stable Life caption-page RLE assets
         run: python -m life.caption_library --alignment data/made_of_maybe_suno_alignment.json --out output/lyric_cues/native_page_rles
       - name: Export first physical glider-timed lyric signal universe
@@ -30,7 +36,7 @@ jobs:
       - name: Export the complete singer plus actual glider-written lyric RLE
         run: python -m life.export_native_lyric_word > output/lyric_cues/native_we_glider_written_world.rle
       - name: Render proof at actual simulated generations
-        run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py && python preview/make_lyric_text_scene.py && python preview/make_native_word.py
+        run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py && python preview/make_lyric_text_scene.py && python preview/make_native_word.py && python preview/make_clocked_word.py
       - uses: actions/upload-artifact@v4
         with:
           name: made-of-maybe-lyric-score-native-life-pages
@@ -41,4 +47,5 @@ jobs:
             preview/first_lyric_pages_contact_sheet.png
             preview/first_line*
             preview/native_we_*
+            preview/clocked_we_*
           retention-days: 30
