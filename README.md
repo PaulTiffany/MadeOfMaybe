@@ -2,7 +2,36 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
-## New: oval face + expressive eyes + readable native-Life captions
+## Character round 2 — wavy hair + glider-controlled eyebrow and iris
+
+The new `life/character_round2.py` builds a much more deliberate singer:
+shoulder-length asymmetric violet hair with separate curls, side-swept
+bangs, highlight strands, fuller eyeliner/lashes, drop earrings, and a
+high, mischievously arched right eyebrow. **Every visible cell is real Life.**
+
+Six new glider-controlled elements give her actual expression without
+replacing pictures: three blocks appear on the right eyebrow for the open
+vowel, while three blocks in the left iris disappear and later reconstruct
+for a brief squint/wink-like cue. The rest of the face, existing mouth
+control circuits and original speech bubble remain independently arranged.
+The eye *outline* does not physically shut, so the new iris wink is not
+full eyelid animation. Lyrics still don't change during the simulation.
+
+See `preview/character_round2_four_expressions.png` and
+`preview/character_round2_real_life.gif`; inspect the complete generation-zero
+universe in `patterns/character_round2_native_life.rle`.
+
+```sh
+python -m unittest tests.test_character_round2 -v
+python -m unittest discover -s tests -v
+python preview/make_character_round2.py
+```
+
+Full qualification and limitations: [CHARACTER_ROUND2_QUALIFICATION.md](research/CHARACTER_ROUND2_QUALIFICATION.md).
+
+---
+
+## Previous: oval face + expressive eyes + readable native-Life captions
 
 A user-directed aesthetic update is implemented in `life/styled_singer.py`
 and `life/lyric_font.py`. The old circle/Pac-Man silhouette is now a tapered
