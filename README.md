@@ -2,33 +2,30 @@
 
 A music video assembled from native Conway's Game of Life (B3/S23) behaviors. The target is **one initial universe at one constant generation rate**: live pattern interactions, independent objects, and signals pre-placed to meet the musical score. No AI video generation or intermediate frame substitution.
 
-## NEW — complete native-Life 7-word line (first real karaoke)
 
-**WE MADE A WINDOW / OUT OF SAND** now appears **word by word** through
-**361 genuine 2×2 Life-block syntheses** at Suno-aligned generations, in
-one uninterrupted B3/S23 universe containing **1,083 preloaded gliders**.
-At **192 Life generations per music second**, the seven physical words
-complete within **10 ms** of their actual vocal onsets and the whole line
-is fully erased by **13.427s**, compared with its 13.420s audio endpoint.
-Unlike previous *lamps*, the complete letter forms are physically created.
+## Full song — genuine glider-written karaoke (text-first)
 
-This is deliberately **lyrics-only** (no speech bubble and no singer). The
-current 1600-Life-cell physical pixel pitch guarantees 306-cell signal-lane
-clearance; it is a space-expensive proof, not a production-sized solution.
-The Life world is one 5,415-cell initial state; whole-world B3/S23 replay
-passes every word-onset assertion and leaves **zero residue** after clearing.
-Output previews magnify truly completed Life-cell blocks for readability.
-The audio is never accelerated. We have not yet compiled the full song.
+The full-song compiler now treats **every sung line** in the 468-token Suno
+alignment as a separately qualified Life stage, building **every word** with
+preloaded two-glider block synthesis, then erasing the whole line with a third
+glider per pixel. One fixed **192-generation/audio-second** clock, no
+runtime insertion or variable simulation rate. The original recorded song
+continues at its original tempo. The singer and speech bubble are deliberately
+**not** in this full-song text-first RLE.
 
 ```bash
-python -m unittest tests.test_first_line_karaoke -v
-python -m life.export_first_line_karaoke > patterns/first_line_karaoke_192.rle
-python preview/make_first_line_karaoke.py
+python -m unittest tests.test_full_song_karaoke -v
+python -m life.verify_full_song_karaoke
+python -m life.export_full_song_karaoke
+python -m life.export_full_song_cues
 ```
 
-See [full engineering qualification](research/FIRST_LINE_NATIVE_KARAOKE.md).
-
----
+GitHub Actions publishes the one full-song RLE, all word and line timings,
+SRT, per-stage camera schedule, and reaction certificate in its artifacts.
+The world is intentionally enormous and sparse; the presentation renderer
+will magnify verified Live Life block outputs as glyph pixels. This is a
+**qualified native-Life score**, not a finished 24fps karaoke video.
+See [FULL_SONG_NATIVE_LIFE_KARAOKE.md](research/FULL_SONG_NATIVE_LIFE_KARAOKE.md).
 
 ## CURRENT — karaoke-first fast Life clock (speech bubble deferred)
 

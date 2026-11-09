@@ -43,6 +43,16 @@ jobs:
         run: python -m life.export_native_lyric_word > output/lyric_cues/native_we_glider_written_world.rle
       - name: Render proof at actual simulated generations
         run: python preview/make_lyric_text_pilot.py && python preview/make_caption_library_preview.py && python preview/make_lyric_text_scene.py && python preview/make_native_word.py && python preview/make_clocked_word.py && python preview/make_first_line_karaoke.py
+      - name: Qualify full-song initial-condition compiler and verified glider packets
+        run: python -m unittest tests.test_full_song_karaoke -v
+      - name: Verify every full-song word reaction via c/4 isolated glider induction and actual Life collisions
+        run: python -m life.verify_full_song_karaoke --out output/lyric_cues/full_song_packet_certificate.json
+      - name: Build the complete 238.88s song as ONE native Life RLE
+        run: |
+          python -m life.export_full_song_karaoke \
+            --out output/lyric_cues/made_of_maybe_full_song_native_life.rle \
+            --score output/lyric_cues/made_of_maybe_full_song_native_life.json
+          python -m life.export_full_song_cues --out output/lyric_cues/full_song_cues
       - uses: actions/upload-artifact@v4
         with:
           name: made-of-maybe-lyric-score-native-life-pages
