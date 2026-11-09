@@ -1,0 +1,19 @@
+name: Life composition qualification
+on:
+  push:
+    branches: [main, research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  life-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test exact B3/S23 behavior
+        run: python -m unittest discover -s tests -v
+      - name: Export scene RLE
+        run: python -m life.export_scene > /tmp/singer_bubble_pulsar.rle
