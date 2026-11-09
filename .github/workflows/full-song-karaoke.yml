@@ -1,0 +1,35 @@
+name: Full-song native-Life karaoke export
+on:
+  push:
+    branches: [main, research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-song:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify real Life glyph reactions and full alignment compiler
+        run: python -m unittest tests.test_full_song_karaoke -v
+      - name: Certify every unique word MAKE / HOLD / ERASE program
+        run: python -m life.verify_full_song_karaoke --out output/full_song_native_life/all_word_reactions_certificate.json
+      - name: Export ONE complete all-lyrics initial universe and camera timing
+        run: |
+          python -m life.export_full_song_karaoke \
+            --out output/full_song_native_life/made_of_maybe_ALL_LYRICS.rle \
+            --score output/full_song_native_life/lyric_score.json \
+            | tee output/full_song_native_life/export_summary.json
+          python -m life.export_full_song_cues --out output/full_song_native_life/cues
+      - name: Publish full Conway karaoke performance
+        uses: actions/upload-artifact@v4
+        with:
+          name: MadeOfMaybe-full-song-conway-lyrics-192gps
+          path: output/full_song_native_life/
+          retention-days: 90
+          if-no-files-found: error
