@@ -73,6 +73,15 @@ def phrase_cues(path=ALIGNMENT_FILE,*,min_switch_g=DEFAULT_SWITCH_G):
         raise AssertionError('no-op switch emitted')
     return tuple(cues)
 
+def phrase_gate_edges(path=ALIGNMENT_FILE,*,min_switch_g=DEFAULT_SWITCH_G):
+    """Only the two external trigger classes for a future physical loop.
+
+    The repeating MEDIUM/OPEN actuator itself is NOT implemented here; this
+    is the reduced phrase start/stop interface, not evidence of a Life loop.
+    """
+    return tuple(c for c in phrase_cues(path,min_switch_g=min_switch_g)
+                 if c.action in ('start','close'))
+
 def state_at(generation,path=ALIGNMENT_FILE,*,min_switch_g=DEFAULT_SWITCH_G):
     """Readout for gate tests, NOT a renderer expression mask."""
     if generation<0:raise ValueError('generation must be nonnegative')
@@ -86,6 +95,7 @@ def audit(path=ALIGNMENT_FILE,*,min_switch_g=DEFAULT_SWITCH_G):
     lines=score(path)
     cues=phrase_cues(path,min_switch_g=min_switch_g)
     groups=phrase_groups(path,min_switch_g=min_switch_g)
+    edges=phrase_gate_edges(path,min_switch_g=min_switch_g)
     return {'gps':GPS,'source':Path(path).name,
             'karaoke_words':sum(len(l.words) for l in lines),
             'karaoke_lines':len(lines),'sung_phrases':len(groups),
@@ -93,6 +103,9 @@ def audit(path=ALIGNMENT_FILE,*,min_switch_g=DEFAULT_SWITCH_G):
             'medium_open_alternations':sum(c.action=='alternate' for c in cues),
             'phrase_closures':sum(c.action=='close' for c in cues),
             'total_mouth_transitions':len(cues),
+            'external_phrase_gate_events':len(edges),
+            'repeat_loop_physically_qualified':False,
+            'phrase_gate_edges':[asdict(c) for c in edges],
             'min_switch_generations':min_switch_g,
             'smallest_actual_transition_gap_g':min((b.generation-a.generation for a,b in zip(cues,cues[1:])),default=None),
             'source_events_only':True,'independent_mouth_oscillator':False,

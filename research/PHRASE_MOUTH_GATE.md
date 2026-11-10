@@ -18,8 +18,9 @@ whole-universe collision/clearance qualification.
 
 The full score selects **35 phrases**, **35 starts**, **148 sparsely selected
 medium/open alternations**, and **35 closes** = **218 state requests**,
-rather than 403 bespoke lip cycles. The necessary phrase-gate boundaries
-alone are 70 source events. A future autonomous, *physically gated* repeat
+rather than 403 bespoke lip cycles. The **minimal external phrase-gate interface is exactly 70 source events**
+(35 start / 35 stop). The optional 148 intermediate word-onset requests
+are only for a word-driven cycle if a self-repeating actuator is not used. A future autonomous, *physically gated* repeat
 mechanism could reduce the number of external alternate triggers still further,
 but that is not implemented or being claimed.
 

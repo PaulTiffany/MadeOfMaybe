@@ -1,7 +1,7 @@
 """Phrase transitions are only existing real karaoke Life events."""
 import unittest
 from pathlib import Path
-from life.phrase_mouth_gate import phrase_groups,phrase_cues,state_at,audit,STATES
+from life.phrase_mouth_gate import phrase_groups,phrase_cues,phrase_gate_edges,state_at,audit,STATES
 from life.word_driven_expression import score
 from life.full_song_karaoke import ALIGNMENT_FILE,GPS
 
@@ -44,6 +44,12 @@ class PhraseMouthGateTests(unittest.TestCase):
         for group in groups:
             for a,b in zip(group,group[1:]):
                 self.assertLess(b.words[0].make_g-a.clear_g,96)
+    def test_minimal_external_loop_interface_is_two_edges_per_phrase(self):
+        edges=phrase_gate_edges(FIXTURE)
+        self.assertEqual([(c.action,c.state) for c in edges],
+                         [('start','medium'),('close','closed'),
+                          ('start','medium'),('close','closed')])
+        self.assertEqual(len(edges),4)
     def test_rejects_unrealistic_response_bounds(self):
         for n in (0,7,24,47,49,95):
             with self.subTest(n=n),self.assertRaises(ValueError):
@@ -55,11 +61,13 @@ class PhraseMouthGateTests(unittest.TestCase):
         for key,value in {'karaoke_words':403,'karaoke_lines':66,
                           'sung_phrases':35,'phrase_starts':35,
                           'medium_open_alternations':148,'phrase_closures':35,
-                          'total_mouth_transitions':218}.items():
+                          'total_mouth_transitions':218,
+                          'external_phrase_gate_events':70}.items():
             self.assertEqual(r[key],value,key)
         self.assertGreaterEqual(r['smallest_actual_transition_gap_g'],96)
         self.assertTrue(r['source_events_only'])
         self.assertFalse(r['independent_mouth_oscillator'])
+        self.assertFalse(r['repeat_loop_physically_qualified'])
         self.assertFalse(r['native_life_full_lip_gate_connected'])
 
 if __name__=='__main__':unittest.main()
