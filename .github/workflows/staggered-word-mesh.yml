@@ -46,6 +46,13 @@ jobs:
           PY
       - name: Install optical video library
         run: python -m pip install 'Pillow>=10,<13'
+      - name: Ensure FFmpeg is installed on current Ubuntu runner
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version | head -n 1
       - name: Render accelerated real-world native-cell preview
         run: |
           command -v ffmpeg
