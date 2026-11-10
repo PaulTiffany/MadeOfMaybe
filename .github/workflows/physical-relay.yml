@@ -7,18 +7,27 @@ on:
 jobs:
   relay-native-life:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Native Snark relay and deadline qualification
+      - name: Native Snark relay, relay ablation, and deadline qualification
         run: python -m unittest tests.test_physical_glider_relay -v
+      - name: Qualify narrower lower physical singer lip banks and cheek guard
+        run: python -m unittest tests.test_refined_singer_candidate -v
+      - name: Render real-Life refined singer pose camera
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          python preview/make_refined_singer_candidate.py
       - name: Archive reproducible source for route engineering
         run: tar -czf conway_source.tar.gz life preview tests data research .github
       - uses: actions/upload-artifact@v4
         with:
-          name: snark-relay-qualification-and-route-source
-          path: conway_source.tar.gz
+          name: snark-relay-refined-singer-qualification
+          path: |
+            conway_source.tar.gz
+            preview/refined_singer_qualified_candidate.png
+            preview/refined_singer_open_closeup.png
           retention-days: 7
