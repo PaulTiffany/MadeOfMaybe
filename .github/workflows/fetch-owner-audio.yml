@@ -1,5 +1,8 @@
 name: Fetch owner-published original Made Of Maybe audio for local edit
 on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths: ['.github/workflows/fetch-owner-audio.yml']
   workflow_dispatch:
 jobs:
   get-original-song:
