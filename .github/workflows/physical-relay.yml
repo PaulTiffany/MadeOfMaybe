@@ -1,0 +1,24 @@
+name: Qualified glider relay and physical relocation feasibility
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  relay-native-life:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Native Snark relay and deadline qualification
+        run: python -m unittest tests.test_physical_glider_relay -v
+      - name: Archive reproducible source for route engineering
+        run: tar -czf conway_source.tar.gz life preview tests data research .github
+      - uses: actions/upload-artifact@v4
+        with:
+          name: snark-relay-qualification-and-route-source
+          path: conway_source.tar.gz
+          retention-days: 7
