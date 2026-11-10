@@ -1,0 +1,65 @@
+name: Native staggered moving word with seven row eaters
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  one-physical-word:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify seven-row station geometry, phase and stable eater primitives
+        run: python -m unittest tests.test_vertical_lwss_corner tests.test_staggered_word_mesh -v
+      - name: Export full native Conway universe and source-ablation fixture
+        run: |
+          python -m life.staggered_word_mesh
+          python - <<'PY'
+          from life.staggered_word_mesh import export
+          export('output/staggered_word_mesh',omit_index=34)
+          PY
+      - name: Compile exact native B3/S23 whole-world simulator
+        run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/mesh_native
+      - name: Evolve both universes to g7600 and verify all physical independence until g6000
+        run: |
+          /tmp/mesh_native output/staggered_word_mesh/we_components.tsv 7600 output/staggered_word_mesh/we_final.tsv 6000 output/staggered_word_mesh/we_formation.tsv output/staggered_word_mesh/we_frames.bin
+          /tmp/mesh_native output/staggered_word_mesh/we_ablate_34_components.tsv 7600 output/staggered_word_mesh/we_ablate_34_final.tsv 6000 output/staggered_word_mesh/we_ablate_34_formation.tsv
+      - name: Verify exact 35-ship WE and complete consumption into original 77 stable eaters
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.staggered_word_mesh import verify_snapshots,read_seed_file
+          directory=Path('output/staggered_word_mesh')
+          for slug,omit in [('we',None),('we_ablate_34',34)]:
+              result=verify_snapshots(read_seed_file(directory/(slug+'_formation.tsv')),
+                  read_seed_file(directory/(slug+'_final.tsv')),omit_index=omit)
+              expected=(959,539) if omit is None else (966,558)
+              assert (result['formation_population'],result['final_population'])==expected
+              (directory/(slug+'_certificate.json')).write_text(json.dumps(result,indent=2)+'\n')
+              print(slug,result)
+          PY
+      - name: Install optical video library
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Render accelerated real-world native-cell preview
+        run: |
+          command -v ffmpeg
+          python preview/render_staggered_word_mesh.py \
+            --frames output/staggered_word_mesh/we_frames.bin \
+            --out preview/staggered_word_we_native.mp4 \
+            --thumbnail preview/staggered_word_we_native.png
+          ffprobe -v error -show_entries format=duration,size -of json preview/staggered_word_we_native.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 35-turn-geometric-staging-actual-WE
+          path: |
+            output/staggered_word_mesh/*.rle
+            output/staggered_word_mesh/*.json
+            preview/staggered_word_we_native.mp4
+            preview/staggered_word_we_native.png
+          retention-days: 30
