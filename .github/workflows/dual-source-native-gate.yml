@@ -19,6 +19,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install audio decoding dependency
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
       - name: Native glider AND truth table and synthetic voice-envelope transcription
         run: |
           python -m unittest tests.test_dual_source_native_gate tests.test_suno_vocal_controller_cli -v
