@@ -29,7 +29,7 @@ int main(int argc,char**argv){
  if(!in||!out){cerr<<"file error\n";return 2;}
  S world;int x,y;while(in>>x>>y)world.insert(pack(x,y));
  cerr<<"g0 population "<<world.size()<<"\n";
- if(world.size()!=9046){cerr<<"unexpected g0 composition\n";return 3;}
+ if(world.empty()){cerr<<"empty input initial world\n";return 3;}
  for(int g=0;g<=end;g++){
   if(g%step==0){int32_t gen=g;uint32_t count=world.size();
    out.write((char*)&gen,4);out.write((char*)&count,4);
