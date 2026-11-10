@@ -50,7 +50,7 @@ jobs:
         run: |
           g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/native_film
           /tmp/native_film output/native_rounded/seed.tsv output/native_rounded/world.bin 3648 8
-          python preview/render_rounded_bubble_edge.py --frames output/native_rounded/world.bin --out output/native_rounded/rounded_native_silent.mp4 --stills output/native_rounded/stills
+          python -m preview.render_rounded_bubble_edge --frames output/native_rounded/world.bin --out output/native_rounded/rounded_native_silent.mp4 --stills output/native_rounded/stills
           ffprobe -v error -show_entries format=duration:stream=nb_frames -of json output/native_rounded/rounded_native_silent.mp4
       - uses: actions/upload-artifact@v4
         with:
