@@ -1,0 +1,59 @@
+name: Existing redirector inside blank speech bubble
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'life/blank_bubble_redirector.py'
+      - 'tests/test_blank_bubble_redirector.py'
+      - '.github/workflows/native-blank-bubble-redirector.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  uncut-native-turner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install native preview dependencies
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Check 444-cell static title removal and 19-cell original turner
+        run: python -m unittest tests.test_blank_bubble_redirector -v
+      - name: Construct exactly one g0 world and its two independent native parts
+        run: |
+          mkdir -p output/native_blank
+          python - <<'PY'
+          from life.blank_bubble_redirector import components
+          from life.core import evolve
+          base,device=components()
+          world=base|device
+          assert len(world)==8619 and len(device)==49
+          with open('output/native_blank/seed.tsv','w') as f:
+              for x,y in sorted(world):f.write(f'{x} {y}\n')
+          with open('output/native_blank/independent.tsv','w') as f:
+              f.write('2\n')
+              for i,part in enumerate((base,device)):
+                  for x,y in sorted(part):f.write(f'{i} {x} {y}\n')
+          PY
+      - name: Prove zero cross-component interference in all 3649 native generations
+        run: |
+          g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/audit
+          /tmp/audit output/native_blank/independent.tsv 3648 output/native_blank/full_native_final.tsv 3648 output/native_blank/full_native_formation.tsv
+      - name: Film every eighth whole-world state, no borders, cuts, labels or overlays
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/film
+          /tmp/film output/native_blank/seed.tsv output/native_blank/full_world.bin 3648 8
+          python preview/render_one_world_native_no_cuts.py             --frames output/native_blank/full_world.bin             --out output/native_blank/blank_bubble_existing_turner_silent.mp4
+          ffprobe -v error -show_entries format=duration:stream=nb_frames -of json             output/native_blank/blank_bubble_existing_turner_silent.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-blank-bubble-existing-19-cell-turner-19s
+          path: output/native_blank/blank_bubble_existing_turner_silent.mp4
+          retention-days: 30
