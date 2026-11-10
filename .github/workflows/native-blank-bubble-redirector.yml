@@ -5,6 +5,7 @@ on:
     paths:
       - 'life/blank_bubble_redirector.py'
       - 'tests/test_blank_bubble_redirector.py'
+      - 'research/one_world_native_frames.cpp'
       - '.github/workflows/native-blank-bubble-redirector.yml'
   pull_request:
   workflow_dispatch:
