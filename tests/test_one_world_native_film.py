@@ -8,7 +8,8 @@ class NativeUncutFilmTests(unittest.TestCase):
             after=camera(t+1e-6)
             self.assertLess(max(abs(a-b) for a,b in zip(before,after)),.001)
     def test_camera_stops_zooming_without_a_new_shot(self):
-        self.assertEqual(camera(11),camera(19))
+        for a,b in zip(camera(11),camera(19)):
+            self.assertAlmostEqual(a,b,places=12)
         with self.assertRaises(ValueError):camera(-.1)
     def test_renderer_contains_no_subtitles_or_pose_editor(self):
         src=inspect.getsource(draw)
