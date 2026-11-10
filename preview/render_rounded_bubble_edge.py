@@ -12,13 +12,13 @@ def camera(t):
                 169.5+(-125-169.5)*u,
                 7.3*math.exp(math.log(.85/7.3)*u))
     return (350.,-125.,.85)
-old_color=base.fixed_color
+old_color=base.color
 def fixed_color(x,y):
     lx=x-1071;ly=y+1019
     if 300<lx<1015 and -370<ly<105:return (129,223,215)
     return old_color(x,y)
 base.camera=camera
-base.fixed_color=fixed_color
+base.color=fixed_color
 if __name__=='__main__':
     import argparse
     p=argparse.ArgumentParser()
@@ -26,4 +26,4 @@ if __name__=='__main__':
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--stills',type=Path)
     a=p.parse_args()
-    print(base.render(a.frames,a.out,still_dir=a.stills))
+    print(base.render(a.frames,a.out,stills=a.stills))
