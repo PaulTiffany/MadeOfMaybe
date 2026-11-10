@@ -1,0 +1,22 @@
+name: Independent word and vocal mouth timing feasibility
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'life/dual_channel_mouth_logic.py'
+      - 'tests/test_dual_channel_mouth_logic.py'
+      - 'research/DUAL_CHANNEL_MOUTH_FEASIBILITY.md'
+      - '.github/workflows/dual-channel-mouth.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  cue-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit exact 403 words and synthetic independent held vocal control
+        run: python -m unittest tests.test_dual_channel_mouth_logic -v
