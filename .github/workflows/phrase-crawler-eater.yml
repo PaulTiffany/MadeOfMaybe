@@ -1,0 +1,40 @@
+name: Native phrase crawler and reusable LWSS eater
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  native-phrase-eater:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Physically consume moving words, native phrase markers, and reuse eight eaters
+        run: python -m unittest tests.test_phrase_crawler_eater -v
+      - name: Export complete initial native Life universe and certificate
+        run: |
+          mkdir -p output patterns
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.core import encode_rle
+          from life.phrase_crawler_eater import initial_world,qualify
+          world,_=initial_world(('WE MADE','A WINDOW'),gap_g=192)
+          Path('patterns/two_phrase_crawler_eater.rle').write_text(encode_rle(world,[
+              'B3/S23: physical LWSS word train, eight reusable eater-1s and phrase markers.',
+              'No runtime cells inserted. Color switch and singer link not implemented.'
+          ]),encoding='utf-8')
+          Path('output/two_phrase_crawler_eater.json').write_text(
+              json.dumps(qualify(),indent=2)+'\n',encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: two-phrase-moving-word-eater-native-life
+          path: |
+            patterns/two_phrase_crawler_eater.rle
+            output/two_phrase_crawler_eater.json
+          retention-days: 30
