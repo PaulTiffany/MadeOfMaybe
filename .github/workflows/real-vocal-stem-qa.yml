@@ -1,0 +1,21 @@
+name: Isolated Suno voice-gate provenance and reverb qualification
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'data/made_of_maybe_vocal_gate_take1_v0.json'
+      - 'tests/test_real_vocal_gate_manifest.py'
+      - '.github/workflows/real-vocal-stem-qa.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  validate-observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assert actual independent vocal intervals and explicit reverb uncertainty
+        run: python -m unittest tests.test_real_vocal_gate_manifest -v

@@ -1,0 +1,349 @@
+{
+  "schema": "made-of-maybe/qualified-vocal-observation-v0",
+  "song_id": "53610991-7381-4749-96e1-79b8e3b1c28b",
+  "vocal_stem_id": "bee52d16-b01b-4224-bd4c-5c51081d813b",
+  "stem_mp3_sha256": "1df830717e8d17f8fede34136d5188f87750bc3d8dd08f503f7c204b8951e011",
+  "original_mix_sha256": "4b4ff4887bd85dbf9e95dd5febc04aa1d725b5fb8d2557ef4224bd02e7442f5f",
+  "source_tag_verified": true,
+  "music_duration_s": 238.88,
+  "decoded_duration_s_approx": 238.894,
+  "sample_hop_s": 0.02,
+  "gate": "mono centered-mix RMS, > 0.14 of global 90th percentile; bridge <=.09 s; discard <.08 s",
+  "gate_threshold_relative_to_p90": 0.14,
+  "quality": "NOT dry vocal ground truth; reverb/delay and doubled vocals remain; do not use for visual mouth manipulation",
+  "word_count_in_separate_alignment": 403,
+  "gate_episode_count": 53,
+  "gate_active_seconds": 211.76,
+  "vocal_only_not_necessarily_held_notes_seconds": 93.04,
+  "requested_state_transitions_from_existing_score": 332,
+  "intervals_seconds": [
+    [
+      3.5,
+      4.14
+    ],
+    [
+      4.3,
+      4.58
+    ],
+    [
+      4.84,
+      4.98
+    ],
+    [
+      5.24,
+      5.36
+    ],
+    [
+      5.64,
+      6.32
+    ],
+    [
+      6.44,
+      8.74
+    ],
+    [
+      10.96,
+      13.5
+    ],
+    [
+      15.24,
+      16.74
+    ],
+    [
+      16.84,
+      17.24
+    ],
+    [
+      17.34,
+      25.88
+    ],
+    [
+      26,
+      26.5
+    ],
+    [
+      28.1,
+      30.82
+    ],
+    [
+      32.36,
+      34.42
+    ],
+    [
+      34.56,
+      37.88
+    ],
+    [
+      38.02,
+      41.22
+    ],
+    [
+      41.42,
+      43.52
+    ],
+    [
+      43.66,
+      43.78
+    ],
+    [
+      43.92,
+      44.06
+    ],
+    [
+      44.2,
+      46.18
+    ],
+    [
+      46.32,
+      55.06
+    ],
+    [
+      55.16,
+      84.96
+    ],
+    [
+      85.48,
+      85.72
+    ],
+    [
+      85.82,
+      88.68
+    ],
+    [
+      88.78,
+      90.82
+    ],
+    [
+      90.92,
+      92.28
+    ],
+    [
+      92.5,
+      98
+    ],
+    [
+      98.1,
+      111.38
+    ],
+    [
+      111.48,
+      112.2
+    ],
+    [
+      112.3,
+      123.44
+    ],
+    [
+      123.54,
+      135.4
+    ],
+    [
+      135.54,
+      135.94
+    ],
+    [
+      136.06,
+      142.88
+    ],
+    [
+      143,
+      153.42
+    ],
+    [
+      153.66,
+      153.8
+    ],
+    [
+      154.22,
+      156.98
+    ],
+    [
+      158.48,
+      165.82
+    ],
+    [
+      166.54,
+      170.18
+    ],
+    [
+      170.8,
+      174.04
+    ],
+    [
+      174.22,
+      176.2
+    ],
+    [
+      176.36,
+      187.74
+    ],
+    [
+      187.84,
+      194.92
+    ],
+    [
+      195.04,
+      195.18
+    ],
+    [
+      195.3,
+      195.72
+    ],
+    [
+      195.82,
+      213.32
+    ],
+    [
+      213.88,
+      217.88
+    ],
+    [
+      217.98,
+      218.12
+    ],
+    [
+      218.52,
+      218.66
+    ],
+    [
+      218.92,
+      219.06
+    ],
+    [
+      219.32,
+      219.98
+    ],
+    [
+      220.12,
+      225.54
+    ],
+    [
+      225.68,
+      227.54
+    ],
+    [
+      227.86,
+      232.2
+    ],
+    [
+      232.62,
+      233.6
+    ]
+  ],
+  "diffuse_release_candidates_seconds": [
+    [
+      5.38,
+      5.62
+    ],
+    [
+      13.88,
+      14.52
+    ],
+    [
+      26.52,
+      28
+    ],
+    [
+      30.84,
+      32.3
+    ],
+    [
+      84.96,
+      85.42
+    ],
+    [
+      157.22,
+      158.44
+    ],
+    [
+      165.84,
+      166.36
+    ],
+    [
+      170.26,
+      170.76
+    ],
+    [
+      233.66,
+      234.8
+    ]
+  ],
+  "diffuse_release_candidates_total_seconds": 7.66,
+  "diffuse_candidates_overlapping_gate": 0,
+  "wet_tails_not_qualified_as_dry_vocal": true,
+  "dry_wet_separation_qualified": false,
+  "native_B3S23_full_song_mouth_qualified": false,
+  "tested_zero_lag_stem_vs_mix_windows_s": [
+    [
+      11,
+      14
+    ],
+    [
+      28,
+      30
+    ],
+    [
+      58,
+      62
+    ],
+    [
+      198,
+      202
+    ],
+    [
+      230,
+      234
+    ]
+  ],
+  "sample_lag_at_16000Hz_in_tested_windows": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "threshold_sensitivity": [
+    {
+      "relative_threshold": 0.08,
+      "gate_episodes": 23,
+      "total_activity_s": 219.56,
+      "vocal_only_s": 99.12,
+      "requested_transitions": 335
+    },
+    {
+      "relative_threshold": 0.1,
+      "gate_episodes": 31,
+      "total_activity_s": 216.64,
+      "vocal_only_s": 96.6,
+      "requested_transitions": 334
+    },
+    {
+      "relative_threshold": 0.14,
+      "gate_episodes": 53,
+      "total_activity_s": 211.76,
+      "vocal_only_s": 93.04,
+      "requested_transitions": 332
+    },
+    {
+      "relative_threshold": 0.18,
+      "gate_episodes": 65,
+      "total_activity_s": 207.66,
+      "vocal_only_s": 90.12,
+      "requested_transitions": 331
+    },
+    {
+      "relative_threshold": 0.22,
+      "gate_episodes": 79,
+      "total_activity_s": 205.04,
+      "vocal_only_s": 88.69,
+      "requested_transitions": 330
+    },
+    {
+      "relative_threshold": 0.3,
+      "gate_episodes": 98,
+      "total_activity_s": 198.84,
+      "vocal_only_s": 85.08,
+      "requested_transitions": 327
+    }
+  ]
+}
