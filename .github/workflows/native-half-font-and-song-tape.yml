@@ -1,0 +1,61 @@
+name: Smaller physical LWSS font and full Suno control-source staging
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'life/native_half_font_first20.py'
+      - 'life/full_song_source_tape.py'
+      - 'tests/test_native_half_font_first20.py'
+      - 'tests/verify_native_half_font_first20.py'
+      - 'tests/test_full_song_source_tape.py'
+      - '.github/workflows/native-half-font-and-song-tape.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  native-font-and-song-inputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Check real smaller Life lettering and all 509 W/V source packets
+        run: python -m unittest tests.test_native_half_font_first20 tests.test_full_song_source_tape -v
+      - name: Export the 8,090-cell native singer and full four-minute unwired source tape
+        run: |
+          python -m life.native_half_font_first20 --out output/half_font_native
+          python -m life.full_song_source_tape --out output/full_song_tape
+      - name: Compile native-Life independent-components checker and frame engine
+        run: |
+          g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/audit
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/frames
+      - name: Verify the entire 3841-generation compact singer world
+        run: |
+          /tmp/audit output/half_font_native/mini_word_parts.tsv 3840 \
+            output/half_font_native/end.tsv 3840 output/half_font_native/checkpoint.tsv
+          /tmp/frames output/half_font_native/mini_word_seed.tsv \
+            output/half_font_native/true_frames.bin 3840 8
+      - name: Verify exact 17-LWSS WE formation, c/2 motion and original W/V mouth
+        run: |
+          python -m tests.verify_native_half_font_first20 \
+            output/half_font_native/true_frames.bin output/half_font_native/native_certificate.json
+      - name: Render uncut native movie using only true Life cells
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+          python -m preview.render_native_word_vocal_link \
+            --frames output/half_font_native/true_frames.bin \
+            --out output/half_font_native/physical_mini_word_silent.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: actual-half-size-lyric-plus-full-song-unwired-suno-tape
+          path: |
+            output/half_font_native/*.json
+            output/half_font_native/*.rle
+            output/half_font_native/*.mp4
+            output/full_song_tape/*.json
+            output/full_song_tape/*.rle
+          retention-days: 30
