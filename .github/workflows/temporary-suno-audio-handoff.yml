@@ -15,7 +15,8 @@ jobs:
           set -euo pipefail
           curl --fail --location --silent --show-error "$AUDIO_URL" -o original_made_of_maybe.mp3
           test "$(wc -c < original_made_of_maybe.mp3)" -gt 1000000
-          ffprobe -v error -show_entries format=duration,size -of json original_made_of_maybe.mp3
+          file original_made_of_maybe.mp3
+          wc -c original_made_of_maybe.mp3
       - uses: actions/upload-artifact@v4
         with:
           name: original-owner-suno-track-transient-transfer
