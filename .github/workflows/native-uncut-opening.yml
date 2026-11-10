@@ -1,0 +1,58 @@
+name: No-hacks single-universe native Conway opening
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'research/one_world_native_frames.cpp'
+      - 'preview/render_one_world_native_no_cuts.py'
+      - 'tests/test_one_world_native_film.py'
+      - '.github/workflows/native-uncut-opening.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  native-uncut:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image encoder
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Verify camera continuity and prohibit optical subtitles
+        run: python -m unittest tests.test_one_world_native_film -v
+      - name: Export the one genuine g0 universe from our physical singer
+        run: |
+          mkdir -p output/native
+          python - <<'PY'
+          from life.relocated_singer_anchor import universe
+          world=universe()
+          assert len(world)==9046
+          with open('output/native/seed.tsv','w') as f:
+              for x,y in sorted(world):f.write(f'{x} {y}\n')
+          PY
+      - name: Evolve entire native B3/S23 world; never swap states
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/native_film
+          /tmp/native_film output/native/seed.tsv output/native/full_world.bin 3648 8
+      - name: Film one continuous world, without any borders, HUD or cuts
+        run: |
+          python preview/render_one_world_native_no_cuts.py \
+            --frames output/native/full_world.bin \
+            --out output/native/single_world_no_cuts_silent.mp4 \
+            --stills output/native/stills
+          ffprobe -v error -show_entries format=duration:stream=nb_frames \
+            -of json output/native/single_world_no_cuts_silent.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exact-native-no-hacks-one-world-19s-silent
+          path: |
+            output/native/single_world_no_cuts_silent.mp4
+            output/native/stills/*
+          retention-days: 30
