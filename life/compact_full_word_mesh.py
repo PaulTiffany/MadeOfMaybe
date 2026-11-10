@@ -122,7 +122,7 @@ def read_snapshot(path):
     with open(path,encoding='utf8') as f:
         return {tuple(map(int,l.split())) for l in f if l.strip()}
 
-def verify_snapshots(formation,final,*,word=WORD,omit_index=None):
+def verify_snapshots(formation,final,*,word=WORD,omit_index=None,cleanup_generation=CLEANUP_G):
     expected=expected_formation(word,omit_index=omit_index)
     rest=expected_final(word,omit_index=omit_index)
     if formation!=expected:
@@ -134,7 +134,7 @@ def verify_snapshots(formation,final,*,word=WORD,omit_index=None):
     rs=routes(word)
     return {
       'rule':'B3/S23','word':word,'source_ablation':omit_index,
-      'formation_generation':FORMATION_G,'cleanup_generation':CLEANUP_G,
+      'formation_generation':FORMATION_G,'cleanup_generation':cleanup_generation,
       'corners':len(rs),'vertical_inputs':len(rs)-(omit_index is not None),
       'outgoing_lwss_pixels':len(rs)-(omit_index is not None),
       'station_pitch_x':STATION_PITCH,'row_and_glyph_pitch':PIXEL_PITCH,
@@ -148,13 +148,14 @@ def verify_snapshots(formation,final,*,word=WORD,omit_index=None):
       'corner_reused':False,'full_403_word_song_qualified':False,
     }
 
-def export(folder,*,omit_index=None):
+def export(folder,word=WORD,*,omit_index=None):
     folder=Path(folder);folder.mkdir(parents=True,exist_ok=True)
-    slug='compact_we' if omit_index is None else f'compact_we_ablate_{omit_index}'
-    parts=components(omit_index=omit_index)
+    base='compact_'+word.lower().replace(' ','_')
+    slug=base if omit_index is None else f'{base}_ablate_{omit_index}'
+    parts=components(word,omit_index=omit_index)
     rle=folder/(slug+'.rle')
     rle.write_text(compact_rle(set().union(*parts),(
-        'Native B3/S23 compact 35-corner WE, physically staged from above.',
+        f'Native B3/S23 compact {len(routes(word))}-corner {word}, staged from above.',
         'All moving LWSS pixels meet at g6000 and are eaten by g7600.',
         'One-shot stations; no full-song or native switch claim.'
     )),encoding='utf8')
@@ -165,7 +166,7 @@ def export(folder,*,omit_index=None):
             for x,y in sorted(part):
                 f.write(f'{i} {x} {y}\n')
     (folder/(slug+'_routes.json')).write_text(
-        json.dumps([asdict(r) for r in routes()],indent=2)+'\n',
+        json.dumps([asdict(r) for r in routes(word)],indent=2)+'\n',
         encoding='utf8')
     return rle,tsv
 

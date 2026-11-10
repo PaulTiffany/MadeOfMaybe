@@ -79,3 +79,26 @@ passing words and shared highlight/mouth signals. An all-zero finale
 also needs deliberate dismantling of the 77 remaining eater structures.
 
 The 14s preview is accelerated native Life observation, not music timing.
+
+
+## Extension: the same geometric compiler assembles WE MADE
+
+The identical station x-pitch 36 and glyph row pitch 36 also assemble
+both words WE MADE, as one physically moving 107-pixel seven-row text train.
+No separate per-word stage or optical text rendering is introduced.
+The word spacing is inherited from the same 5x7 Life glyph vocabulary.
+For this longer phrase, 107 real turning stations are preloaded and fired
+at staggered native generations to coincide at g6000. An exact whole-world
+native Life audit compares all 108 independently evolved components at
+EVERY tick from g0 through g6000 without interaction.
+
+The WE MADE populations in a separate certified native run are:
+g0 = 4,543; g6000 = 2,831 (1,284 moving LWSS-phase cells + 1,547 eater
+cells); g10000 = exactly 1,547 stable eater cells. A single source-ablated
+word-pixel run likewise passed g0 through g10000: 4,534 -> 2,838 -> 1,566,
+the latter including the unchanged 19-cell unactivated turner.
+The word must travel farther to its left eaters, hence g10000 cleanup
+rather than g7600. The fixed horizontal pitch is already sufficient
+for a physically spaced phrase, but its two words do not yet have
+separately qualified song onset / highlight timings. Reuse of each
+individual turner remains unimplemented.

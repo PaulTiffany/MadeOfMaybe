@@ -46,4 +46,17 @@ class CompactFullWordMeshTests(unittest.TestCase):
         with self.assertRaises(ValueError):components(omit_index=35)
         with self.assertRaises(ValueError):routes(formation_g=201)
 
+    def test_same_spacing_compiles_107_real_ships_for_we_made(self):
+        phrase='WE MADE'
+        self.assertEqual(len(lit_pixels(phrase)),107)
+        self.assertEqual(len(components(phrase)),108)
+        self.assertEqual(len(universe(phrase)),4543)
+        self.assertEqual(len(expected_word(phrase)),107*12)
+        self.assertEqual(len(expected_formation(phrase)),2831)
+        self.assertEqual(len(expected_final(phrase)),1547)
+        self.assertEqual(evolve(expected_final(phrase)),expected_final(phrase))
+        self.assertEqual(len(universe(phrase,omit_index=106)),4534)
+        self.assertEqual(len(expected_formation(phrase,omit_index=106)),2838)
+        self.assertEqual(len(expected_final(phrase,omit_index=106)),1566)
+
 if __name__=='__main__':unittest.main()
