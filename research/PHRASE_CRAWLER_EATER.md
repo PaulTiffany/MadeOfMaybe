@@ -17,8 +17,9 @@ After both full phrases, their **four real moving START/STOP cue-marker
 spaceships**, and all intermediate interactions have passed, the entire
 world is **exactly the original 56 eater cells**. No ash or escaping ships.
 
-The physical blank interval is 101 unoccupied horizontal Life cells
-between the phrase segments in the generation-zero seed. The code accepts
+The physical blank interval is **101 empty horizontal Life cells in the seven lyric rows**
+between the phrase segments in the generation-zero seed. The separate cue
+lane contains a STOP marker inside that interval, followed by a quiet gap. The code accepts
 a `gap_g` parameter in multiples of four, placing actual empty rail space
 using the LWSS c/2 motion relationship.
 
