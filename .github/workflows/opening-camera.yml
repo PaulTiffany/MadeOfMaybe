@@ -1,0 +1,17 @@
+name: One-world opening camera and real glider tracking
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  actual-glider-follow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check actual physical source glider stays centered through native collision precursor
+        run: python -m unittest tests.test_one_world_camera -v
