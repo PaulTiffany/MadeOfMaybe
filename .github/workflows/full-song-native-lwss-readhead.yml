@@ -1,0 +1,28 @@
+name: 403-word original Suno compact native WEST LWSS train with singer
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'life/full_song_lwss_readhead.py'
+      - 'tests/test_full_song_lwss_readhead.py'
+      - '.github/workflows/full-song-native-lwss-readhead.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  native-word-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify exact compact 3x4 native score and actual 24-ship eaters
+        run: python -m unittest tests.test_full_song_lwss_readhead -v
+      - name: Export original-song singer plus native moving-LWSS world seed
+        run: python -m life.full_song_lwss_readhead --out output/full_lwss_readhead
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-403-suno-native-WEST-LWSS-train-source-no-optical-lyrics
+          path: output/full_lwss_readhead/*
+          retention-days: 30
