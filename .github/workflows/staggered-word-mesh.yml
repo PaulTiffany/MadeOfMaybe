@@ -1,10 +1,6 @@
 name: Native staggered moving word with seven row eaters
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-  pull_request:
   workflow_dispatch:
-
 jobs:
   one-physical-word:
     runs-on: ubuntu-latest

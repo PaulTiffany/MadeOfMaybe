@@ -1,15 +1,5 @@
 name: Real 20s one-world song W plus isolated vocals V integration
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/native_congruent_first20.py'
-      - 'data/native_first20_removed_tiles.json'
-      - 'tests/verify_congruent_first20.py'
-      - 'preview/render_congruent_first20.py'
-      - 'research/NATIVE_FIRST20_TWO_SOURCE.md'
-      - '.github/workflows/native-congruent-first20.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   exact-native-congruent:

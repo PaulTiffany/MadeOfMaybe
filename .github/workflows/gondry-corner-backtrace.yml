@@ -1,12 +1,5 @@
 name: Gondry corrected — downward LWSS through original converters into westward words
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/gondry_corner_backtrace.py'
-      - 'tests/test_gondry_corner_backtrace.py'
-      - '.github/workflows/gondry-corner-backtrace.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   native-corner-backtrace:

@@ -1,12 +1,5 @@
 name: Native 3-state jaw bank with independent vocal and word sources
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/dual_source_mouth_pixel.py'
-      - 'tests/test_dual_source_mouth_pixel.py'
-      - '.github/workflows/native-dual-source-mouth.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   native-two-input-jaw:

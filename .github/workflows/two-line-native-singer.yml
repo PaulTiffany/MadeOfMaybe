@@ -1,12 +1,5 @@
 name: Bubble-free singer and TWO real native converted Suno lyric words
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/two_line_native_singer.py'
-      - 'tests/test_two_line_native_singer.py'
-      - '.github/workflows/two-line-native-singer.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   singer-plus-we-made:

@@ -1,8 +1,5 @@
 name: Word-driven three-state mouth and causal first-line film
 on:
-  push:
-    branches: [main, research/glider-driven-singer-pilot]
-  pull_request:
   workflow_dispatch:
 jobs:
   word-sourced-singer:

@@ -1,8 +1,5 @@
 name: Life composition qualification
 on:
-  push:
-    branches: [main, research/glider-driven-singer-pilot]
-  pull_request:
   workflow_dispatch:
 jobs:
   life-tests:

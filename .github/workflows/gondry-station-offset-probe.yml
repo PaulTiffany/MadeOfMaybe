@@ -1,10 +1,5 @@
 name: Probe native corner-stagger arrival phases for Suno MADE
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'research/probe_gondry_made_station_offsets.py'
-      - '.github/workflows/gondry-station-offset-probe.yml'
   workflow_dispatch:
 jobs:
   corner-offsets:

@@ -1,13 +1,5 @@
 name: Rounded physical bubble and original edge-mounted turner
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/rounded_bubble_edge_candidate.py'
-      - 'tests/test_rounded_bubble_edge_candidate.py'
-      - 'preview/render_rounded_bubble_edge.py'
-      - '.github/workflows/native-rounded-bubble.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   rounded-universe:

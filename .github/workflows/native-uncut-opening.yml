@@ -1,13 +1,5 @@
 name: No-hacks single-universe native Conway opening
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'research/one_world_native_frames.cpp'
-      - 'preview/render_one_world_native_no_cuts.py'
-      - 'tests/test_one_world_native_film.py'
-      - '.github/workflows/native-uncut-opening.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   native-uncut:

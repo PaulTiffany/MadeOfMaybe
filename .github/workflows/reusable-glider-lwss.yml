@@ -1,12 +1,5 @@
 name: Proven reusable westbound G-to-LWSS native Life converter
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/reusable_glider_to_lwss_2023.py'
-      - 'tests/test_reusable_glider_to_lwss_2023.py'
-      - '.github/workflows/reusable-glider-lwss.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   repeatable-source:

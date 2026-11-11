@@ -27,6 +27,7 @@ from life.full_song_lwss_readhead import (
     X_ANCHOR,Y_ANCHOR,ROW_PITCH,PITCH,eaters,row_events,
     singer_parts,verify_train_geometry,source_seeds)
 from life.phrase_crawler_eater import LWSS
+from life.posthoc_traffic_bubble import construct_bubble,save_bubble
 
 W,H=1280,720
 FPS,GPS=24,192
@@ -127,6 +128,8 @@ def render(singer_path,out):
     if original[0][1]!=set().union(*singer_parts()):
         raise AssertionError('movie is using the wrong original singer')
     resting=verify_singer_clearance(original)
+    physical_bubble,bubble_report=construct_bubble(original)
+    save_bubble(Path(out).parent,physical_bubble,bubble_report)
     # stable camera/face from 25s after the initial gently moving camera.
     center,zoom=camera(25*GPS)
     static=Image.new('RGB',(W,H),BACKGROUND)
@@ -134,6 +137,7 @@ def render(singer_path,out):
     draw_singer(d,resting,center,zoom)
     fishhooks=eaters()
     draw_cells(d,fishhooks,center,zoom,(132,148,181))
+    draw_cells(d,physical_bubble,center,zoom,(152,200,239))
     out=Path(out);out.parent.mkdir(parents=True,exist_ok=True)
     cmd=['ffmpeg','-hide_banner','-loglevel','error','-y',
         '-f','rawvideo','-pixel_format','rgb24','-video_size',f'{W}x{H}',
@@ -150,6 +154,7 @@ def render(singer_path,out):
                 singer=original[g//8][1] if g<=4096 else resting
                 draw_singer(draw,singer,center,zoom)
                 draw_cells(draw,fishhooks,center,zoom,(132,148,181))
+                draw_cells(draw,physical_bubble,center,zoom,(152,200,239))
             else:
                 im=static.copy();draw=ImageDraw.Draw(im)
             draw_active_ships(draw,g,events,times,center,zoom)
@@ -173,7 +178,10 @@ def render(singer_path,out):
       'video_has_original_audio':False,
       'word_source_uses_real_B3S23_LWSS_cells':True,
       'receiver_reset_g40_not_optical_dissolve':True,
-      'native_physical_bubble_present':False,
+      'native_physical_bubble_present':True,
+      'bubble_posthoc_is_real_stationary_B3S23_g0_cells':True,
+      'bubble_qualification':bubble_report,
+      'original_native_g0_population_including_bubble':qual['true_source_g0_population']+len(physical_bubble),
       'per_frame_cell_injection':False,'screen_typography_overlay':False,
       'camera_cuts':0,'symbolics':False,'nuke':False}
     out.with_suffix('.json').write_text(json.dumps(result,indent=2)+'\n')

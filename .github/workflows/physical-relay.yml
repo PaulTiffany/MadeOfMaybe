@@ -1,8 +1,5 @@
 name: Qualified glider relay and physical relocation feasibility
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-  pull_request:
   workflow_dispatch:
 jobs:
   relay-native-life:

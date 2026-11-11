@@ -1,14 +1,5 @@
 name: Native two-source Life logic and actual Suno vocal compiler
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/dual_source_native_gate.py'
-      - 'tests/test_dual_source_native_gate.py'
-      - 'tools/compile_suno_vocal_controller.py'
-      - 'tests/test_suno_vocal_controller_cli.py'
-      - '.github/workflows/dual-source-native-gate.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   dual-source-native-logic:

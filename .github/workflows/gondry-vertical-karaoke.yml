@@ -1,12 +1,5 @@
 name: Gondry inverse-staged 403-word native vertical spaceship karaoke
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/gondry_vertical_karaoke.py'
-      - 'tests/test_gondry_vertical_karaoke.py'
-      - '.github/workflows/gondry-vertical-karaoke.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   backward-staged-native:

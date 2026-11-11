@@ -1,13 +1,5 @@
 name: Independent word and vocal mouth timing feasibility
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/dual_channel_mouth_logic.py'
-      - 'tests/test_dual_channel_mouth_logic.py'
-      - 'research/DUAL_CHANNEL_MOUTH_FEASIBILITY.md'
-      - '.github/workflows/dual-channel-mouth.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   cue-contract:

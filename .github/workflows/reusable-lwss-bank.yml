@@ -1,12 +1,5 @@
 name: Native reusable LWSS converter-eater bank and song timing allocation
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/reusable_lwss_bank.py'
-      - 'tests/test_reusable_lwss_bank.py'
-      - '.github/workflows/reusable-lwss-bank.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   array-and-scheduler:

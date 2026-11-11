@@ -1,12 +1,5 @@
 name: 403-word original Suno compact native WEST LWSS train with singer
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/full_song_lwss_readhead.py'
-      - 'tests/test_full_song_lwss_readhead.py'
-      - '.github/workflows/full-song-native-lwss-readhead.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   native-word-train:

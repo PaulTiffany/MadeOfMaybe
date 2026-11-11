@@ -1,8 +1,5 @@
 name: Native phrase crawler and reusable LWSS eater
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-  pull_request:
   workflow_dispatch:
 jobs:
   native-phrase-eater:

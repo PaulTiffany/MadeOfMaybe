@@ -1,15 +1,5 @@
 name: Native word-turner glider physically gates Suno vocal lip
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/native_word_vocal_link.py'
-      - 'data/native_word_vocal_link_clearance.json'
-      - 'tests/test_native_word_vocal_link.py'
-      - 'tests/verify_native_word_vocal_link.py'
-      - 'preview/render_native_word_vocal_link.py'
-      - '.github/workflows/native-word-vocal-link.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   physical-word-vocal-link:

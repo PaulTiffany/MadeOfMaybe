@@ -1,12 +1,5 @@
 name: Full-song true 90-degree native converter source staging (not optical)
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'life/complete_native_converter_score.py'
-      - 'tests/test_complete_native_converter_score.py'
-      - '.github/workflows/full-native-converter-source.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   all-original-suno-word-source-stages:

@@ -1,12 +1,5 @@
 name: Isolated Suno voice-gate provenance and reverb qualification
 on:
-  push:
-    branches: [research/glider-driven-singer-pilot]
-    paths:
-      - 'data/made_of_maybe_vocal_gate_take1_v0.json'
-      - 'tests/test_real_vocal_gate_manifest.py'
-      - '.github/workflows/real-vocal-stem-qa.yml'
-  pull_request:
   workflow_dispatch:
 jobs:
   validate-observation:

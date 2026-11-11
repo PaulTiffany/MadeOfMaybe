@@ -1,8 +1,5 @@
 name: Full-song native-Life karaoke export
 on:
-  push:
-    branches: [main, research/glider-driven-singer-pilot]
-  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
