@@ -48,7 +48,8 @@ def command(pilot:Path,lyrics:Path,out:Path,audio=None):
         cmd+=['-map','2:a:0','-c:a','aac','-b:a','192k','-shortest']
     else:
         cmd+=['-an']
-    cmd+=['-c:v','libx264','-preset','veryfast','-crf','21',
+    cmd+=['-r',str(FPS),'-frames:v',str(SONG_END_FRAMES),
+          '-c:v','libx264','-preset','veryfast','-crf','21',
           '-pix_fmt','yuv420p','-movflags','+faststart',str(out)]
     return cmd
 
