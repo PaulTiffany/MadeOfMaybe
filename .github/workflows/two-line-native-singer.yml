@@ -36,26 +36,26 @@ jobs:
               if not entry['valid_g0']:
                   print('G0 FAILURE',entry)
                   continue
-              delta=entry['offset']
-              finish=folder/f'candidate_{delta}_g3400.tsv'
-              read=folder/f'candidate_{delta}_g2204.tsv'
+              delta=entry['offset'];row_y=entry['row_y']
+              finish=folder/f'candidate_y{row_y}_x{delta}_g3400.tsv'
+              read=folder/f'candidate_y{row_y}_x{delta}_g2204.tsv'
               run=subprocess.run(['/tmp/two_word',entry['file'],'3400',
                   str(finish),'2204',str(read)],capture_output=True,text=True)
-              (folder/f'candidate_{delta}_log.txt').write_text(run.stdout+run.stderr)
+              (folder/f'candidate_y{row_y}_x{delta}_log.txt').write_text(run.stdout+run.stderr)
               if run.returncode:
                   print('NATIVE FAIL',delta,run.stderr[-160:])
                   continue
-              if not made_at_g2204()<=read_snapshot(read):
+              if not made_at_g2204(row_y)<=read_snapshot(read):
                   print('MISSING MADE at original Suno onset',delta)
                   continue
-              if not made_fixed(delta)<=read_snapshot(finish):
+              if not made_fixed(delta,row_y)<=read_snapshot(finish):
                   print('EATER NOT RESTORED',delta)
                   continue
-              winner=delta
-              print('NATIVE PASS: first two words in singer world, converter x offset',delta)
-              export_winner(delta,folder)
+              winner={'offset':delta,'row_y':row_y}
+              print('NATIVE PASS: two words in original singer world',winner)
+              export_winner(delta,row_y,folder)
               break
-          (folder/'winner.json').write_text(json.dumps({'offset':winner}))
+          (folder/'winner.json').write_text(json.dumps(winner))
           if winner is None:raise SystemExit('All one-bubble native variants failed: see logs')
           PY
       - name: Record contiguous 20-second REAL Life movie frames
@@ -79,7 +79,9 @@ jobs:
           a=obs[2152];b=obs[2200]
           for _ in range(4):a=evolve(a);b=evolve(b)
           assert expected_word()<=a
-          assert made_at_g2204()<=b
+          import json
+          row_y=json.load(open('output/two_word_singer/winner.json'))['row_y']
+          assert made_at_g2204(row_y)<=b
           print('Both physical words present in the SAME native singer world')
           PY
       - name: Render 20-second 24fps native singer+words visual

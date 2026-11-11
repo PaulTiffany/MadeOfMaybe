@@ -24,3 +24,14 @@ causal control input to the singer's mouth. The existing W/V lip evidence
 remains for the first word; extension to the 403-word real song/one-bubble
 performance, repeated mouth control and the final zero-population ending
 is NOT demonstrated here.
+
+## Negative result and expanded physical search
+
+The first one-row x-offset-only study failed, rather than validating
+the assembly: at offsets -18, 0 and +18 the combined scene interfered
+already at generation 1; other offsets collided at g586, g658 and g730.
+No optical correction or physically false output was substituted.
+The search was expanded to actual y placements 120..216 in 12-cell
+steps (relative to the real original WE layout) and multiple independent
+source/converter x offsets. Each candidate still derives from the
+original Suno g2204 readout and original converter formula.
