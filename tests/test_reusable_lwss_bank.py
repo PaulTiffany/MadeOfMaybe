@@ -44,5 +44,22 @@ class ReusableLWSSBankTests(unittest.TestCase):
         self.assertFalse(cert['outputs_arranged_as_3x4_words'])
         self.assertFalse(cert['full_native_song_film_qualified'])
 
+    def test_distant_eater_allows_two_actual_westbound_ships_in_flight(self):
+        from life.reusable_lwss_bank import qualify_streaming_lane
+        cert = qualify_streaming_lane()
+        self.assertEqual(cert['initial_population'], 152)
+        self.assertEqual(tuple(cert['two_westbound_LWSS_at_g388']), (True, True))
+        self.assertEqual(cert['final_population'], 112)
+        self.assertTrue(cert['station_and_eater_restored'])
+        self.assertFalse(cert['full_word_routing_proven'])
+
+    def test_ablate_first_streamed_ship_keeps_second_and_restores_eater(self):
+        from life.reusable_lwss_bank import qualify_streaming_lane
+        cert = qualify_streaming_lane(omit=0)
+        self.assertEqual(cert['initial_population'], 147)
+        self.assertEqual(tuple(cert['two_westbound_LWSS_at_g388']), (False, True))
+        self.assertEqual(cert['final_population'], 112)
+
+
 if __name__ == '__main__':
     unittest.main()

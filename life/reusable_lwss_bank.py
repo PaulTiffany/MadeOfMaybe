@@ -196,6 +196,60 @@ def schedule_audit():
     }
 
 
+# A second, longer-lived physical receiver demonstrates *streaming* ships.
+# The ordinary sink eats at ~g240; shift the same stable eater 128 cells
+# west so multiple output LWSSes are simultaneously in flight.
+STREAM_EATER_OFFSET = 128
+STREAM_EATER = frozenset(place(EATER_TEXT, 32 - STREAM_EATER_OFFSET, 24))
+
+
+def streaming_lane_seed(shots=8, omit=None):
+    """One converter, a distant receiver, and eight preloaded input gliders."""
+    if not 1 <= shots <= 8 or (omit is not None and not 0 <= omit < shots):
+        raise ValueError('bounded streamed sample only')
+    cells = set(hardware()) | set(STREAM_EATER)
+    for shot in range(shots):
+        if shot != omit:
+            cells |= delayed_glider(REF_OUTPUT_G + MIN_GAP_G * shot, 0)
+    if len(cells) != len(hardware()) + len(STREAM_EATER) + 5*(shots-(omit is not None)):
+        raise AssertionError('stream g0 seed collision')
+    return cells
+
+
+def qualify_streaming_lane(shots=8, omit=None, end_g=1932):
+    """Two actual west-moving LWSS in flight together, then exact reset."""
+    if shots < 2 or end_g < (REF_OUTPUT_G + MIN_GAP_G*(shots-1)
+                             + 2*STREAM_EATER_OFFSET + 100):
+        raise ValueError('insufficient stream observation window')
+    fixed = set(hardware()) | set(STREAM_EATER)
+    seed = streaming_lane_seed(shots, omit)
+    world = set(seed)
+    output = reference_westbound()
+    observation = None
+    for g in range(end_g+1):
+        if g == REF_OUTPUT_G + MIN_GAP_G:
+            # The first westbound ship has moved 94 cells since g200.
+            # The second ship has the same exact 12-cell phase at g388.
+            first = place(output, -MIN_GAP_G//2, 0) <= world
+            second = set(output) <= world
+            observation = (first, second)
+        if g == end_g:
+            break
+        world = evolve(world)
+    expected = (omit != 0, omit != 1)
+    if observation != expected:
+        raise AssertionError(('streamed output/ablation mismatch', observation, expected))
+    if world != fixed or evolve(world) != world:
+        raise AssertionError('distant receiver failed to erase the LWSS train')
+    return {'rule':'B3/S23', 'actual_glider_inputs': shots-(omit is not None),
+            'initial_population':len(seed), 'end_generation':end_g,
+            'two_westbound_LWSS_at_g388':observation,
+            'physical_receiving_eater_128_cells_farther_west':True,
+            'final_population':len(world), 'station_and_eater_restored':True,
+            'source_ablation':omit, 'full_word_routing_proven':False}
+
+
+
 if __name__ == '__main__':
     import json
     print(json.dumps(schedule_audit(), indent=2))

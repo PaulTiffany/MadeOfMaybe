@@ -34,6 +34,15 @@ jobs:
                   'Each known Luke Kiernan 2023 converter AND fishhook restores.',
                   'Remote bank is NOT full-song visible lyrics or lip control.'
               )), encoding='utf-8')
+          from life.reusable_lwss_bank import streaming_lane_seed, qualify_streaming_lane
+          (dest/'eight_shot_physical_stream_to_distant_eater.rle').write_text(
+              compact_rle(streaming_lane_seed(), (
+                  'Real reusable LWSS emitter; 2 actual moving ships at g388.',
+                  'A 128-cell-distant real eater consumes all 8 ships.',
+                  'Converter and fishhook exactly restored at g1932.'
+              )), encoding='utf-8')
+          (dest/'native_stream.json').write_text(
+              json.dumps(qualify_streaming_lane(), indent=2) + '\n', encoding='utf-8')
           (dest/'native_sample.json').write_text(
               json.dumps(qualify_sample(), indent=2) + '\n', encoding='utf-8')
           (dest/'full_song_slot_feasibility.json').write_text(

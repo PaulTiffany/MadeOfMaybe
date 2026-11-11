@@ -68,3 +68,23 @@ to an unbounded 10,366-pixel result.
    as simulated mouth or textual overlays.
 
 Original converter citation: https://conwaylife.com/wiki/G-to-LWSS_(2023).
+
+## Follow-up: the outputs can actually travel before being eaten
+
+The local eater above is useful for source qualification but intercepts
+the LWSS almost immediately. We moved that *same seven-cell native
+fishhook* another **128 Life cells west**, without modifying the source,
+converter or simulation rule. A **single 8-shot native g0 world** then
+has two independently moving **12-cell westbound LWSSes simultaneously
+visible at g388**: the first has advanced 94 cells since g200, the
+second has just appeared. The receiver subsequently consumes all eight
+ships, leaving the **exact original 105-cell converter + seven-cell
+fishhook** at g1932, with no ash. Removing the first input at g0
+selectively removes the first ship, preserves the second and restores
+the same hardware.
+
+This is an authentic short reusable **one-rail moving pixel stream**.
+It is a concrete receiver-distance/throughput subassembly, not yet
+a multirow 3×4 letter, word stream, singer connection or song movie.
+The two readouts and complete reset are independently replayed by
+`tests/test_reusable_lwss_bank.py` and exported as a Golly RLE in CI.
