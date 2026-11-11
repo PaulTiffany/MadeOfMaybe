@@ -78,10 +78,10 @@ def assemble(include=SONG_WORDS):
     # as an animation operation; preserve every other g0 source.
     original=original_singer_parts()
     base=tuple(original[k] for k in (0,2,3,4))
-    from .two_line_native_singer import maker
+    from .two_line_native_singer import made_parts
     # The qualified second original word is a 900-cell-right native
     # physical stage, not a font laid over an image.
-    made=maker(900)
+    made=place(set().union(*made_parts(0,ROW_Y)),SHIFT[0]+900,SHIFT[1])
     groups=list(base)+[made]
     included=[
       WordStage(0,'WE',words[0].make_g,SHIFT[0],SHIFT[1],
