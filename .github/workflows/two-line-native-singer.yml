@@ -1,0 +1,99 @@
+name: One singer plus TWO native Suno words with actual corner conversion
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'life/two_line_native_singer.py'
+      - 'tests/test_two_line_native_singer.py'
+      - '.github/workflows/two-line-native-singer.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  singer-plus-we-made:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Qualify geometric reading-line and native receiver
+        run: python -m unittest tests.test_two_line_native_singer -v
+      - name: Compile source-staged original singer plus the MADE converter bank
+        run: python -m life.two_line_native_singer output/two_word_singer
+      - name: Compile independent B3/S23 full-world engine
+        run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/two_word
+      - name: Find genuinely collision-free g0 singer plus WE plus MADE configuration
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          from life.compact_full_word_mesh import read_snapshot
+          from life.two_line_native_singer import made_at_g2204,made_fixed,export_winner
+          folder=Path('output/two_word_singer')
+          candidates=json.loads((folder/'candidates.json').read_text())
+          winner=None
+          for entry in candidates:
+              if not entry['valid_g0']:
+                  print('G0 FAILURE',entry)
+                  continue
+              delta=entry['offset']
+              finish=folder/f'candidate_{delta}_g3400.tsv'
+              read=folder/f'candidate_{delta}_g2204.tsv'
+              run=subprocess.run(['/tmp/two_word',entry['file'],'3400',
+                  str(finish),'2204',str(read)],capture_output=True,text=True)
+              (folder/f'candidate_{delta}_log.txt').write_text(run.stdout+run.stderr)
+              if run.returncode:
+                  print('NATIVE FAIL',delta,run.stderr[-160:])
+                  continue
+              if not made_at_g2204()<=read_snapshot(read):
+                  print('MISSING MADE at original Suno onset',delta)
+                  continue
+              if not made_fixed(delta)<=read_snapshot(finish):
+                  print('EATER NOT RESTORED',delta)
+                  continue
+              winner=delta
+              print('NATIVE PASS: first two words in singer world, converter x offset',delta)
+              export_winner(delta,folder)
+              break
+          (folder/'winner.json').write_text(json.dumps({'offset':winner}))
+          if winner is None:raise SystemExit('All one-bubble native variants failed: see logs')
+          PY
+      - name: Record contiguous 20-second REAL Life movie frames
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/native_frames
+          /tmp/native_frames output/two_word_singer/winning_g0.tsv output/two_word_singer/frames.bin 3840 8
+      - name: Verify WE and MADE native readouts without pixel substitution
+        run: |
+          python - <<'PY'
+          import struct
+          from life.core import evolve
+          from life.native_half_font_first20 import expected_word
+          from life.two_line_native_singer import made_at_g2204
+          obs={}
+          with open('output/two_word_singer/frames.bin','rb') as f:
+              while h:=f.read(8):
+                  g,n=struct.unpack('<iI',h)
+                  b=f.read(n*8)
+                  if g in (2152,2200,3840):obs[g]=set(struct.iter_unpack('<ii',b))
+          assert len(obs)==3
+          a=obs[2152];b=obs[2200]
+          for _ in range(4):a=evolve(a);b=evolve(b)
+          assert expected_word()<=a
+          assert made_at_g2204()<=b
+          print('Both physical words present in the SAME native singer world')
+          PY
+      - name: Render 20-second 24fps native singer+words visual
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq; sudo apt-get install -y ffmpeg; fi
+          python -m preview.render_native_word_vocal_link --frames output/two_word_singer/frames.bin --out output/two_word_singer/two_words_native_singer.mp4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-singer-two-word-real-converter-integration
+          path: |
+            output/two_word_singer/*.json
+            output/two_word_singer/*.rle
+            output/two_word_singer/*log.txt
+            output/two_word_singer/*.mp4
+          retention-days: 30
