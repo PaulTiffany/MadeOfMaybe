@@ -1,0 +1,53 @@
+name: Gondry corrected — downward LWSS through original converters into westward words
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'life/gondry_corner_backtrace.py'
+      - 'tests/test_gondry_corner_backtrace.py'
+      - '.github/workflows/gondry-corner-backtrace.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  native-corner-backtrace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Prove exact source-to-converter-to-target kinematics
+        run: python -m unittest tests.test_gondry_corner_backtrace -v
+      - name: Export first two original Suno words with intact corner hardware
+        run: python -m life.gondry_corner_backtrace --out output/gondry_corner
+      - name: Compile full-world independent native B3/S23 simulator
+        run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/gondry_corner
+      - name: Reproduce WE and MADE from downward ships to converted words to eaters
+        run: |
+          cd output/gondry_corner
+          /tmp/gondry_corner we_parts.tsv 3600 we_end.tsv 2156 we_read.tsv
+          /tmp/gondry_corner made_parts.tsv 3600 made_end.tsv 2204 made_read.tsv
+      - name: Verify exact converted real moving-word readouts and final eater reset
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.compact_full_word_mesh import read_snapshot
+          from life.gondry_corner_backtrace import check_native_snapshots
+          d=Path('output/gondry_corner')
+          for word,g in [('WE',2156),('MADE',2204)]:
+              name=word.lower()
+              result=check_native_snapshots(read_snapshot(d/(name+'_read.tsv')),
+                                             read_snapshot(d/(name+'_end.tsv')),
+                                             word=word,target_g=g)
+              (d/(name+'_qualification.json')).write_text(
+                  json.dumps(result,indent=2)+'\n')
+              print(word,result)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gondry-original-corner-conversion-first-two-suno-words
+          path: |
+            output/gondry_corner/*.rle
+            output/gondry_corner/*.json
+          retention-days: 30
