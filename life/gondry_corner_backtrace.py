@@ -76,6 +76,18 @@ def backtrace(word, target_g):
             x-=56
             k+=28
         e=TURN_REFERENCE_G+4*k
+        if e>target_g:
+            # Sparse glyphs (notably the apostrophe in I'M) can give an
+            # ordinal-based station that would emit the converted LWSS
+            # after its desired word onset. Shift THAT actual 19-cell
+            # station and incoming LWSS to the east and reverse-stage
+            # the incoming ship at g0, leaving the output readout
+            # coordinates/time unchanged. No frame or word substitution.
+            dx=(e-target_g)//2+64
+            dx+=dx%2
+            x+=dx
+            k-=dx//2
+            e=TURN_REFERENCE_G+4*k
         read_x=1+GLYPH_PITCH*col
         read_y=OUTPUT_REFERENCE_MIN_Y+y
         if e>target_g or e%4 or k<2:
