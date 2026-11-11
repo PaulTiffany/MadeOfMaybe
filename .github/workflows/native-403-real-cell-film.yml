@@ -11,6 +11,9 @@ on:
       - 'tests/test_full_song_vocal_extension.py'
       - 'research/verify_full_song_vocal_extension.cpp'
       - '.github/workflows/native-403-real-cell-film.yml'
+permissions:
+  contents: read
+  actions: read
 jobs:
   physical-full-song-workprint:
     runs-on: ubuntu-latest
@@ -52,28 +55,42 @@ jobs:
             --singer output/native_403_film/native_original_singer_513_frames.bin \
             --vocal output/native_403_film/native_43_episode_two_real_lips_5608_frames.bin \
             --out output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4
-      - name: Get owner's authorized original Suno MP3 (temporary signed link, no credit-confirm)
+      - name: Restore original authorized Suno audio from our existing successful private film artifact
         env:
           GH_TOKEN: ${{ github.token }}
-          SUNO_URL_BLOB_SHA: e174b0297c16ea6d1b43990ac531e65294b54492
-        run: python scripts/fetch_authorized_suno_audio_once.py output/native_403_film/original_song.mp3
+        run: |
+          # Reuse the already-authorized source we muxed in run 42962060154.
+          # No new Suno export or credits, and no expiring S3 signed link.
+          curl -fLsS --retry 2 --max-time 90 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/PaulTiffany/MadeOfMaybe/actions/artifacts/13829613293/zip" \
+            -o /tmp/original_suno_music_archive.zip
+          unzip -p /tmp/original_suno_music_archive.zip \
+            MadeOfMaybe_original_music_real_bubble_small.mp4 >/tmp/source_with_original_audio.mp4
+          ffmpeg -hide_banner -loglevel error -y \
+            -i /tmp/source_with_original_audio.mp4 -vn -c:a copy \
+            output/native_403_film/original_song.m4a
+          ffprobe -v error -select_streams a:0 -show_entries stream=codec_name \
+            -of default=noprint_wrappers=1 output/native_403_film/original_song.m4a | grep -q aac
+          rm -f /tmp/original_suno_music_archive.zip /tmp/source_with_original_audio.mp4
       - name: Music-mux the post-hoc bubble workprint, make SMALL downloadable versions
         run: |
           ffmpeg -y -hide_banner -loglevel error \
             -i output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4 \
-            -i output/native_403_film/original_song.mp3 \
+            -i output/native_403_film/original_song.m4a \
             -map 0:v:0 -map 1:a:0 -vf 'scale=960:-2:flags=lanczos' \
             -c:v libx264 -preset medium -crf 31 -c:a aac -b:a 112k \
             -t 238.875 -movflags +faststart \
             output/native_403_film/MadeOfMaybe_original_music_real_bubble_small.mp4
           ffmpeg -y -hide_banner -loglevel error \
             -i output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4 \
-            -i output/native_403_film/original_song.mp3 \
+            -i output/native_403_film/original_song.m4a \
             -map 0:v:0 -map 1:a:0 -vf 'scale=640:-2:flags=lanczos' \
             -c:v libx264 -preset medium -crf 34 -c:a aac -b:a 80k \
             -t 238.875 -movflags +faststart \
             output/native_403_film/MadeOfMaybe_original_music_bubble_tiny.mp4
-          rm -f output/native_403_film/original_song.mp3
+          rm -f output/native_403_film/original_song.m4a
       - name: Inspect length and frame rate
         run: |
           ffprobe -v error -select_streams v:0 -show_entries \
