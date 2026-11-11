@@ -18,8 +18,9 @@ singer is independently C++ evolved through g4096 and frozen ONLY once
 native one-step stability is checked. No runtime changes to Life world.
 """
 from __future__ import annotations
-import argparse,bisect,json,struct,subprocess
+import argparse,bisect,json,struct,subprocess,sys
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from PIL import Image,ImageDraw
 from life.core import evolve
 from life.full_song_lwss_readhead import (
