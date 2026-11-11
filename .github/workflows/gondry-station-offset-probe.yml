@@ -1,0 +1,44 @@
+name: Probe native corner-stagger arrival phases for Suno MADE
+on:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'research/probe_gondry_made_station_offsets.py'
+      - '.github/workflows/gondry-station-offset-probe.yml'
+  workflow_dispatch:
+jobs:
+  corner-offsets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Generate physically altered g0 converter station candidates
+        run: python research/probe_gondry_made_station_offsets.py output/station_probe
+      - name: Compile B3/S23 independent-components oracle
+        run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/probe_gondry
+      - name: Test each source phase, without relaxing native collision criteria
+        run: |
+          mkdir -p output/station_probe/results
+          for file in output/station_probe/*_parts.tsv; do
+            name=$(basename "$file" _parts.tsv)
+            if /tmp/probe_gondry "$file" 3600 \
+              "output/station_probe/results/${name}_final.tsv" 2204 \
+              "output/station_probe/results/${name}_word.tsv" \
+              >"output/station_probe/results/${name}_log.txt" 2>&1; then
+              echo "PASS $name"
+            else
+              echo "FAIL $name"
+            fi
+          done
+          echo 'Probe complete; no failed candidate promoted to production.'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gondry-MADE-converter-station-phase-probe
+          path: |
+            output/station_probe/results/*.txt
+            output/station_probe/results/*_word.tsv
+            output/station_probe/results/*_final.tsv
+          retention-days: 7
