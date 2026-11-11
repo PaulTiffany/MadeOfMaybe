@@ -1,5 +1,7 @@
-"""Native one-world attempt: existing singer/rounded bubble/real W+V mouth,
+"""Native one-world attempt: existing singer/real W+V mouth,
 plus a second REAL downward-LWSS -> 90-degree converter -> WEST word MADE.
+The bubble is OMITTED from the seed by design; retrofit it only after
+all karaoke corridors are working, never place a rim through active traffic.
 
 Gondry inverse source staging moves the second converter x-position while
 preserving every moving output-pixel position at original Suno g2204.
@@ -20,7 +22,7 @@ from .export_operational import compact_rle
 ROW_Y=144
 ROWS=(120,132,144,156,168,180,192,204,216)
 SHIFT=(WE_SHIFT[0]+SINGER_TRANSLATION[0],WE_SHIFT[1]+SINGER_TRANSLATION[1])
-OFFSETS=(-54,-36,-18,0,18,36,54,72,90)
+OFFSETS=(900,)
 
 def made_parts(offset=0,row_y=ROW_Y):
     if offset%2:raise ValueError('offset violates period four')
@@ -36,36 +38,40 @@ def made_parts(offset=0,row_y=ROW_Y):
         raise ValueError('second-stage initial overlap')
     return tuple(parts)
 
-def components(offset=0,row_y=ROW_Y):
-    base=singer_parts()
-    new=place(set().union(*made_parts(offset,row_y)),*SHIFT)
+def components(offset=900,row_y=ROW_Y):
+    original=singer_parts()
+    # Original index 1 is the 648-cell rounded speech bubble. It is NOT
+    # part of production staging. Preserve face (0), native WE (2), the
+    # isolated-Suno vocal gliders (3), and the physically joined W/V lip (4).
+    base=tuple(original[i] for i in (0,2,3,4))
+    new=place(set().union(*made_parts(0,row_y)),SHIFT[0]+offset,SHIFT[1])
     if len(set().union(*base,new))!=sum(map(len,base))+len(new):
         raise ValueError('second stage overlaps original singer at g0')
     return tuple(base)+(new,)
 
-def universe(offset=0,row_y=ROW_Y):
+def universe(offset=900,row_y=ROW_Y):
     return set().union(*components(offset,row_y))
 
-def made_at_g2204(row_y=ROW_Y):
+def made_at_g2204(row_y=ROW_Y,offset=900):
     out=set()
     for p in backtrace('MADE',2204):
         out|=place(reference_output(),
-            SHIFT[0]+p.reading_x+43,SHIFT[1]+row_y+p.reading_y-12)
+            SHIFT[0]+offset+p.reading_x+43,SHIFT[1]+row_y+p.reading_y-12)
     return out
 
-def made_fixed(offset=0,row_y=ROW_Y):
+def made_fixed(offset=900,row_y=ROW_Y):
     parts=[]
     for p in backtrace('MADE',2204):
-        x=p.station_x+offset;y=p.station_y+row_y
+        x=p.station_x;y=p.station_y+row_y
         parts.append(place(EATER_NORTHEAST,x,y)|place(EATER_SOUTHWEST,x,y))
     parts.append(set().union(*(place(EATER_TEXT,0,row_y+36*r)
         for r in range(4))))
-    return place(set().union(*parts),*SHIFT)
+    return place(set().union(*parts),SHIFT[0]+offset,SHIFT[1])
 
 def export_probe(folder):
     folder=Path(folder);folder.mkdir(parents=True,exist_ok=True)
     reports=[]
-    for row_y in ROWS:
+    for row_y in (ROW_Y,):
         for delta in OFFSETS:
             try: parts=components(delta,row_y)
             except ValueError as e:
@@ -92,7 +98,7 @@ def export_winner(delta,row_y,folder):
     with (folder/'winning_g0.tsv').open('w') as f:
         for x,y in sorted(live):f.write(f'{x} {y}\n')
     (folder/'winning_g0.rle').write_text(compact_rle(live,(
-      'Real singer and two Suno lyric words, one B3/S23 g0 universe',
+      'Bubble-free real singer and two Suno lyrics, one B3/S23 g0 universe',
       'Downward LWSS turn WEST at actual original 19-cell converters',
       'Native seven-cell fishhook receivers; no inserted movie elements',
       'Second MADE has not yet been wired to the actual three-state mouth'
@@ -101,6 +107,9 @@ def export_winner(delta,row_y,folder):
       'WE_onset_generation':2156,'MADE_onset_generation':2204,
       'MADE_converted_3x4_glyph_LWSS':len(backtrace('MADE',2204)),
       'actual_original_W_to_V_lip_kept':True,
+      'physical_bubble_cells_g0':0,
+      'rim_must_be_added_after_full_karaoke_traffic_qualified':True,
+      'word_stage_translation_world_x':delta,
       'MADE_to_mouth_connected':False,
       'all_403_words_physically_integrated':False,
       'four_minute_one_bubble_movie_complete':False}

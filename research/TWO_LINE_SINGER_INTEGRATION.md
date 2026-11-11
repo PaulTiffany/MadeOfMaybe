@@ -35,3 +35,18 @@ The search was expanded to actual y placements 120..216 in 12-cell
 steps (relative to the real original WE layout) and multiple independent
 source/converter x offsets. Each candidate still derives from the
 original Suno g2204 readout and original converter formula.
+
+
+## Production change — build the film WITHOUT any bubble
+
+Per explicit user direction, the 648-cell original rounded rim has been
+omitted in the actual shared singer + WE + MADE generator. No bounding
+bubble, opaque mask, post-render edge, per-frame erasures or filler tiles
+are authorized in the moving karaoke construction. The large physical
+900-cell x gap isolates the second incoming-from-above original converter
+stage; its output and eaters are translated together, not drawn by a font.
+Both original Suno readout generations are preserved. The active scene
+contains singer/cheeks, real W+V lip, first WE and second MADE but no rim.
+This is a short qualification building block, not the 403-word film.
+Only AFTER the actual full word traffic has been qualified should a new
+physical 2x2-still-life bubble be placed in its remaining empty space.

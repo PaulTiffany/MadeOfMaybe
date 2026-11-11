@@ -1,4 +1,4 @@
-name: One singer plus TWO native Suno words with actual corner conversion
+name: Bubble-free singer and TWO real native converted Suno lyric words
 on:
   push:
     branches: [research/glider-driven-singer-pilot]
@@ -60,7 +60,7 @@ jobs:
               if run.returncode:
                   print('NATIVE FAIL',delta,run.stderr[-160:])
                   continue
-              if not made_at_g2204(row_y)<=read_snapshot(read):
+              if not made_at_g2204(row_y,delta)<=read_snapshot(read):
                   print('MISSING MADE at original Suno onset',delta)
                   continue
               if not made_fixed(delta,row_y)<=read_snapshot(finish):
@@ -96,7 +96,8 @@ jobs:
           assert expected_word()<=a
           import json
           row_y=json.load(open('output/two_word_singer/winner.json'))['row_y']
-          assert made_at_g2204(row_y)<=b
+          offset=json.load(open('output/two_word_singer/winner.json'))['offset']
+          assert made_at_g2204(row_y,offset)<=b
           print('Both physical words present in the SAME native singer world')
           PY
       - name: Render 20-second 24fps native singer+words visual
