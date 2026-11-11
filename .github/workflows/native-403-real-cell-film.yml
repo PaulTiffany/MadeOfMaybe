@@ -7,6 +7,9 @@ on:
       - 'preview/render_native_403_lwss_world.py'
       - 'life/posthoc_traffic_bubble.py'
       - 'life/full_song_lwss_readhead.py'
+      - 'life/full_song_vocal_extension.py'
+      - 'tests/test_full_song_vocal_extension.py'
+      - 'research/verify_full_song_vocal_extension.cpp'
       - '.github/workflows/native-403-real-cell-film.yml'
 jobs:
   physical-full-song-workprint:
@@ -16,6 +19,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
+      - name: Qualify the ORIGINAL native singer's later Suno V lip events
+        run: |
+          python -m unittest tests.test_full_song_vocal_extension -v
+          python -m life.full_song_vocal_extension --out output/native_403_film
+          g++ -O3 -std=c++17 research/verify_full_song_vocal_extension.cpp -o /tmp/qualify_real_v
+          /tmp/qualify_real_v \
+            output/native_403_film/original_singer_plus_43_two_lip_components.tsv \
+            output/native_403_film/original_stem_later_43_episodes.tsv
       - name: Install encoder and native B3/S23 camera
         run: |
           python -m pip install 'Pillow>=10,<13'

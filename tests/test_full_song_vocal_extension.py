@@ -1,44 +1,45 @@
-"""Actual 53-event source and first two converter words survive integration."""
+"""Preserve every original 20-second native singer part and add two V tiles."""
 import unittest
 from life.core import evolve,place
 from life.full_song_vocal_extension import (
-    episodes,native_pulse_cells,parts,TARGET,LAST_VERIFY_G,
-    quantize_make,quantize_erase)
+    later_vocal_episodes,native_lip_gliders,components,TARGETS,
+    TARGET_MODES,quantize_make,quantize_erase,LAST_NATIVE_G)
 
-class FullSunoVocalSingerTests(unittest.TestCase):
-    def test_original_stem_53_physical_make_erase_episodes(self):
-        es=episodes()
-        self.assertEqual(len(es),53)
-        self.assertEqual((es[0].physical_make_g,es[-1].physical_erase_g),
-                         (672,44850))
-        self.assertEqual(len(native_pulse_cells()),795)
-        self.assertEqual(LAST_VERIFY_G,44862)
+class PreservedSingerExtendedVTests(unittest.TestCase):
+    def test_original_stem_43_later_source_episodes(self):
+        ev=later_vocal_episodes()
+        self.assertEqual(len(ev),43)
+        self.assertEqual((ev[0].source_index,ev[0].physical_make_g),(10,4992))
+        self.assertEqual((ev[-1].source_index,ev[-1].physical_erase_g),(52,44850))
+        self.assertEqual(LAST_NATIVE_G,44862)
 
-    def test_all_original_actor_components_except_replaced_four_event_v(self):
-        ps=parts()
-        self.assertEqual(tuple(map(len,ps)),(6408,742,0,52,1372,795))
-        self.assertEqual(sum(map(len,ps)),9369)
-        self.assertEqual(len(set().union(*ps)),9369)
-        self.assertEqual(TARGET,(991,-933))
+    def test_preserve_first20_actor_and_every_existing_source(self):
+        from life.two_line_native_singer import components as old
+        ps=components()
+        old_parts=old(900,144)
+        self.assertEqual(tuple(ps[:5]),tuple(old_parts))
+        self.assertEqual(tuple(map(len,ps)),(6408,742,240,52,1372,645,645))
+        self.assertEqual(len(set().union(*ps)),10104)
+        self.assertEqual(TARGETS,{'medium_0':(991,-933),'open_1':(1046,-862)})
 
-    def test_true_B3S23_rearm_for_first_three_suno_vocal_episodes(self):
+    def test_actual_B3S23_pulse_make_erase_for_first_two_later_episodes(self):
         from life.glider_controlled_mouth import (
-            block_make_at,block_erase_at,rotate)
-        from life.full_song_vocal_extension import MAKE_DIR,ERASE_DIR,BLOCK
-        source=set()
-        for ep in episodes()[:3]:
-            source |= place(rotate(block_make_at(ep.physical_make_g),MAKE_DIR),
-                            *TARGET)
-            source |= place(rotate(block_erase_at(ep.physical_erase_g),ERASE_DIR),
-                            *TARGET)
-        reads={ep.physical_make_g+2:(ep.index,True) for ep in episodes()[:3]}
-        reads.update({ep.physical_erase_g+4:(ep.index,False)
-                      for ep in episodes()[:3]})
-        for g in range(max(reads)+1):
-            if g in reads:
-                _,on=reads[g]
-                self.assertEqual(place(BLOCK,*TARGET)<=source,on,
-                                 f'physical B3/S23 lip wrong at g{g}')
-            if g<max(reads):source=evolve(source)
+             BLOCK,ROUTING,rotate,block_make_at,block_erase_at)
+        for name in ('medium_0','open_1'):
+            bank,index=TARGET_MODES[name]
+            _,md,ed=ROUTING[bank,index]
+            target=TARGETS[name]
+            state=set()
+            records=later_vocal_episodes()[:2]
+            for e in records:
+                state |= place(rotate(block_make_at(e.physical_make_g),md),*target)
+                state |= place(rotate(block_erase_at(e.physical_erase_g),ed),*target)
+            checkpoints={e.physical_make_g+2:True for e in records}
+            checkpoints.update({e.physical_erase_g+4:False for e in records})
+            for g in range(max(checkpoints)+1):
+                if g in checkpoints:
+                    self.assertEqual(place(BLOCK,*target)<=state,checkpoints[g],
+                        f'wrong physical lip signal {name} at g{g}')
+                if g<max(checkpoints):state=evolve(state)
 
 if __name__=='__main__':unittest.main()
