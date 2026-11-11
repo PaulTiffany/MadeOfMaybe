@@ -5,7 +5,7 @@ This is an **independent implementation**, not the earlier WE/MADE singer pilot 
 ### Watch
 
 - `output/MadeOfMaybe_ONE_LINE_403_LWSS_FULL_SONG.mp4` — 960 × 540, 48 fps, original Suno audio.
-- `output/MadeOfMaybe_ONE_LINE_403_LWSS_FULL_SONG_SMALL.mp4` — 640 × 360, 30 fps, original Suno audio, mobile-friendly.
+- `output/MadeOfMaybe_ONE_LINE_403_LWSS_FULL_SONG_SMALL.mp4` — 640 × 360, 48 fps, original Suno audio, mobile-friendly.
 
 ### Physical construction
 
