@@ -20,6 +20,21 @@ jobs:
         run: python -m unittest tests.test_two_line_native_singer -v
       - name: Compile source-staged original singer plus the MADE converter bank
         run: python -m life.two_line_native_singer output/two_word_singer
+      - name: Save independent singer and converter source components for physical diagnosis
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from life.native_half_font_first20 import components as original
+          from life.two_line_native_singer import made_parts
+          base=Path('output/two_word_singer/source_diagnostics')
+          base.mkdir(parents=True,exist_ok=True)
+          for name,groups in [('original_5_components',original()),
+                              ('MADE_local_33_components',made_parts(0))]:
+              with (base/(name+'.tsv')).open('w') as f:
+                  f.write(str(len(groups))+'\n')
+                  for i,group in enumerate(groups):
+                      for x,y in sorted(group):f.write(f'{i} {x} {y}\n')
+          PY
       - name: Compile independent B3/S23 full-world engine
         run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/two_word
       - name: Find genuinely collision-free g0 singer plus WE plus MADE configuration
@@ -98,4 +113,6 @@ jobs:
             output/two_word_singer/*.rle
             output/two_word_singer/*log.txt
             output/two_word_singer/*.mp4
+            output/two_word_singer/source_diagnostics/*.tsv
+            output/two_word_singer/*_parts.tsv
           retention-days: 30
