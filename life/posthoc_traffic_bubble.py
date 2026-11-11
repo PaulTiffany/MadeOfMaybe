@@ -54,18 +54,35 @@ def native_corridor_clear(origin):
                 return False
     return True
 
-def actor_footprint(frames):
+def actor_footprint(frames, vocal_frames=()):
     prior_g=-8; all_live=set()
     for g,cells in frames:
         if g!=prior_g+8:raise AssertionError('missing native 8-generation singer sample')
         prior_g=g
         all_live.update(cells)
     if prior_g!=4096:raise AssertionError('need complete singer native film g0..4096')
+    # Restrict the V trajectory certificate to possible bubble collisions.
+    # The underlying complete V sources are independently native evolved.
+    origins=candidate_origins()
+    xmin=min(x for x,y in origins)-MOORE_GUARD-2
+    xmax=max(x for x,y in origins)+MOORE_GUARD+2
+    ymin=min(y for x,y in origins)-MOORE_GUARD-2
+    ymax=max(y for x,y in origins)+MOORE_GUARD+2
+    previous=-8
+    checked=0
+    for g,cells in vocal_frames:
+        if g!=previous+8:
+            raise AssertionError('later Suno vocal native frame gap')
+        previous=g;checked+=1
+        all_live.update((x,y) for x,y in cells
+                        if xmin<=x<=xmax and ymin<=y<=ymax)
+    if checked and (checked!=5608 or previous!=44856):
+        raise AssertionError('not all 43 original-vocal native trajectories checked')
     return all_live
 
-def construct_bubble(frames):
+def construct_bubble(frames, vocal_frames=()):
     origins=candidate_origins()
-    actor=actor_footprint(frames)
+    actor=actor_footprint(frames,vocal_frames)
     survivors=[]
     masked_actor=0;masked_trains=0
     for x,y in origins:
@@ -98,6 +115,8 @@ def construct_bubble(frames):
       'removed_for_401_word_westbound_LWSS_corridor':masked_trains,
       'physical_bubble_cells':len(result),
       'actor_native_sample_stride_g':8,
+      'vocal_stem_43_late_episodes_clearance_verified':bool(vocal_frames),
+      'late_V_native_samples_in_bubble_audit':len(vocal_frames),
       'actor_sampled_until_g':4096,
       'actor_stationary_after_g4096':True,
       'physical_karaoke_open_right_from_x':UPSTREAM_OPEN_X,

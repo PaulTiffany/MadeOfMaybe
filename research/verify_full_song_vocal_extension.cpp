@@ -8,7 +8,7 @@
 // Verifies 86 actual block make and 86 erase checkpoints, and exact reset.
 // No demand that a third, unqualified lip bank works.
 //
-// Usage: /tmp/test_v components.tsv episodes.tsv
+// Usage: /tmp/test_v components.tsv episodes.tsv native_V_frames.bin
 #include <bits/stdc++.h>
 using namespace std;
 using U=uint64_t;using S=unordered_set<U>;
@@ -39,7 +39,10 @@ bool hasblock(const S&s,int x,int y){
         s.count(pk(x,y+1))&&s.count(pk(x+1,y+1));
 }
 int main(int argc,char**argv){
- if(argc!=3){cerr<<"usage: test_v components.tsv episodes.tsv\n";return 2;}
+ if(argc!=4){cerr<<"usage: test_v components.tsv episodes.tsv native_V_frames.bin\n";return 2;}
+ ofstream frames(argv[3],ios::binary|ios::trunc);
+ if(!frames){cerr<<"unable to record original V native output\n";return 2;}
+ int recorded=0;
  ifstream f(argv[1]);int n,i,x,y;f>>n;if(n!=7){cerr<<"bad part count "<<n<<"\n";return 3;}
  vector<S> a(n);
  while(f>>i>>x>>y){if(i<0||i>=n)return 3;a[i].insert(pk(x,y));}
@@ -68,6 +71,22 @@ int main(int argc,char**argv){
            <<" medium="<<medium.size()<<" open="<<open.size()<<"\n";
        return 7;
    }
+   if(g%8==0){
+      // Exact original B3/S23 occupancy, not a song-time expression lookup.
+      // All 1290 glider-source cells are preloaded at g0. These two
+      // proven noninteracting worlds may be composed with the original
+      // native singer and with the posthoc collision-cleared bubble.
+      S frame=medium;frame.insert(open.begin(),open.end());
+      int32_t gg=g;uint32_t nn=uint32_t(frame.size());
+      frames.write(reinterpret_cast<const char*>(&gg),4);
+      frames.write(reinterpret_cast<const char*>(&nn),4);
+      for(U v:frame){
+          int32_t x=xx(v),y=yy(v);
+          frames.write(reinterpret_cast<const char*>(&x),4);
+          frames.write(reinterpret_cast<const char*>(&y),4);
+      }
+      recorded++;
+   }
    for(const auto& e:events){
       if(g==e.on+2){
          if(!hasblock(medium,991,-933)||!hasblock(open,1046,-862)){
@@ -92,11 +111,12 @@ int main(int argc,char**argv){
    }
  }
  if(!medium.empty()||!open.empty()||singer.size()!=7164||
-     checked_make!=43||checked_erase!=43){
+     checked_make!=43||checked_erase!=43||recorded!=5608){
     cerr<<"Unqualified debris or checkpoints: "<<medium.size()<<" "
         <<open.size()<<" "<<singer.size()<<" "<<checked_make<<" "<<checked_erase<<"\n";
     return 11;
  }
+ frames.flush();if(!frames){cerr<<"native frame archive write failed\n";return 12;}
  cout<<"PASS 43 Suno V episodes, TWO preserved singer lip cells,"
        <<" 86 physical ON and 86 physical OFF checks at exact source times,"
        <<" 44862 actual B3/S23 source generations, full source ablation."

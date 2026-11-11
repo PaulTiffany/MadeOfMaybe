@@ -28,6 +28,7 @@ from life.full_song_lwss_readhead import (
     singer_parts,verify_train_geometry,source_seeds)
 from life.phrase_crawler_eater import LWSS
 from life.posthoc_traffic_bubble import construct_bubble,save_bubble
+from life.full_song_vocal_extension import native_lip_gliders
 
 W,H=1280,720
 FPS,GPS=24,192
@@ -115,7 +116,7 @@ def verify_singer_clearance(frames):
         raise AssertionError('singer native C++ frames must reach g4096')
     return singer_at_4096
 
-def render(singer_path,out):
+def render(singer_path,vocal_path,out):
     qual=verify_train_geometry()
     events=arrivals()
     times=[x[0] for x in events]
@@ -128,7 +129,23 @@ def render(singer_path,out):
     if original[0][1]!=set().union(*singer_parts()):
         raise AssertionError('movie is using the wrong original singer')
     resting=verify_singer_clearance(original)
-    physical_bubble,bubble_report=construct_bubble(original)
+    native_vocal=tuple(snapshots(vocal_path))
+    if (len(native_vocal)!=5608 or native_vocal[0][0]!=0 or
+        native_vocal[-1][0]!=44856 or native_vocal[-1][1]):
+        raise AssertionError('missing final native B3/S23 43-episode V trajectory')
+    if native_vocal[0][1]!=(set(native_lip_gliders('medium_0'))|
+                             set(native_lip_gliders('open_1'))):
+        raise AssertionError('not the actual original Suno 1290-cell V-source tape')
+    # The singer and V branches have been verified by the C++ backend
+    # independently at EVERY native generation, with >=2-cell clearance.
+    # Also check V never touches the later 401-word physical LWSS lanes.
+    _,number_of_lanes=__import__('life.full_song_lwss_readhead',fromlist=['layout']).layout()
+    rail_max=Y_ANCHOR+ROW_PITCH*(number_of_lanes-1)+3*PITCH+20
+    for g,vcells in native_vocal:
+        if any(x>=X_ANCHOR-38 and Y_ANCHOR-20<=y<=rail_max
+               for x,y in vcells):
+            raise AssertionError(('V signal intrudes into physical lyric rail',g))
+    physical_bubble,bubble_report=construct_bubble(original,native_vocal)
     save_bubble(Path(out).parent,physical_bubble,bubble_report)
     # stable camera/face from 25s after the initial gently moving camera.
     center,zoom=camera(25*GPS)
@@ -157,6 +174,10 @@ def render(singer_path,out):
                 draw_cells(draw,physical_bubble,center,zoom,(152,200,239))
             else:
                 im=static.copy();draw=ImageDraw.Draw(im)
+            # Real glider and native block pixels from all 43 separately
+            # simulated B3/S23 V episodes; no renderer mouth state lookup.
+            v_cells=native_vocal[g//8][1] if g<=44856 else ()
+            draw_cells(draw,v_cells,center,zoom,(246,151,205))
             draw_active_ships(draw,g,events,times,center,zoom)
             proc.stdin.write(im.tobytes())
         proc.stdin.close()
@@ -175,6 +196,13 @@ def render(singer_path,out):
       'full_401_later_native_WEST_moving_words':True,
       'later_401_south_to_WEST_converters_missing':True,
       'original_WV_physical_mouth_full_song_missing':True,
+      'original_20s_native_singer_and_W_lip_preserved':True,
+      'late_V_suno_episodes_actually_recorded_from_B3S23':43,
+      'new_physically_rearmed_existing_lip_tiles':2,
+      'full_8_lip_3_state_behavior_qualified':False,
+      'full_403_W_to_mouth_wired':False,
+      'native_V_source_g0_cells':1290,
+      'native_V_trajectory_samples':5608,
       'video_has_original_audio':False,
       'word_source_uses_real_B3S23_LWSS_cells':True,
       'receiver_reset_g40_not_optical_dissolve':True,
@@ -190,6 +218,7 @@ def render(singer_path,out):
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--singer',required=True,type=Path)
+    p.add_argument('--vocal',required=True,type=Path)
     p.add_argument('--out',required=True,type=Path)
     a=p.parse_args()
-    print(json.dumps(render(a.singer,a.out),indent=2))
+    print(json.dumps(render(a.singer,a.vocal,a.out),indent=2))
