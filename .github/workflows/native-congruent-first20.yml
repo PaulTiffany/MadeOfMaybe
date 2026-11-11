@@ -1,0 +1,53 @@
+name: Real 20s one-world song W plus isolated vocals V integration
+on:
+  workflow_dispatch:
+jobs:
+  exact-native-congruent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install only preview dependencies (not used for native physics)
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Compile the established true B3/S23 whole-world simulator
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/film_native
+          g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/independent_native
+      - name: Build exact initial Life universe from provenance and physical song signals
+        run: python -m life.native_congruent_first20 --out output/native_congruent
+      - name: Full 3841-generation collision audit, actual five-component universe
+        run: |
+          /tmp/independent_native output/native_congruent/native_first20_parts.tsv \
+            3840 output/native_congruent/last.tsv 3840 output/native_congruent/g3840.tsv
+      - name: Evolve actual full world for all 481 film frames at 192 Life generations/second
+        run: |
+          /tmp/film_native output/native_congruent/native_first20_seed.tsv \
+            output/native_congruent/native_first20_frames.bin 3840 8
+      - name: Assert native WE word timing, no optical mouth edits, four physical V poses, AND source ablation
+        run: |
+          python -m tests.verify_congruent_first20 \
+            --frames output/native_congruent/native_first20_frames.bin \
+            --output output/native_congruent/certificate.json
+      - name: Render continuous uncut silent native film
+        run: |
+          python -m preview.render_congruent_first20 \
+            --frames output/native_congruent/native_first20_frames.bin \
+            --out output/native_congruent/real_20s_silent.mp4
+          ffprobe -v error -show_entries format=duration:stream=nb_frames \
+            -of json output/native_congruent/real_20s_silent.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-first20-music-W-vocals-V-real-Life-verified
+          path: |
+            output/native_congruent/*.json
+            output/native_congruent/*.rle
+            output/native_congruent/real_20s_silent.mp4
+          retention-days: 30

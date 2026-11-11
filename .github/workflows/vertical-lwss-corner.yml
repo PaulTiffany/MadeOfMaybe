@@ -1,0 +1,31 @@
+name: Native vertical-to-horizontal LWSS corner
+on:
+  workflow_dispatch:
+jobs:
+  lwss-corner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify actual 90-degree LWSS turn from above
+        run: python -m unittest tests.test_vertical_lwss_corner -v
+      - name: Export one-shot Golly turner universe
+        run: |
+          mkdir -p patterns
+          python - <<'PY'
+          from pathlib import Path
+          from life.core import encode_rle
+          from life.vertical_lwss_corner import STATION,INPUT
+          Path('patterns/one_shot_vertical_lwss_corner.rle').write_text(
+              encode_rle(STATION|INPUT,('Real 90-degree LWSS turn from above.',
+                                        'One-shot. Not yet a reusable full-phrase device.')),
+              encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-one-shot-lwss-corner
+          path: patterns/one_shot_vertical_lwss_corner.rle
+          retention-days: 30

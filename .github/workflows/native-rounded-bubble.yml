@@ -1,0 +1,53 @@
+name: Rounded physical bubble and original edge-mounted turner
+on:
+  workflow_dispatch:
+jobs:
+  rounded-universe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install movie toolchain
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Verify stable bubble/port/tail and original 19-cell turner
+        run: python -m unittest tests.test_rounded_bubble_edge_candidate -v
+      - name: Export exactly one 8803-cell world with 3 independent physical parts
+        run: |
+          mkdir -p output/native_rounded
+          python - <<'PY'
+          from life.rounded_bubble_edge_candidate import components
+          parts=components()
+          assert list(map(len,parts))==[7902,852,49]
+          world=set().union(*parts)
+          with open('output/native_rounded/seed.tsv','w') as f:
+              for x,y in sorted(world):f.write(f'{x} {y}\n')
+          with open('output/native_rounded/parts.tsv','w') as f:
+              f.write('3\n')
+              for i,part in enumerate(parts):
+                  for x,y in sorted(part):f.write(f'{i} {x} {y}\n')
+          PY
+      - name: Compare full B3/S23 world against three independent parts at every generation
+        run: |
+          g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/native_audit
+          /tmp/native_audit output/native_rounded/parts.tsv 3648 output/native_rounded/final.tsv 3648 output/native_rounded/formation.tsv
+      - name: Generate native uncropped cinematic reveal with no per-frame world edits
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/native_film
+          /tmp/native_film output/native_rounded/seed.tsv output/native_rounded/world.bin 3648 8
+          python -m preview.render_rounded_bubble_edge --frames output/native_rounded/world.bin --out output/native_rounded/rounded_native_silent.mp4 --stills output/native_rounded/stills
+          ffprobe -v error -show_entries format=duration:stream=nb_frames -of json output/native_rounded/rounded_native_silent.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: true-life-rounded-bubble-one-existing-turner
+          path: |
+            output/native_rounded/rounded_native_silent.mp4
+            output/native_rounded/stills/*
+          retention-days: 30

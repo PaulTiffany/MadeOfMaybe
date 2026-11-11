@@ -1,0 +1,45 @@
+name: Native two-source Life logic and actual Suno vocal compiler
+on:
+  workflow_dispatch:
+jobs:
+  dual-source-native-logic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install audio decoding dependency
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Native glider AND truth table and synthetic voice-envelope transcription
+        run: |
+          python -m unittest tests.test_dual_source_native_gate tests.test_suno_vocal_controller_cli -v
+      - name: Export physical 2-input truth-table candidate initial conditions
+        run: |
+          mkdir -p output/dual_source_native_gate
+          python - <<'PY'
+          from pathlib import Path
+          from life.core import encode_rle
+          from life.dual_source_native_gate import world,qualify
+          import json
+          d=Path('output/dual_source_native_gate')
+          for w in (False,True):
+              for v in (False,True):
+                  name=f'word_{int(w)}_vocals_{int(v)}.rle'
+                  (d/name).write_text(encode_rle(world(w,v),
+                     ('Real B3/S23 dual-source truth table, output g124.',
+                      'Three native block indicator sites; no jaw link yet.')),
+                     encoding='utf8')
+          (d/'physical_gate_certificate.json').write_text(
+              json.dumps(qualify(),indent=2)+'\n',encoding='utf8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: physical-word-vocal-gate-truth-table
+          path: output/dual_source_native_gate/*
+          retention-days: 30

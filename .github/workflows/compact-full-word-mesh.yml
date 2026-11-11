@@ -1,0 +1,98 @@
+name: Compact complete native 35-turn WE
+on:
+  workflow_dispatch:
+jobs:
+  compact-native-word:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify all 35 phase-matched routes and one-input ablation
+        run: python -m unittest tests.test_compact_full_word_mesh -v
+      - name: Export complete native g0 word and source-ablation patterns
+        run: |
+          python -m life.compact_full_word_mesh
+          python - <<'PY'
+          from life.compact_full_word_mesh import export
+          export('output/compact_full_word_mesh',omit_index=34)
+          export('output/compact_full_word_mesh',word='WE MADE')
+          export('output/compact_full_word_mesh',word='WE MADE',omit_index=106)
+          PY
+      - name: Compile independent whole-world native Life checker
+        run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/compact_native
+      - name: Two exact g0–g7600 worlds; check component independence g0–g6000
+        run: |
+          cd output/compact_full_word_mesh
+          /tmp/compact_native compact_we_parts.tsv 7600 compact_we_final.tsv 6000 compact_we_formation.tsv compact_we_frames.bin
+          /tmp/compact_native compact_we_ablate_34_parts.tsv 7600 compact_we_ablate_34_final.tsv 6000 compact_we_ablate_34_formation.tsv
+      - name: Verify exact 35-pixel moving WE, full cleanup, and missing-pixel control
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.compact_full_word_mesh import read_snapshot,verify_snapshots
+          d=Path('output/compact_full_word_mesh')
+          for slug,omit in [('compact_we',None),('compact_we_ablate_34',34)]:
+              cert=verify_snapshots(read_snapshot(d/(slug+'_formation.tsv')),
+                                    read_snapshot(d/(slug+'_final.tsv')),
+                                    omit_index=omit)
+              expected=(1519,959,539) if omit is None else (1510,966,558)
+              assert (cert['initial_population'],cert['formation_population'],cert['cleanup_population'])==expected
+              (d/(slug+'_certificate.json')).write_text(json.dumps(cert,indent=2)+'\n')
+              print(slug,cert)
+          PY
+      - name: Exact 107-turn WE MADE native phrase and source-ablation replay to g10000
+        run: |
+          cd output/compact_full_word_mesh
+          /tmp/compact_native compact_we_made_parts.tsv 10000 compact_we_made_final.tsv 6000 compact_we_made_formation.tsv compact_we_made_frames.bin
+          /tmp/compact_native compact_we_made_ablate_106_parts.tsv 10000 compact_we_made_ablate_106_final.tsv 6000 compact_we_made_ablate_106_formation.tsv
+      - name: Qualify exact moving phrase at g6000 and no debris at g10000
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.compact_full_word_mesh import read_snapshot,verify_snapshots
+          d=Path('output/compact_full_word_mesh')
+          for slug,omit in [('compact_we_made',None),('compact_we_made_ablate_106',106)]:
+              cert=verify_snapshots(read_snapshot(d/(slug+'_formation.tsv')),
+                                    read_snapshot(d/(slug+'_final.tsv')),
+                                    word='WE MADE',omit_index=omit,cleanup_generation=10000)
+              expected=(4543,2831,1547) if omit is None else (4534,2838,1566)
+              assert (cert['initial_population'],cert['formation_population'],cert['cleanup_population'])==expected
+              (d/(slug+'_certificate.json')).write_text(json.dumps(cert,indent=2)+'\n')
+              print(slug,cert)
+          PY
+      - name: Install silent preview tools
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Render actual native-cell movie with compact camera framing
+        run: |
+          python preview/render_compact_full_word_mesh.py \
+            --frames output/compact_full_word_mesh/compact_we_frames.bin \
+            --out preview/compact_full_we_native.mp4 \
+            --thumbnail preview/compact_full_we_native.png
+          ffprobe -v error -show_entries format=duration,size -of json preview/compact_full_we_native.mp4
+          python preview/render_compact_full_word_mesh.py \
+            --phrase --frames output/compact_full_word_mesh/compact_we_made_frames.bin \
+            --out preview/compact_we_made_native.mp4 \
+            --thumbnail preview/compact_we_made_native.png
+          ffprobe -v error -show_entries format=duration,size -of json preview/compact_we_made_native.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: compact-35-turner-moving-WE-fully-qualified
+          path: |
+            output/compact_full_word_mesh/*.rle
+            output/compact_full_word_mesh/*routes.json
+            output/compact_full_word_mesh/*certificate.json
+            preview/compact_full_we_native.mp4
+            preview/compact_full_we_native.png
+            preview/compact_we_made_native.mp4
+            preview/compact_we_made_native.png
+          retention-days: 30

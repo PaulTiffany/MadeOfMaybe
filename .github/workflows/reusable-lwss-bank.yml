@@ -1,0 +1,48 @@
+name: Native reusable LWSS converter-eater bank and song timing allocation
+on:
+  workflow_dispatch:
+jobs:
+  array-and-scheduler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Replay three actual 8-shot converter+eater lanes and source-ablation
+        run: python -m unittest tests.test_reusable_lwss_bank -v
+      - name: Export actual g0 bank seed and separate complete Suno slot audit
+        run: |
+          mkdir -p output/reusable_bank
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.reusable_lwss_bank import sample_parts, qualify_sample, schedule_audit
+          from life.export_operational import compact_rle
+          dest = Path('output/reusable_bank')
+          cells = set().union(*sample_parts(lanes=3, shots=8))
+          (dest/'three_eight_pulse_stable_sinks.rle').write_text(
+              compact_rle(cells, (
+                  'Actual B3/S23 g0 converter+fishhook array: 3 x 8 pulses.',
+                  'Each known Luke Kiernan 2023 converter AND fishhook restores.',
+                  'Remote bank is NOT full-song visible lyrics or lip control.'
+              )), encoding='utf-8')
+          from life.reusable_lwss_bank import streaming_lane_seed, qualify_streaming_lane
+          (dest/'eight_shot_physical_stream_to_distant_eater.rle').write_text(
+              compact_rle(streaming_lane_seed(), (
+                  'Real reusable LWSS emitter; 2 actual moving ships at g388.',
+                  'A 128-cell-distant real eater consumes all 8 ships.',
+                  'Converter and fishhook exactly restored at g1932.'
+              )), encoding='utf-8')
+          (dest/'native_stream.json').write_text(
+              json.dumps(qualify_streaming_lane(), indent=2) + '\n', encoding='utf-8')
+          (dest/'native_sample.json').write_text(
+              json.dumps(qualify_sample(), indent=2) + '\n', encoding='utf-8')
+          (dest/'full_song_slot_feasibility.json').write_text(
+              json.dumps(schedule_audit(), indent=2) + '\n', encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-reusable-lwss-sinks-and-full-song-capacity-audit
+          path: output/reusable_bank/*
+          retention-days: 30

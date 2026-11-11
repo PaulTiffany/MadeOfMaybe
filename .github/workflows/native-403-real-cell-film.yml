@@ -1,0 +1,108 @@
+name: Made of Maybe native 403-word screening film + posthoc real bubble + original music
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/glider-driven-singer-pilot]
+    paths:
+      - 'preview/render_native_403_lwss_world.py'
+      - 'life/posthoc_traffic_bubble.py'
+      - 'life/full_song_lwss_readhead.py'
+      - 'life/full_song_vocal_extension.py'
+      - 'tests/test_full_song_vocal_extension.py'
+      - 'research/verify_full_song_vocal_extension.cpp'
+      - '.github/workflows/native-403-real-cell-film.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  physical-full-song-workprint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Qualify the ORIGINAL native singer's later Suno V lip events
+        run: |
+          python -m unittest tests.test_full_song_vocal_extension -v
+          python -m life.full_song_vocal_extension --out output/native_403_film
+          g++ -O3 -std=c++17 research/verify_full_song_vocal_extension.cpp -o /tmp/qualify_real_v
+          /tmp/qualify_real_v \
+            output/native_403_film/original_singer_plus_43_two_lip_components.tsv \
+            output/native_403_film/original_stem_later_43_episodes.tsv \
+            output/native_403_film/native_43_episode_two_real_lips_5608_frames.bin
+      - name: Install encoder and native B3/S23 camera
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq; sudo apt-get install -y ffmpeg; fi
+      - name: Qualify native 401-word LWSS bank with source isolation
+        run: python -m unittest tests.test_full_song_lwss_readhead -v
+      - name: Build exact singer with original two turned words, no bubble
+        run: |
+          python - <<'PY'
+          from life.two_line_native_singer import export_winner
+          d=export_winner(900,144,'output/native_403_film')
+          assert d['physical_bubble_cells_g0']==0
+          PY
+      - name: Independently compute original real singer to stable g4096
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/real_singer
+          /tmp/real_singer output/native_403_film/winning_g0.tsv \
+            output/native_403_film/native_original_singer_513_frames.bin 4096 8
+      - name: Film all 3 minutes 58.875 seconds of genuine Game of Life cells
+        run: |
+          python preview/render_native_403_lwss_world.py \
+            --singer output/native_403_film/native_original_singer_513_frames.bin \
+            --vocal output/native_403_film/native_43_episode_two_real_lips_5608_frames.bin \
+            --out output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4
+      - name: Restore original authorized Suno audio from our existing successful private film artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Reuse the already-authorized source we muxed in run 42962060154.
+          # No new Suno export or credits, and no expiring S3 signed link.
+          curl -fLsS --retry 2 --max-time 90 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/PaulTiffany/MadeOfMaybe/actions/artifacts/13829613293/zip" \
+            -o /tmp/original_suno_music_archive.zip
+          unzip -p /tmp/original_suno_music_archive.zip \
+            MadeOfMaybe_original_music_real_bubble_small.mp4 >/tmp/source_with_original_audio.mp4
+          ffmpeg -hide_banner -loglevel error -y \
+            -i /tmp/source_with_original_audio.mp4 -vn -c:a copy \
+            output/native_403_film/original_song.m4a
+          ffprobe -v error -select_streams a:0 -show_entries stream=codec_name \
+            -of default=noprint_wrappers=1 output/native_403_film/original_song.m4a | grep -q aac
+          rm -f /tmp/original_suno_music_archive.zip /tmp/source_with_original_audio.mp4
+      - name: Music-mux the post-hoc bubble workprint, make SMALL downloadable versions
+        run: |
+          ffmpeg -y -hide_banner -loglevel error \
+            -i output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4 \
+            -i output/native_403_film/original_song.m4a \
+            -map 0:v:0 -map 1:a:0 -vf 'scale=960:-2:flags=lanczos' \
+            -c:v libx264 -preset medium -crf 31 -c:a aac -b:a 112k \
+            -t 238.875 -movflags +faststart \
+            output/native_403_film/MadeOfMaybe_original_music_real_bubble_small.mp4
+          ffmpeg -y -hide_banner -loglevel error \
+            -i output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4 \
+            -i output/native_403_film/original_song.m4a \
+            -map 0:v:0 -map 1:a:0 -vf 'scale=640:-2:flags=lanczos' \
+            -c:v libx264 -preset medium -crf 34 -c:a aac -b:a 80k \
+            -t 238.875 -movflags +faststart \
+            output/native_403_film/MadeOfMaybe_original_music_bubble_tiny.mp4
+          rm -f output/native_403_film/original_song.m4a
+      - name: Inspect length and frame rate
+        run: |
+          ffprobe -v error -select_streams v:0 -show_entries \
+            stream=width,height,nb_frames,avg_frame_rate,duration \
+            -of json output/native_403_film/MadeOfMaybe_full_native_LWSS_silent.mp4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: made-of-maybe-native-403-original-music-and-real-posthoc-bubble
+          path: |
+            output/native_403_film/*.json
+            output/native_403_film/*small.mp4
+            output/native_403_film/*tiny.mp4
+            output/native_403_film/*.rle
+          retention-days: 30

@@ -1,0 +1,52 @@
+name: Suno-timed first moving WE in compact native Conway
+on:
+  workflow_dispatch:
+jobs:
+  timed-native-we:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify Suno g2156 provenance and phase-matched physical routes
+        run: python -m unittest tests.test_first_word_song_timed -v
+      - name: Export native first word and g0 source-ablation pattern
+        run: |
+          python -m life.first_word_song_timed
+          python - <<'PY'
+          from life.first_word_song_timed import export
+          export('output/song_timed_moving_we',omit_index=34)
+          PY
+      - name: Compile exact native Life whole-world auditor
+        run: g++ -O3 -std=c++17 research/staggered_mesh_native.cpp -o /tmp/song_native
+      - name: Check full and ablated worlds to g3500, components independent until g2156
+        run: |
+          cd output/song_timed_moving_we
+          /tmp/song_native suno_first_we_parts.tsv 3500 suno_first_we_final.tsv 2156 suno_first_we_formation.tsv
+          /tmp/song_native suno_first_we_ablate_34_parts.tsv 3500 suno_first_we_ablate_34_final.tsv 2156 suno_first_we_ablate_34_formation.tsv
+      - name: Assert real entire moving word at first lyric onset and exact still-life cleanup
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from life.first_word_song_timed import read_snapshot,verify_snapshots
+          d=Path('output/song_timed_moving_we')
+          for slug,omit in [('suno_first_we',None),('suno_first_we_ablate_34',34)]:
+              cert=verify_snapshots(read_snapshot(d/(slug+'_formation.tsv')),
+                                    read_snapshot(d/(slug+'_final.tsv')),
+                                    omit_index=omit)
+              expected=(1519,987,539) if omit is None else (1510,994,558)
+              assert (cert['initial_population'],cert['onset_population'],cert['final_population'])==expected
+              (d/(slug+'_certificate.json')).write_text(json.dumps(cert,indent=2)+'\n')
+              print(slug,cert)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: suno-timed-native-moving-WE-at-g2156
+          path: |
+            output/song_timed_moving_we/*.rle
+            output/song_timed_moving_we/*certificate.json
+            output/song_timed_moving_we/*routes.json
+          retention-days: 30

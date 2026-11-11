@@ -1,0 +1,14 @@
+name: Native moving lyric glyphs
+on:
+  workflow_dispatch:
+jobs:
+  lwss-type:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify actual B3/S23 moving 5x7 typography and onset rail limits
+        run: python -m unittest tests.test_moving_lyric_train -v

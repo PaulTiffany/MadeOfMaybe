@@ -1,0 +1,35 @@
+name: Full-song true 90-degree native converter source staging (not optical)
+on:
+  workflow_dispatch:
+jobs:
+  all-original-suno-word-source-stages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Reject missing physical glyph pixels or original lyric mismatches
+        run: python -m unittest tests.test_complete_native_converter_score -v
+      - name: Export all 403 real corner-converted word source patterns
+        run: python -m life.complete_native_converter_score --out output/complete_native_corner_source
+      - name: Never promote g0-source compilation to fully qualified film
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('output/complete_native_corner_source/native_corner_source_qualification.json'))
+          assert d['source_word_pixel_LWSS']==10366
+          assert d['total_words']==403
+          assert d['physical_bubble_cells']==0
+          assert d['native_90_degree_converters']
+          assert d['complete_source_score_compiled']
+          assert not d['native_video_from_g0_to_g45864_finished']
+          assert not d['exact_four_minute_whole_universe_evolution_verified']
+          print('PASS native full score source, still NOT a completed song film')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-403-native-90deg-LWSS-g0-source-not-yet-film
+          path: output/complete_native_corner_source/*
+          retention-days: 30

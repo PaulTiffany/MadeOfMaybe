@@ -1,0 +1,31 @@
+name: Causal physical lyric-to-real-lip qualification
+on:
+  workflow_dispatch:
+jobs:
+  real-lip-coupling:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify actual B3/S23 coupling, source ablation, and unchanged portrait
+        run: python -m unittest tests.test_physical_lip_splitter_bridge -v
+      - name: Export real seven-word/character joint Golly universe
+        run: |
+          python -m life.export_physical_lip_splitter_bridge \
+            --out patterns/first_line_physical_lip_bridge.rle \
+            --report output/first_line_physical_lip_bridge.json
+      - name: Install optical-preview dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Render causal source-present versus source-ablated proof
+        run: python preview/render_physical_lip_bridge.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: made-of-maybe-causal-physical-real-lip-bridge
+          path: |
+            patterns/first_line_physical_lip_bridge.rle
+            output/first_line_physical_lip_bridge.json
+            preview/real_lip_shared_signal_ablation.png
+          retention-days: 30

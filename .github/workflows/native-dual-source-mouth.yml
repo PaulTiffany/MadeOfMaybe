@@ -1,0 +1,39 @@
+name: Native 3-state jaw bank with independent vocal and word sources
+on:
+  workflow_dispatch:
+jobs:
+  native-two-input-jaw:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Evolve four full native two-source lip worlds through g784
+        run: python -m unittest tests.test_dual_source_mouth_pixel -v
+      - name: Export true native mouth pilot Golly patterns and certificates
+        run: |
+          mkdir -p output/native_dual_lip
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from life.core import encode_rle
+          from life.dual_source_mouth_pixel import seed,qualify
+          d=Path('output/native_dual_lip')
+          for w in (False,True):
+              for v in (False,True):
+                  (d/f'mouth_W{int(w)}_V{int(v)}.rle').write_text(
+                    encode_rle(seed(w,v),(
+                        'Original physical three-state Life mouth machinery.',
+                        f'Word signal={int(w)} vocal signal={int(v)}.',
+                        'Finite source-gated pilot: not complete singer.',
+                    )),encoding='utf8')
+          (d/'native_mouth_certificate.json').write_text(
+              json.dumps(qualify(),indent=2)+'\n',encoding='utf8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-dual-vocal-word-mouth-four-case-life-proof
+          path: output/native_dual_lip/*
+          retention-days: 30

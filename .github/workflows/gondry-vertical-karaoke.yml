@@ -1,0 +1,49 @@
+name: Gondry inverse-staged 403-word native vertical spaceship karaoke
+on:
+  workflow_dispatch:
+jobs:
+  backward-staged-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify all Suno source words and first two real uncut B3/S23 worlds
+        run: python -m unittest tests.test_gondry_vertical_karaoke -v
+      - name: Export full 403-word g0 universe and qualification
+        run: python -m life.gondry_vertical_karaoke --out output/gondry_vertical
+      - name: Independently replay two original words with C++ native Life
+        run: |
+          g++ -O3 -std=c++17 research/one_world_native_frames.cpp -o /tmp/native_gondry
+          /tmp/native_gondry output/gondry_vertical/first_two_native_seed.tsv \
+            output/gondry_vertical/first_two_native_world.bin 2600 8
+      - name: Verify C++ full-world frames against the exact backtraced source
+        run: |
+          python - <<'PY'
+          import struct
+          from life.gondry_vertical_karaoke import select_words,snapshot,receiver_cells
+          words=select_words(2)
+          frames=0
+          with open('output/gondry_vertical/first_two_native_world.bin','rb') as f:
+              while h:=f.read(8):
+                  g,n=struct.unpack('<iI',h)
+                  raw=f.read(8*n)
+                  assert len(raw)==8*n
+                  world=set(struct.iter_unpack('<ii',raw))
+                  expected=snapshot(g,words)
+                  assert world==expected,(g,len(world),len(expected))
+                  frames+=1
+                  if g==2600: assert world==receiver_cells(words)
+          assert frames==326,frames
+          print('All 326 real native C++ frame snapshots match the inverse compiler')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gondry-full-403-word-from-above-sources-and-native-pilot
+          path: |
+            output/gondry_vertical/*.rle
+            output/gondry_vertical/*.json
+            output/gondry_vertical/first_two_native_world.bin
+          retention-days: 30

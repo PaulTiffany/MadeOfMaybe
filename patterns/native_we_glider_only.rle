@@ -1,0 +1,32 @@
+#C MadeOfMaybe: B3/S23 with native glider-written and erased WE (35 physical glyph pixels)
+#C WE begins assembling at g220, complete by g268, erased by g442
+#C Suno alignment WE 11.224-11.479s at 24 gen/sec; deletion lags audio
+#C All gliders are in generation-zero seed; no runtime insertions or image switching
+#C Word-only export
+x = 428, y = 348, rule = B3/S23
+bo79bo39bo19bo19bo19bo19bo$2bo79bo39bo19bo19bo19bo19bo$3o77b3o37b3o17b
+3o17b3o17b3o17b3o18$bo79bo39bo$2bo79bo39bo$3o77b3o37b3o18$bo79bo$2bo
+79bo$3o77b3o42bo$126bo$124b3o236bo$260bo102bobo$47bo211bo61bo41b2o15bo
+$45bobo211b3o35bo23bobo56bobo$46b2o248bo24b2o57b2o$296b3o$131bo40bo$
+132bo40bo$130b3o38b3o8$bo79bo99bo$2bo79bo99bo$3o77b3o97b3o2$124bo$122b
+obo$49bo73b2o$50bo$48b3o$176bo$175bo$175b3o157bo$334bo$334b3o7$bo79bo$
+2bo79bo$3o77b3o6$49bo$47bobo$48b2o10$bo$2bo$3o2$224bo$222bobo$223b2o3$
+295bo$51bo242bo$49bobo242b3o$50b2o81bo40bo$131bobo41bo157bo$132b2o39b
+3o157bobo$333b2o2$58bo$59bo$57b3o$181bo244bo$182bo242bo$180b3o242b3o
+10$53bo$51bobo$52b2o81bo$133bobo$134b2o14$256bo$256bobo$256b2o36bo$
+294bobo$294b2o17$232bo$230bobo$231b2o$175bo$173bobo$174b2o$318b2o$318b
+obo$318bo41b2o$339b3o18bobo$43b2o294bo20bo22b2o$42bobo295bo42bobo$44bo
+159b3o176bo$206bo$205bo14$126b2o$125bobo171b3o$127bo171bo$300bo$164b3o
+$166bo$165bo13$168b3o$45b2o123bo$44bobo79b3o40bo$46bo81bo170b3o$127bo
+171bo$261b3o36bo$261bo$262bo9$313b3o20b2o$129b2o182bo22bobo$128bobo
+183bo21bo$47b2o81bo59b3o$46bobo143bo$48bo142bo34b2o$86b3o136bobo$88bo
+138bo$87bo$221b3o$221bo$222bo8$131b2o$130bobo$49b2o81bo$48bobo$50bo$
+168b3o$170bo$86b3o80bo$88bo210b3o$87bo211bo$221b3o76bo$221bo$222bo8$
+52b3o$54bo$53bo243b2o$297bobo$259b2o36bo$177b3o79bobo$177bo81bo$178bo
+40b3o$46b3o170bo$48bo171bo$47bo36b3o$86bo$85bo279b2o18b2o$365bobo17bob
+o$365bo19bo$227b3o$227bo$228bo$116b3o191b3o$118bo191bo$117bo53b2o138bo
+$170bobo20b3o$130b3o39bo22bo$132bo61bo33b2o$131bo95bobo$229bo18b3o$
+250bo$199b3o4b3o40bo$199bo8bo170b3o$200bo6bo171bo$64b3o274b3o36bo$66bo
+274bo$65bo199b2o75bo$265bobo$265bo13$125b3o$127bo$126bo3$305b2o$305bob
+o$305bo18$245b2o38b2o58b2o18b2o18b2o$245bobo37bobo57bobo17bobo17bobo$
+245bo39bo59bo19bo19bo!

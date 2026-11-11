@@ -1,0 +1,34 @@
+name: Life composition qualification
+on:
+  workflow_dispatch:
+jobs:
+  life-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install camera test dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Install ffmpeg for isolated-vocal decoding fixture
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version | head -n 1
+      - name: Test exact B3/S23 behavior and alignment
+        run: python -m unittest discover -s tests -v
+      - name: Compile full Suno lyric cue sheet
+        run: python -m life.lyric_cues --alignment data/made_of_maybe_suno_alignment.json --out output/made_of_maybe
+      - name: Upload word and caption-page timing tables
+        uses: actions/upload-artifact@v4
+        with:
+          name: made-of-maybe-lyric-timing-csv
+          path: output/made_of_maybe_*.csv
+      - name: Export scene RLE
+        run: python -m life.export_scene > /tmp/singer_bubble_pulsar.rle
+      - name: Export and verify dense full-world RLE
+        run: python -m life.export_dense > /tmp/dense_three_state_singer.rle
+      - name: Export lyric-controlled Life RLE
+        run: python -m life.export_first_line > /tmp/seven_word_glider_timed_captions.rle

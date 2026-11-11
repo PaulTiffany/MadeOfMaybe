@@ -1,0 +1,46 @@
+name: Combined native singer and physical lyric pilot
+on:
+  workflow_dispatch:
+jobs:
+  singer-lyrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow for the optical camera
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Ensure FFmpeg and FFprobe are available on runner
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+      - name: Verify exact delayed lip gliders and unchanged Life glyph physics
+        run: python -m unittest tests.test_first_line_singing_character -v
+      - name: Export independent physical lyric and full-lip portrait stages into ONE world
+        run: |
+          python -m life.export_first_line_singer \
+            --out patterns/first_line_singing_character.rle \
+            --report output/first_line_singing_character_report.json
+      - name: Render and inspect 4.5s first-line singer proof
+        run: |
+          python preview/render_first_line_singer.py \
+            --out preview/first_line_singing_character.mp4
+          ffprobe -v error -show_entries stream=nb_frames:format=duration \
+            -of json preview/first_line_singing_character.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: made-of-maybe-first-line-native-singing-character
+          path: |
+            patterns/first_line_singing_character.rle
+            output/first_line_singing_character_report.json
+            preview/first_line_singing_character.mp4
+            preview/first_line_singing_character_contact.png
+            preview/first_line_singing_character_frame.png
+            preview/first_line_singing_character_video_metadata.json
+          retention-days: 30

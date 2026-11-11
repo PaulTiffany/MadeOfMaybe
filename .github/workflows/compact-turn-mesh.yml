@@ -1,0 +1,21 @@
+name: Compact seven-row LWSS stagger clearance
+on:
+  workflow_dispatch:
+jobs:
+  measure-compact-stagger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare dense, checkerboard, unstaggered and seven-row diagonal native worlds
+        run: python -m unittest tests.test_compact_turn_mesh_probe -v
+      - name: Export Golly seed and measured alignment certificate
+        run: python -m life.export_compact_turn_mesh_probe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: compact-7-row-native-turn-mesh-proof
+          path: output/compact_turn_mesh/*
+          retention-days: 30

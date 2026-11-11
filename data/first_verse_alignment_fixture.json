@@ -1,0 +1,21 @@
+{
+  "audio_id": "53610991-7381-4749-96e1-79b8e3b1c28b",
+  "status": "complete",
+  "source": "Suno, first two verse-1 lyric lines only; test/preview fixture",
+  "words": [
+    {"word":"[Verse 1 — intimate, conversational]\nWe","start_s":11.224,"end_s":11.479,"success":true},
+    {"word":" made","start_s":11.479,"end_s":11.824,"success":true},
+    {"word":" a","start_s":11.824,"end_s":11.964,"success":true},
+    {"word":" window","start_s":11.964,"end_s":12.560,"success":true},
+    {"word":" out","start_s":12.593,"end_s":12.880,"success":true},
+    {"word":" of","start_s":12.909,"end_s":12.968,"success":true},
+    {"word":" sand","start_s":12.968,"end_s":13.420,"success":true},
+    {"word":"\nWe","start_s":15.499,"end_s":15.744,"success":true},
+    {"word":" drew","start_s":15.744,"end_s":16.067,"success":true},
+    {"word":" a","start_s":16.067,"end_s":16.211,"success":true},
+    {"word":" sky","start_s":16.211,"end_s":16.567,"success":true},
+    {"word":" upon","start_s":16.705,"end_s":17.048,"success":true},
+    {"word":" the","start_s":17.120,"end_s":17.310,"success":true},
+    {"word":" glass","start_s":17.310,"end_s":17.714,"success":true}
+  ]
+}

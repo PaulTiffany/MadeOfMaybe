@@ -1,0 +1,32 @@
+name: Physical shared lyric-mouth fanout
+on:
+  workflow_dispatch:
+jobs:
+  causal-splitter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify reusable native glider duplicator and four shared lyric-mouth signals
+        run: python -m unittest tests.test_lyric_mouth_fanout -v
+      - name: Export physical Life source and native word-onset mouth intent
+        run: |
+          python -m life.export_lyric_mouth_fanout \
+            --out patterns/lyric_mouth_shared_splitter.rle \
+            --manifest output/lyric_mouth_shared_splitter.json
+      - name: Render direct B3/S23 checkpoint observations
+        run: |
+          python -m pip install 'Pillow>=10,<13'
+          python preview/make_lyric_mouth_fanout.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: made-of-maybe-causal-lyric-mouth-splitter
+          path: |
+            patterns/lyric_mouth_shared_splitter.rle
+            output/lyric_mouth_shared_splitter.json
+            preview/lyric_mouth_shared_fanout_five_states.png
+            preview/lyric_mouth_shared_fanout.gif
+          retention-days: 30

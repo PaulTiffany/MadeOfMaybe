@@ -1,0 +1,32 @@
+name: Proven reusable westbound G-to-LWSS native Life converter
+on:
+  workflow_dispatch:
+jobs:
+  repeatable-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Qualify native B3/S23 4-input train and source-ablation restoration
+        run: python -m unittest tests.test_reusable_glider_to_lwss_2023 -v
+      - name: Export real 4-input train for Golly
+        run: |
+          mkdir -p output/reusable_converter
+          python - <<'PY'
+          from pathlib import Path
+          from life.export_operational import compact_rle
+          from life.reusable_glider_to_lwss_2023 import train
+          Path('output/reusable_converter/reusable_westbound_four.rle').write_text(
+              compact_rle(train(),(
+                 'Existing Luke Kiernan 2023 reusable converter, reflected',
+                 'Four 188-generation spaced inputs become 4 westbound LWSS',
+                 '105-cell original stable station restored at g1000',
+              )),encoding='utf8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: actually-reusable-westbound-LWSS-2023
+          path: output/reusable_converter/*.rle
+          retention-days: 30
