@@ -55,3 +55,28 @@ but are explicitly **not the desired production architecture**.
 
 No renderer mouth override, video reversal, disappearing face,
 fake native fonts, or one-world equivalence claim is authorized.
+
+## Negative test and physical repair: MADE at g2204
+
+The unmodified 36-cell station mesh **FAILED** actual whole-world B3/S23
+component independence at **generation 1521**: converter components 8 and 10
+interacted. Uniformly shifting the entire station bank did not fix it.
+This disproves a naive promotion of the passing WE layout to arbitrary
+miniature words at a much earlier formation deadline.
+
+We kept the same 19-cell native converter, output target and original Suno
+clock, and shifted only **MADE input/converter #10** 56 Life cells LEFT.
+Its source was simultaneously moved 56 cells NORTH, delaying the actual
+conversion by **112 generations** while preserving the expected WESTBOUND
+LWSS at g2204. An independent native B3/S23 local replay now has no
+unplanned cross-converter interactions through the readout at g2204,
+and the intended four-row text catchers consume all incoming ships by
+g3600, leaving exactly **476 original 7-cell stationary eaters**.
+This is an explicit geometry/timing qualification, not an illusion
+produced by reversing playback frames.
+
+The single-word WE fixture starts with 742 real cells and returns to
+266 stable eater cells; the MADE fixture starts with 1,372 cells and
+returns to 476. These are still **separate single-word worlds**, not
+a false claim that both phrases or the full song already share one
+physical speech bubble.

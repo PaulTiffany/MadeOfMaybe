@@ -1,3 +1,14 @@
+# HISTORICAL BRANCH — NOT THE USER'S INTENDED FILM
+
+The direct southbound-word compiler in this note was a valid separate
+Life prototype, but **incorrectly bypasses the required 90-degree
+converter**. It must not be used as the finished Made of Maybe karaoke.
+The actual production requirement and corrected backward-at-source
+compiler are in `research/GONDRY_CORRECTED_CONVERTER_CONTRACT.md` and
+`life/gondry_corner_backtrace.py`.
+
+---
+
 # The Gondry move: solve the motion BACKWARDS, run Conway FORWARDS
 
 **A B3/S23 cellular automaton is not reversible in general.** In particular,

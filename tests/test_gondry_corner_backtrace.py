@@ -13,6 +13,9 @@ class CorrectedGondryTests(unittest.TestCase):
                          [('WE',2156),('MADE',2204)])
         self.assertEqual(len(backtrace('WE',2156)),17)
         self.assertEqual(len(backtrace('MADE',2204)),32)
+        self.assertEqual(backtrace('MADE',2204)[10].station_x,456)
+        self.assertEqual(backtrace('MADE',2204)[10].incoming_advance_periods,
+                         tuple(p for p in backtrace('MADE',2204) if p.pixel_index==10)[0].incoming_advance_periods)
 
     def test_every_output_is_original_physical_corner_and_period_four_backtrace(self):
         source=set(INPUT)

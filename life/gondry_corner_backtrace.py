@@ -67,6 +67,14 @@ def backtrace(word, target_g):
         raise ValueError('target must be a viable period-four song tick')
     result=[]
     for i,col,row,x,y,k in routes(word,target_g=target_g):
+        # This single physical staging adjustment prevents a real g1521
+        # cross-reaction between MADE stations 8 and 10. Moving station 10
+        # 56 cells left and starting its vertical source 56 cells north
+        # delays that converter 112 generations but preserves the exact
+        # westbound word pixel at original Suno g2204.
+        if word=='MADE' and target_g==2204 and i==10:
+            x-=56
+            k+=28
         e=TURN_REFERENCE_G+4*k
         read_x=1+GLYPH_PITCH*col
         read_y=OUTPUT_REFERENCE_MIN_Y+y
